@@ -45,13 +45,9 @@ class MyHttp {
   static Future<http.Response> get(String endPoint) async {
     var sp = await SharedPreferences.getInstance();
     String token = sp.getString("token");
+    print(token);
     var headers = {"Content-type": "application/json", "authorization": "Bearer $token"};
     var res = await http.get(MyUrl.url(endPoint), headers: headers);
-    // if (res.statusCode == 403) {
-    // var sp = await SharedPreferences.getInstance();
-    // sp.remove("token");
-    // sp.remove("id");
-    // }
     return res;
   }
 }

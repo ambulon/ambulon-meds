@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medcomp/utils/my_url.dart';
 import 'package:medcomp/views/login/login_page.dart';
-import 'package:medcomp/widget_constants/headline.dart';
 import 'package:medcomp/widget_constants/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatelessWidget {
+  final name;
+  final email;
+  final photo;
+  ProfilePage({@required this.name, @required this.email, @required this.photo});
+
   Widget defaultHeadline(str, bool small) {
     return Container(
       alignment: Alignment.centerLeft,
@@ -41,14 +45,15 @@ class ProfilePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      defaultHeadline('Name', true),
-                      defaultHeadline('Manish Kumar', false),
+                      defaultHeadline(name, true),
+                      defaultHeadline(email, false),
                     ],
                   ),
                 ),
                 Spacer(),
                 CircleAvatar(
                   radius: ScreenUtil().setHeight(30),
+                  backgroundImage: NetworkImage(photo),
                 ),
                 SizedBox(width: ScreenUtil().setWidth(18)),
               ],

@@ -8,6 +8,11 @@ import 'package:medcomp/views/home/components/search_page.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class CustomAppBarHome extends StatelessWidget {
+  final name;
+  final email;
+  final photo;
+  CustomAppBarHome({@required this.name, @required this.email, @required this.photo});
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil(width: Styles.get_width(context), height: Styles.get_height(context), allowFontScaling: true)
@@ -44,7 +49,11 @@ class CustomAppBarHome extends StatelessWidget {
                     showBarModalBottomSheet(
                       context: context,
                       isDismissible: true,
-                      builder: (_) => ProfilePage(),
+                      builder: (_) => ProfilePage(
+                        email: email,
+                        name: name,
+                        photo: photo,
+                      ),
                     );
                   },
                   child: Icon(

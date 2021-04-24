@@ -19,7 +19,7 @@ class DefaultWidgets {
         children: [
           Expanded(
             child: Text(
-              str,
+              "$str",
               style: TextStyle(
                 fontSize: ScreenUtil().setHeight(small ? 16 : 18),
                 color: Colors.black,

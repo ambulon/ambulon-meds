@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:medcomp/views/home/components/search_page.dart';
-import 'package:medcomp/views/search/search_result.dart';
+import 'package:medcomp/utils/search_strings.dart';
 
 class SearchResultBar extends SearchDelegate<String> {
   final func;
@@ -29,13 +28,12 @@ class SearchResultBar extends SearchDelegate<String> {
   }
 
   Widget results() {
-    // List temp = TopPromoSlider.servicelist;
     List list = [];
 
     if (query.isEmpty) {
-      list = SearchStrings.list;
+      list = SearchStrings.staticPreferredlist;
     } else {
-      list = SearchStrings.list.where((item) => item.toLowerCase().contains(query.toLowerCase())).toList();
+      list = SearchStrings.staticPreferredlist.where((item) => item.toLowerCase().contains(query.toLowerCase())).toList();
       list.add('Search for \'$query\'');
     }
 

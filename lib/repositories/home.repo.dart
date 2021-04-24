@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:medcomp/models/user.model.dart';
 import 'package:medcomp/utils/my_url.dart';
 import 'dart:developer';
+
 // import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeRepo {
@@ -10,6 +11,7 @@ class HomeRepo {
 
   Future<UserModel> getDetails() async {
     try {
+      // await SearchStrings.readHistoryList();
       var res = await MyHttp.get("user/get-details");
 
       if (res.statusCode == 200) {

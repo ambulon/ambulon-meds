@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
+// import 'dart:convert';
 import 'package:medcomp/models/search.model.dart';
-import 'package:medcomp/utils/my_url.dart';
-import 'dart:developer';
+// import 'package:medcomp/utils/my_url.dart';
+// import 'dart:developer';
 
 class SearchRepo {
   String message;
@@ -10,6 +10,7 @@ class SearchRepo {
   Future<SearchModel> getDetails(strList, dataList) async {
     await Future.delayed(new Duration(milliseconds: 500));
     SearchModel result = SearchModel.fromJson({}, strList, dataList);
+    // await SearchStrings.addList(strList.last);
     return result;
     // try {
     //   var res = await MyHttp.get("user/get-details/${strList.last}");

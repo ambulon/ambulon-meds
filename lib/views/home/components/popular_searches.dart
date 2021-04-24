@@ -34,9 +34,7 @@ class _PopularSearchesState extends State<PopularSearches> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           GestureDetector(
-            onTap: () {
-              // TODO : Comparision page
-            },
+            onTap: () {},
             child: CircleAvatar(
               backgroundColor: Colors.orangeAccent,
               radius: isTablet ? ScreenUtil().setWidth(60) : MediaQuery.of(context).size.width * 0.10,

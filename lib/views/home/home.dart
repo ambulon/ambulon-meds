@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'package:fdottedline/fdottedline.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,25 +28,6 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     BlocProvider.of<HomeBloc>(context).add(HomeEventLoadData());
-  }
-
-  pad() {
-    List<Map<String, dynamic>> vars = [
-      {
-        'name': 'one',
-      },
-      {
-        'name': 'three',
-      },
-    ];
-    String temp = jsonEncode(vars);
-    print(temp);
-    try {
-      var body = jsonDecode(temp) as List;
-      print(body);
-    } catch (e) {
-      print(e);
-    }
   }
 
   @override

@@ -1,16 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medcomp/utils/search_strings.dart';
 import 'package:medcomp/views/search/search_result.dart';
-
-class SearchStrings {
-  static const list = [
-    'Paracetamol',
-    'Crocin',
-    'Zip Mox',
-    'Nici Plus',
-    'RCinex',
-  ];
-}
 
 class MedicineSearch extends SearchDelegate<String> {
   @override
@@ -39,9 +30,9 @@ class MedicineSearch extends SearchDelegate<String> {
     List list = [];
 
     if (query.isEmpty) {
-      list = SearchStrings.list;
+      list = SearchStrings.staticPreferredlist;
     } else {
-      list = SearchStrings.list.where((item) => item.toLowerCase().contains(query.toLowerCase())).toList();
+      list = SearchStrings.staticPreferredlist.where((item) => item.toLowerCase().contains(query.toLowerCase())).toList();
       list.add('Search for \'$query\'');
     }
 

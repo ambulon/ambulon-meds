@@ -1,12 +1,9 @@
-import 'package:shared_preferences/shared_preferences.dart';
-
 class UserModel {
   String id;
   String fid;
   String name;
   String email;
   String photoUrl;
-  List last10searches;
   // List<MedicineModel> wishlist;
 
   UserModel(
@@ -15,7 +12,6 @@ class UserModel {
     this.name,
     this.email,
     this.photoUrl,
-    this.last10searches,
   );
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -33,7 +29,6 @@ class UserModel {
       this.name = json["name"] ?? "null",
       this.email = json["email"] ?? "null",
       this.photoUrl = imageTemp,
-      this.last10searches = json["search_history"],
     );
   }
 }

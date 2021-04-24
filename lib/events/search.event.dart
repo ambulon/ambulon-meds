@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:medcomp/models/search.model.dart';
 
 class SearchEvent extends Equatable {
   @override
@@ -8,7 +9,8 @@ class SearchEvent extends Equatable {
 
 class SearchEventLoadData extends SearchEvent {
   final List strList;
-  SearchEventLoadData({@required this.strList});
+  final List<SingleSearchResultModel> dataList;
+  SearchEventLoadData({@required this.strList, @required this.dataList});
 }
 
 class SearchEventRemoveSearch extends SearchEvent {}

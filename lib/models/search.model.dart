@@ -1,20 +1,27 @@
 class SearchModel {
   List strList;
-  // List<List<dynamic>> data;
+  List<SingleSearchResultModel> dataList;
 
-  SearchModel(this.strList);
+  SearchModel(this.strList, this.dataList);
 
-  SearchModel.fromJson(Map<String, dynamic> json, List strListEvent) {
-    // List dataTemp = dataListEvent;
-    // if (dataTemp != null || dataTemp == []) {
-    //   dataTemp[0] = ['data', 'for', strListEvent.last];
-    // } else {
-    //   dataTemp.add(['data', 'for', strListEvent.last]);
-    // }
-    // adding data from this json
+  SearchModel.fromJson(Map<String, dynamic> json, List strListEvent, List<SingleSearchResultModel> ssrmL) {
+    SingleSearchResultModel ssrm = SingleSearchResultModel.fromJson(json, strListEvent.last);
+    ssrmL.add(ssrm);
     SearchModel(
       this.strList = strListEvent,
-      // this.data = dataTemp,
+      this.dataList = ssrmL,
+    );
+  }
+}
+
+class SingleSearchResultModel {
+  String name;
+  List details;
+  SingleSearchResultModel(this.name, this.details);
+  SingleSearchResultModel.fromJson(Map<String, dynamic> json, String str) {
+    SingleSearchResultModel(
+      this.name = str,
+      this.details = str.split(''),
     );
   }
 }

@@ -20,7 +20,7 @@ class _SearchResultState extends State<SearchResult> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<SearchBloc>(context).add(SearchEventLoadData(strList: [widget.str]));
+    BlocProvider.of<SearchBloc>(context).add(SearchEventLoadData(strList: [widget.str], dataList: []));
   }
 
   @override
@@ -63,8 +63,8 @@ class _SearchResultState extends State<SearchResult> {
                           Navigator.pop(context);
                           Navigator.pop(context);
                         } else {
-                          temp.removeLast();
-                          BlocProvider.of<SearchBloc>(context).add(SearchEventLoadData(strList: temp));
+                          BlocProvider.of<SearchBloc>(context).add(SearchEventRemoveSearch());
+                          // BlocProvider.of<SearchBloc>(context).add(SearchEventLoadData(strList: temp));
                         }
                       },
                       child: Text('bback'),
@@ -79,14 +79,20 @@ class _SearchResultState extends State<SearchResult> {
                         if (newStr != null && newStr != "") {
                           List temp = state.searchModel.strList;
                           temp.add(newStr);
-                          BlocProvider.of<SearchBloc>(context).add(SearchEventLoadData(strList: temp));
+                          BlocProvider.of<SearchBloc>(context).add(SearchEventLoadData(
+                            strList: temp,
+                            dataList: state.searchModel.dataList,
+                          ));
                         } else {
                           ToastPreset.err(context: context, str: 'ENTER');
                         }
                       },
                       child: Text('search'),
                     ),
-                    for (var s in state.searchModel.strList) Text(s),
+                    for (int i = 0; i < state.searchModel.dataList.length; i++) Text("${state.searchModel.dataList[i].details}"),
+                    Divider(),
+                    for (int i = 0; i < state.searchModel.strList.length; i++)
+                      Text("${state.searchModel.strList[i]} : ${state.searchModel.dataList[i].details}"),
                   ],
                 ),
               ),

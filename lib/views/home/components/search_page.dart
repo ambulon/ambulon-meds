@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medcomp/views/search/search_result.dart';
 
 class SearchStrings {
   static const list = [
@@ -66,12 +67,27 @@ class MedicineSearch extends SearchDelegate<String> {
                     vertical: ScreenUtil().setHeight(10),
                     horizontal: ScreenUtil().setWidth(18),
                   ),
-                  child: Text(
-                    list[index],
-                    style: TextStyle(
-                      fontSize: ScreenUtil().setHeight(16),
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500,
+                  child: GestureDetector(
+                    onTap: () {
+                      String temp = list[index];
+                      if (index == list.length - 1) {
+                        temp = temp.replaceAll('Search for \'', '');
+                        temp = temp.substring(0, temp.length - 1);
+                      }
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => SearchResult(
+                                    str: temp,
+                                  )));
+                    },
+                    child: Text(
+                      list[index],
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setHeight(16),
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 );

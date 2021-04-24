@@ -21,3 +21,15 @@ login():
 
 home()
     getdetails()
+```
+<br>
+
+```python
+home -> SR1
+    event startNode [str]
+SR1 -> SR2
+    event addNode eventList.add(str)
+SR1 <- SR2
+    if(len(list) == 0)  pop context
+    event removeNode eventList.pop()
+

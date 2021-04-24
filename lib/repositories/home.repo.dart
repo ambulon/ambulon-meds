@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:medcomp/models/user.model.dart';
 import 'package:medcomp/utils/my_url.dart';
 import 'dart:developer';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeRepo {
   String message;
@@ -15,6 +16,9 @@ class HomeRepo {
         var resBody = jsonDecode(res.body);
         print("user/get-details : $resBody");
         UserModel user = new UserModel.fromJson(resBody["user"]);
+        // SharedPreferences prefs = await SharedPreferences.getInstance();
+        // prefs.getString('searches');
+
         inspect(user);
         print("home.repo ran fine");
         return user;

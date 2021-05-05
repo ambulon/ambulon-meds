@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medcomp/bloc/home.bloc.dart';
 import 'package:medcomp/events/home.event.dart';
+import 'package:medcomp/models/search.model.dart';
 import 'package:medcomp/models/user.model.dart';
 import 'package:medcomp/states/home.state.dart';
 import 'package:medcomp/widget_constants/error.dart';
@@ -38,26 +39,26 @@ class _HomeState extends State<Home> {
       onWillPop: () {
         showDialog(
             context: context,
-            child: CupertinoAlertDialog(
-              title: Text("Quit App"),
-              content: Text("Are you sure you want to exit the app?"),
-              actions: <Widget>[
-                CupertinoDialogAction(
-                    isDefaultAction: true,
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text("Nope")),
-                CupertinoDialogAction(
-                    textStyle: TextStyle(color: Colors.red),
-                    isDefaultAction: true,
-                    onPressed: () async {
-                      // Navigator.pop(context);
-                      exit(0);
-                    },
-                    child: Text("Yes, sure")),
-              ],
-            ));
+            builder: (_) => CupertinoAlertDialog(
+                  title: Text("Quit App"),
+                  content: Text("Are you sure you want to exit the app?"),
+                  actions: <Widget>[
+                    CupertinoDialogAction(
+                        isDefaultAction: true,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text("Nope")),
+                    CupertinoDialogAction(
+                        textStyle: TextStyle(color: Colors.red),
+                        isDefaultAction: true,
+                        onPressed: () async {
+                          // Navigator.pop(context);
+                          exit(0);
+                        },
+                        child: Text("Yes, sure")),
+                  ],
+                ));
         return;
       },
       child: BlocConsumer<HomeBloc, HomeState>(
@@ -70,9 +71,7 @@ class _HomeState extends State<Home> {
             return Loader();
           }
           if (state is HomeStateError) {
-            return ErrorPage(
-              message: state.message,
-            );
+            return loadPage(null);
           }
           if (state is HomeStateLoaded) {
             return loadPage(state.userModel);
@@ -94,9 +93,9 @@ class _HomeState extends State<Home> {
             expandedHeight: ScreenUtil().setHeight(170),
             flexibleSpace: FlexibleSpaceBar(
               background: CustomAppBarHome(
-                email: user.email,
-                name: user.name,
-                photo: user.photoUrl,
+                email: user?.email,
+                name: user?.name,
+                photo: user?.photoUrl,
               ),
               centerTitle: true,
             ),
@@ -175,7 +174,10 @@ class _HomeState extends State<Home> {
                       SizedBox(height: ScreenUtil().setHeight(12)),
                       MedicineComparisionList.list(
                         str: 'Para',
-                        medlist: ['', '', '', '', '', '', ''],
+                        medlist: [
+                          MedicineModel.fromJson({}),
+                          MedicineModel.fromJson({}),
+                        ],
                         compact: true,
                       ),
                       SizedBox(height: ScreenUtil().setHeight(12)),

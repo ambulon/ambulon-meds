@@ -5,6 +5,7 @@ import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/styles.dart';
 import 'package:medcomp/views/home/components/profile_page.dart';
 import 'package:medcomp/views/home/components/search_page.dart';
+import 'package:medcomp/widget_constants/toast.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class CustomAppBarHome extends StatelessWidget {
@@ -46,15 +47,19 @@ class CustomAppBarHome extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    showBarModalBottomSheet(
-                      context: context,
-                      isDismissible: true,
-                      builder: (_) => ProfilePage(
-                        email: email,
-                        name: name,
-                        photo: photo,
-                      ),
-                    );
+                    if (name == null || email == null || photo == null) {
+                      ToastPreset.err(context: context, str: 'Not Logged in');
+                    } else {
+                      showBarModalBottomSheet(
+                        context: context,
+                        isDismissible: true,
+                        builder: (_) => ProfilePage(
+                          email: email,
+                          name: name,
+                          photo: photo,
+                        ),
+                      );
+                    }
                   },
                   child: Icon(
                     Icons.data_usage_rounded,

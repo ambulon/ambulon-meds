@@ -1,4 +1,4 @@
-package com.example.medcomp
+package com.ambulon.medcomp
 
 import io.flutter.embedding.android.FlutterActivity
 

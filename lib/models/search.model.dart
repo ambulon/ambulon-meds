@@ -4,7 +4,7 @@ class SearchModel {
 
   SearchModel(this.strList, this.dataList);
 
-  SearchModel.fromJson(Map<String, dynamic> json, List strListEvent, List<SingleSearchResultModel> ssrmL) {
+  SearchModel.fromJson(List<Map<String, dynamic>> json, List strListEvent, List<SingleSearchResultModel> ssrmL) {
     SingleSearchResultModel ssrm = SingleSearchResultModel.fromJson(json, strListEvent.last);
     ssrmL.add(ssrm);
     SearchModel(
@@ -16,12 +16,32 @@ class SearchModel {
 
 class SingleSearchResultModel {
   String name;
-  List details;
-  SingleSearchResultModel(this.name, this.details);
-  SingleSearchResultModel.fromJson(Map<String, dynamic> json, String str) {
+  List<MedicineModel> list;
+  SingleSearchResultModel(this.name, this.list);
+  SingleSearchResultModel.fromJson(List<Map<String, dynamic>> json, String str) {
+    List<MedicineModel> medList = [];
+    for (var m in json) {
+      medList.add(new MedicineModel.fromJson(m));
+    }
     SingleSearchResultModel(
       this.name = str,
-      this.details = str.split(''),
+      this.list = medList,
+    );
+  }
+}
+
+class MedicineModel {
+  String site;
+  double price;
+  String des;
+
+  MedicineModel(this.site, this.price, this.des);
+
+  MedicineModel.fromJson(Map<String, dynamic> json) {
+    MedicineModel(
+      this.site = json['site'] ?? "ambulon.com",
+      this.price = json['price'] ?? 0.0,
+      this.des = json['description'] ?? "Description",
     );
   }
 }

@@ -5,7 +5,8 @@ import 'dart:convert' as convert;
 class MyUrl {
   static String url(String endPoint) {
     if (endPoint.substring(0, 1) == "/") endPoint = endPoint.substring(1);
-    return "https://ambulon-meds.herokuapp.com/$endPoint";
+    // return "https://ambulon-meds.herokuapp.com/$endPoint";
+    return "https://ceeb49abd150.ngrok.io/$endPoint";
   }
 }
 

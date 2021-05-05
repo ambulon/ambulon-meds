@@ -1,13 +1,15 @@
 // import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medcomp/models/search.model.dart';
 import 'package:medcomp/utils/styles.dart';
 import 'headline.dart';
 
 class MedicineComparisionList {
   static Widget list({
     @required String str,
-    @required List medlist,
+    @required List<MedicineModel> medlist,
+    bool showTitle = true,
     bool compact = false,
   }) {
     int limit = medlist.length;
@@ -16,13 +18,21 @@ class MedicineComparisionList {
     }
     return Column(
       children: [
-        DefaultWidgets.headline(
-          str: str,
-          small: false,
-          verticalMargin: true,
-          showAll: compact,
-        ),
-        for (int i = 0; i < limit; i++) MedCard(),
+        showTitle
+            ? DefaultWidgets.headline(
+                str: str,
+                small: false,
+                verticalMargin: true,
+                showAll: compact,
+              )
+            : SizedBox(),
+        for (int i = 0; i < limit; i++)
+          MedCard(
+            name: str,
+            price: medlist[i].price,
+            site: medlist[i].site,
+            description: medlist[i].des,
+          ),
       ],
     );
   }
@@ -31,7 +41,7 @@ class MedicineComparisionList {
 class MedCard extends StatelessWidget {
   final String name;
   final String imgUrl;
-  final String price;
+  final double price;
   final String description;
   final int stars;
   final String site;
@@ -39,7 +49,7 @@ class MedCard extends StatelessWidget {
   MedCard({
     this.name = 'Paracetamol',
     this.imgUrl = '',
-    this.price = 'Rs. 50',
+    this.price = 0.0,
     this.description = 'quantity and stuff',
     this.stars = 4,
     this.site = 'alibaba.com',
@@ -105,7 +115,7 @@ class MedCard extends StatelessWidget {
                         ),
                         SizedBox(width: ScreenUtil().setWidth(5)),
                         Text(
-                          '$price',
+                          'Rs. ${price.toStringAsFixed(1)}',
                           style: TextStyle(
                             fontSize: ScreenUtil().setHeight(13),
                             color: Colors.teal[900],

@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medcomp/bloc/search.bloc.dart';
 import 'package:medcomp/events/search.event.dart';
+import 'package:medcomp/models/search.model.dart';
 import 'package:medcomp/states/search.state.dart';
 import 'package:medcomp/widget_constants/custom_appbar.dart';
 import 'package:medcomp/widget_constants/error.dart';
 import 'package:medcomp/widget_constants/headline.dart';
 import 'package:medcomp/widget_constants/loader.dart';
+import 'package:medcomp/widget_constants/med_card.dart';
 import 'package:medcomp/widget_constants/toast.dart';
 
 import 'components/search_field.dart';
@@ -49,6 +51,7 @@ class _SearchResultState extends State<SearchResult> {
             );
           }
           if (state is SearchStateLoaded) {
+            SingleSearchResultModel data = state.searchModel.dataList.last;
             return Scaffold(
               appBar: CustomAppBar.defForSearchResult(
                 title: 'Search',
@@ -89,12 +92,17 @@ class _SearchResultState extends State<SearchResult> {
                   child: Column(
                     children: [
                       DefaultWidgets.headline(
-                        str: "Search results for ${state.searchModel.strList.last}",
+                        str: "Search results for ${data.name}",
                         small: true,
                         verticalMargin: true,
                       ),
-                      for (int i = 0; i < state.searchModel.strList.length; i++)
-                        Text("${state.searchModel.strList[i]} : ${state.searchModel.dataList[i].details}"),
+                      MedicineComparisionList.list(
+                        str: data.name,
+                        medlist: data.list,
+                        showTitle: false,
+                        compact: false,
+                      ),
+                      // for (int i = 0; i < data.list.length; i++) Text("${data.list[i].site} : ${data.list[i].price}"),
                     ],
                   ),
                 ),

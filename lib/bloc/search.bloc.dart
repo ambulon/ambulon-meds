@@ -33,7 +33,6 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         if (state is SearchStateLoaded) {
           SearchModel searchModel = (state as SearchStateLoaded).searchModel;
           yield SearchStateLoading();
-          await Future.delayed(Duration(milliseconds: 50));
           searchModel.strList.removeLast();
           searchModel.dataList.removeLast();
           yield SearchStateLoaded(searchModel);

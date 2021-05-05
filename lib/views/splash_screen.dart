@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:medcomp/utils/search_strings.dart';
 import 'package:medcomp/views/login/login_page.dart';
 import 'package:medcomp/utils/styles.dart';
 import 'package:shared_preferences/shared_preferences.dart';

@@ -37,6 +37,9 @@ class _LoginPageState extends State<LoginPage> {
       final User user = (await _firebaseAuth.signInWithCredential(credential)).user;
 
       await apiSave(user);
+      setState(() {
+        isLoading = false;
+      });
     } catch (e) {
       ToastPreset.err(context: context, str: 'Error in gsign-in');
       print("Error in gsignin try catch : $e");

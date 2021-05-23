@@ -1,22 +1,19 @@
 import 'dart:async';
 import 'dart:convert';
-// import 'dart:convert';
 import 'package:medcomp/models/search.model.dart';
 import 'package:medcomp/utils/my_url.dart';
-// import 'package:medcomp/utils/my_url.dart';
-// import 'dart:developer';
 
-class SearchRepo {
+class HomeMedRepo {
   String message;
 
-  Future<SearchModel> getDetails(strList, dataList) async {
+  Future<SingleSearchResultModel> getDetails() async {
     try {
-      var res = await MyHttp.get("scrape?name=${strList.last}");
+      var res = await MyHttp.get("scrape?name=Paracetamol");
 
       if (res.statusCode == 200) {
         var resBody = jsonDecode(res.body);
         print(resBody['priceList']);
-        SearchModel result = SearchModel.fromJson(resBody['priceList'], strList, dataList);
+        SingleSearchResultModel result = SingleSearchResultModel.fromJson(resBody['priceList'], 'Paracetamol');
         return result;
       } else {
         print("Error code for search repo is ${res.statusCode} ${res.body}");

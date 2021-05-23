@@ -15,7 +15,8 @@ import 'components/search_field.dart';
 
 class SearchResult extends StatefulWidget {
   final str;
-  SearchResult({@required this.str});
+  final bool preset;
+  SearchResult({@required this.str, this.preset = false});
 
   @override
   _SearchResultState createState() => _SearchResultState();
@@ -43,7 +44,7 @@ class _SearchResultState extends State<SearchResult> {
             return SizedBox();
           }
           if (state is SearchStateLoading) {
-            return Loader();
+            return Loader.def();
           }
           if (state is SearchStateError) {
             return ErrorPage(
@@ -54,15 +55,20 @@ class _SearchResultState extends State<SearchResult> {
             SingleSearchResultModel data = state.searchModel.dataList.last;
             return Scaffold(
               appBar: CustomAppBar.defForSearchResult(
+                showSearchButton: !widget.preset,
                 title: 'Search',
                 context: context,
                 backFunc: () {
-                  List temp = state.searchModel.strList;
-                  if (temp.length == 1) {
-                    Navigator.pop(context);
+                  if (widget.preset) {
                     Navigator.pop(context);
                   } else {
-                    BlocProvider.of<SearchBloc>(context).add(SearchEventRemoveSearch());
+                    List temp = state.searchModel.strList;
+                    if (temp.length == 1) {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    } else {
+                      BlocProvider.of<SearchBloc>(context).add(SearchEventRemoveSearch());
+                    }
                   }
                 },
                 searchFunc: () {
@@ -95,12 +101,15 @@ class _SearchResultState extends State<SearchResult> {
                         str: "Search results for ${data.name}",
                         small: true,
                         verticalMargin: true,
+                        showAll: false,
+                        showAllFunc: () {},
                       ),
                       MedicineComparisionList.list(
                         str: data.name,
                         medlist: data.list,
                         showTitle: false,
                         compact: false,
+                        context: context,
                       ),
                       // for (int i = 0; i < data.list.length; i++) Text("${data.list[i].site} : ${data.list[i].price}"),
                     ],

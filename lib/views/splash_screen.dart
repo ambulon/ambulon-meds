@@ -22,12 +22,19 @@ class _SplashScreenState extends State<SplashScreen> {
   startup() async {
     await Future.delayed(new Duration(milliseconds: 100));
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    // prefs.clear();
-    String token = prefs.getString('token');
-    if (token == null) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LoginPage()));
+    var isFirstTime = prefs.getBool('first_time');
+    if (isFirstTime != null && !isFirstTime) {
+      prefs.setBool('first_time', false);
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => Home()));
     } else {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => Home()));
+      prefs.setBool('first_time', false);
+      String token = prefs.getString('token');
+
+      if (token == null) {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LoginPage()));
+      } else {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => Home()));
+      }
     }
   }
 

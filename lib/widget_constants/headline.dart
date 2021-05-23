@@ -8,6 +8,7 @@ class DefaultWidgets {
     @required bool small,
     @required bool verticalMargin,
     bool showAll = false,
+    @required Function showAllFunc,
   }) {
     return Container(
       alignment: Alignment.centerLeft,
@@ -29,12 +30,15 @@ class DefaultWidgets {
           ),
           SizedBox(width: ScreenUtil().setWidth(10)),
           showAll
-              ? Text(
-                  'view all',
-                  style: TextStyle(
-                    fontSize: ScreenUtil().setHeight(13),
-                    color: ColorTheme.bgColor,
-                    fontWeight: FontWeight.w500,
+              ? GestureDetector(
+                  onTap: showAllFunc,
+                  child: Text(
+                    'view all',
+                    style: TextStyle(
+                      fontSize: ScreenUtil().setHeight(13),
+                      color: ColorTheme.bgColor,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 )
               : SizedBox(),

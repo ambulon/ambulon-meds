@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medcomp/models/search.model.dart';
 import 'package:medcomp/utils/styles.dart';
+import 'package:medcomp/views/search/search_result.dart';
 import 'headline.dart';
 
 class MedicineComparisionList {
@@ -11,6 +12,7 @@ class MedicineComparisionList {
     @required List<MedicineModel> medlist,
     bool showTitle = true,
     bool compact = false,
+    @required BuildContext context,
   }) {
     int limit = medlist.length;
     if (compact && limit > 4) {
@@ -24,6 +26,15 @@ class MedicineComparisionList {
                 small: false,
                 verticalMargin: true,
                 showAll: compact,
+                showAllFunc: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => SearchResult(
+                                str: str,
+                                preset: true,
+                              )));
+                },
               )
             : SizedBox(),
         for (int i = 0; i < limit; i++)
@@ -71,22 +82,23 @@ class MedCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Expanded(
-              flex: 3,
-              child: ClipRRect(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(8),
-                  bottomLeft: Radius.circular(8),
-                ),
-                // child: CachedNetworkImage(
-                //   height: ScreenUtil().setHeight(110),
-                //   imageUrl: imgUrl,
-                //   fit: BoxFit.cover,
-                // ),
-                child: Container(
-                  height: ScreenUtil().setHeight(110),
-                  color: Colors.amberAccent,
-                ),
-              )),
+            flex: 3,
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(8),
+                bottomLeft: Radius.circular(8),
+              ),
+              // child: CachedNetworkImage(
+              //   height: ScreenUtil().setHeight(110),
+              //   imageUrl: imgUrl,
+              //   fit: BoxFit.cover,
+              // ),
+              child: Container(
+                height: ScreenUtil().setHeight(110),
+                color: Colors.amberAccent,
+              ),
+            ),
+          ),
           Expanded(
             flex: 7,
             child: Container(
@@ -151,30 +163,30 @@ class MedCard extends StatelessWidget {
   }
 
   Widget siteAndStars() {
-    return Expanded(
-      child: Container(
-        width: double.infinity,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(
-              Icons.insert_link_rounded,
-              color: Colors.teal[900],
-              size: ScreenUtil().setHeight(20),
-            ),
-            SizedBox(width: ScreenUtil().setWidth(3)),
-            Text(
-              site,
+    String tempSite = site.replaceAll('www.', '');
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(
+          Icons.insert_link_rounded,
+          color: Colors.teal[900],
+          size: ScreenUtil().setHeight(15),
+        ),
+        SizedBox(width: ScreenUtil().setWidth(3)),
+        Expanded(
+          child: Container(
+            child: Text(
+              tempSite,
               style: TextStyle(
-                fontSize: ScreenUtil().setHeight(14),
+                fontSize: ScreenUtil().setHeight(12),
                 fontStyle: FontStyle.italic,
               ),
             ),
-            Spacer(),
-            starsWidget(),
-          ],
+          ),
         ),
-      ),
+        SizedBox(width: ScreenUtil().setWidth(7)),
+        starsWidget(),
+      ],
     );
   }
 

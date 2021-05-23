@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/styles.dart';
+import 'package:medcomp/views/search/search_result.dart';
 
 class PopularSearches extends StatefulWidget {
   @override
@@ -19,12 +20,6 @@ class _PopularSearchesState extends State<PopularSearches> {
     'RCinex',
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    // isTablet = MediaQuery.of(context).size.width > 730;
-  }
-
   Widget categorySlot(String name) {
     String tempname = name.replaceAll(' ', '\n');
     tempname = tempname.replaceAll('and\n', '& ');
@@ -34,7 +29,15 @@ class _PopularSearchesState extends State<PopularSearches> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => SearchResult(
+                            str: name,
+                            preset: true,
+                          )));
+            },
             child: CircleAvatar(
               backgroundColor: Colors.orangeAccent,
               radius: isTablet ? ScreenUtil().setWidth(60) : MediaQuery.of(context).size.width * 0.10,

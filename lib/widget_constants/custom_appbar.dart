@@ -33,6 +33,7 @@ class CustomAppBar {
     context,
     backFunc,
     searchFunc,
+    showSearchButton,
   }) {
     return AppBar(
       leading: GestureDetector(
@@ -44,14 +45,16 @@ class CustomAppBar {
         ),
       ),
       actions: [
-        GestureDetector(
-          onTap: searchFunc,
-          child: Icon(
-            Icons.search,
-            size: ScreenUtil().setHeight(25),
-            color: Colors.white,
-          ),
-        ),
+        showSearchButton
+            ? GestureDetector(
+                onTap: searchFunc,
+                child: Icon(
+                  Icons.search,
+                  size: ScreenUtil().setHeight(25),
+                  color: Colors.white,
+                ),
+              )
+            : SizedBox(),
         SizedBox(width: ScreenUtil().setWidth(20)),
       ],
       backgroundColor: Colors.teal[600],

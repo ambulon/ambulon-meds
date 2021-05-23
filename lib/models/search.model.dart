@@ -4,7 +4,7 @@ class SearchModel {
 
   SearchModel(this.strList, this.dataList);
 
-  SearchModel.fromJson(List<Map<String, dynamic>> json, List strListEvent, List<SingleSearchResultModel> ssrmL) {
+  SearchModel.fromJson(List json, List strListEvent, List<SingleSearchResultModel> ssrmL) {
     SingleSearchResultModel ssrm = SingleSearchResultModel.fromJson(json, strListEvent.last);
     ssrmL.add(ssrm);
     SearchModel(
@@ -18,7 +18,7 @@ class SingleSearchResultModel {
   String name;
   List<MedicineModel> list;
   SingleSearchResultModel(this.name, this.list);
-  SingleSearchResultModel.fromJson(List<Map<String, dynamic>> json, String str) {
+  SingleSearchResultModel.fromJson(List json, String str) {
     List<MedicineModel> medList = [];
     for (var m in json) {
       medList.add(new MedicineModel.fromJson(m));
@@ -40,7 +40,7 @@ class MedicineModel {
   MedicineModel.fromJson(Map<String, dynamic> json) {
     MedicineModel(
       this.site = json['site'] ?? "ambulon.com",
-      this.price = json['price'] ?? 0.0,
+      this.price = double.tryParse(json['price'].toString()) ?? 0.0,
       this.des = json['description'] ?? "Description",
     );
   }

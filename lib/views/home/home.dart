@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medcomp/bloc/home.bloc.dart';
+import 'package:medcomp/bloc/homemed.bloc.dart';
 import 'package:medcomp/events/home.event.dart';
-import 'package:medcomp/models/search.model.dart';
+import 'package:medcomp/events/homemed.event.dart';
 import 'package:medcomp/models/user.model.dart';
 import 'package:medcomp/states/home.state.dart';
-import 'package:medcomp/widget_constants/error.dart';
+import 'package:medcomp/states/homemed.state.dart';
+import 'package:medcomp/views/cart/cart_page.dart';
 import 'package:medcomp/widget_constants/headline.dart';
 import 'package:medcomp/widget_constants/loader.dart';
 import 'package:medcomp/widget_constants/med_card.dart';
@@ -29,6 +31,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     BlocProvider.of<HomeBloc>(context).add(HomeEventLoadData());
+    BlocProvider.of<HomeMedBloc>(context).add(HomeMedEventLoadData());
   }
 
   @override
@@ -68,7 +71,7 @@ class _HomeState extends State<Home> {
             return SizedBox();
           }
           if (state is HomeStateLoading) {
-            return Loader();
+            return Loader.def();
           }
           if (state is HomeStateError) {
             return loadPage(null);
@@ -115,70 +118,30 @@ class _HomeState extends State<Home> {
                         str: 'Popular Searches',
                         small: false,
                         verticalMargin: true,
+                        showAll: false,
+                        showAllFunc: () {},
                       ),
                       PopularSearches(),
                       SizedBox(height: ScreenUtil().setHeight(12)),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => SavedMeds()),
-                          );
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          height: ScreenUtil().setHeight(110),
-                          margin: EdgeInsets.symmetric(vertical: ScreenUtil().setHeight(10), horizontal: ScreenUtil().setWidth(15)),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(colors: [
-                              Colors.teal[600],
-                              Colors.teal[800],
-                            ]),
-                            boxShadow: kElevationToShadow[2],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                FDottedLine(
-                                  color: Colors.white,
-                                  strokeWidth: 2.0,
-                                  dottedLength: 10.0,
-                                  space: 2.0,
-                                  corner: FDottedLineCorner.all(8),
-                                  height: ScreenUtil().setHeight(90),
-                                  width: ScreenUtil().setHeight(90),
-                                  child: Container(
-                                    padding: EdgeInsets.all(ScreenUtil().setHeight(8)),
-                                    child: Icon(
-                                      Icons.add,
-                                      color: Colors.white,
-                                      size: ScreenUtil().setHeight(35),
-                                    ),
-                                  ),
-                                ),
-                                Text(
-                                  'Saved Items',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: ScreenUtil().setHeight(13),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                      // savedMedsWidget(),
+                      createCartWidget(),
                       SizedBox(height: ScreenUtil().setHeight(12)),
-                      MedicineComparisionList.list(
-                        str: 'Para',
-                        medlist: [
-                          MedicineModel.fromJson({}),
-                          MedicineModel.fromJson({}),
-                        ],
-                        compact: true,
+                      BlocConsumer<HomeMedBloc, HomeMedState>(
+                        listener: (ctx, HomeMedState state) {},
+                        builder: (ctx, HomeMedState state) {
+                          if (state is HomeMedStateLoading) {
+                            return Loader.medCardShimmer();
+                          }
+                          if (state is HomeMedStateLoaded) {
+                            return MedicineComparisionList.list(
+                              str: state.model.name,
+                              medlist: state.model.list,
+                              compact: true,
+                              context: context,
+                            );
+                          }
+                          return SizedBox();
+                        },
                       ),
                       SizedBox(height: ScreenUtil().setHeight(12)),
                     ],
@@ -189,6 +152,118 @@ class _HomeState extends State<Home> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget createCartWidget() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => CartPage()),
+        );
+      },
+      child: Container(
+        width: double.infinity,
+        height: ScreenUtil().setHeight(110),
+        margin: EdgeInsets.symmetric(vertical: ScreenUtil().setHeight(10), horizontal: ScreenUtil().setWidth(15)),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(colors: [
+            Colors.teal[600],
+            Colors.teal[800],
+          ]),
+          boxShadow: kElevationToShadow[2],
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              FDottedLine(
+                color: Colors.white,
+                strokeWidth: 2.0,
+                dottedLength: 10.0,
+                space: 2.0,
+                corner: FDottedLineCorner.all(8),
+                height: ScreenUtil().setHeight(90),
+                width: ScreenUtil().setHeight(90),
+                child: Container(
+                  padding: EdgeInsets.all(ScreenUtil().setHeight(8)),
+                  child: Icon(
+                    Icons.shopping_cart_outlined,
+                    color: Colors.white,
+                    size: ScreenUtil().setHeight(35),
+                  ),
+                ),
+              ),
+              Text(
+                'Your Cart',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: ScreenUtil().setHeight(13),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget savedMedsWidget() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => SavedMeds()),
+        );
+      },
+      child: Container(
+        width: double.infinity,
+        height: ScreenUtil().setHeight(110),
+        margin: EdgeInsets.symmetric(vertical: ScreenUtil().setHeight(10), horizontal: ScreenUtil().setWidth(15)),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(colors: [
+            Colors.teal[600],
+            Colors.teal[800],
+          ]),
+          boxShadow: kElevationToShadow[2],
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              FDottedLine(
+                color: Colors.white,
+                strokeWidth: 2.0,
+                dottedLength: 10.0,
+                space: 2.0,
+                corner: FDottedLineCorner.all(8),
+                height: ScreenUtil().setHeight(90),
+                width: ScreenUtil().setHeight(90),
+                child: Container(
+                  padding: EdgeInsets.all(ScreenUtil().setHeight(8)),
+                  child: Icon(
+                    Icons.add,
+                    color: Colors.white,
+                    size: ScreenUtil().setHeight(35),
+                  ),
+                ),
+              ),
+              Text(
+                'Saved Items',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: ScreenUtil().setHeight(13),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

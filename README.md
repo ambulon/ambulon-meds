@@ -1,5 +1,26 @@
 ```python
+cart state not loaded
+cart event load from prefs
+cart state loading
+    cart state loaded data
+        cart event clear data           # clear SP and yield state init
+        cart event edit list
+            cart state init with list
+        
+    cart state init
+        cart event load network data    # save to SP
+        cart state loaded data          # above
+```
+<br>
 
+- [x] shimmer effect
+- [x] popular searches
+- [ ] cart module
+- [ ] profile page
+
+<br>
+
+```python
 splash():
     bool = check for JWT
 	    if true:
@@ -9,15 +30,7 @@ splash():
         
 login():
     id = await continue with google()
-    bool = checkUserExistinNode?(id)
-    if true:
-        save JWT
-        home()
-    else:
-        JWT = createinNode(id)
-        save JWT
-        registerinNode({age, location...})
-        home()
+    saveJWT()
 
 home()
     getdetails()
@@ -32,4 +45,4 @@ SR1 -> SR2
 SR1 <- SR2
     if(len(list) == 0)  pop context
     event removeNode eventList.pop()
-
+```

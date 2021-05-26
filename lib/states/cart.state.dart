@@ -15,10 +15,7 @@ class CartStateLoadedData extends CartState {
   CartStateLoadedData(this.model);
 }
 
-class CartStateInit extends CartState {
-  final List list;
-  CartStateInit(this.list);
-}
+class CartStateEmpty extends CartState {}
 
 class CartStateError extends CartState {
   final message;

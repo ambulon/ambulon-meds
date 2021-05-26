@@ -28,6 +28,17 @@ class SingleSearchResultModel {
       this.list = medList,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> data = {
+      "name": this.name,
+      "quantity": 1,
+      "priceList": {
+        for (var s in this.list) s.siteShort: s.price,
+      },
+    };
+    return data;
+  }
 }
 
 class MedicineModel {
@@ -43,5 +54,17 @@ class MedicineModel {
       this.price = double.tryParse(json['price'].toString()) ?? 0.0,
       this.des = json['description'] ?? "Description",
     );
+  }
+
+  String get siteShort {
+    if (this.site.contains('netmeds')) {
+      return "netmeds";
+    } else if (this.site.contains('1mg')) {
+      return "_1mg";
+    } else if (this.site.contains('apollo')) {
+      return "apollo";
+    } else {
+      return "";
+    }
   }
 }

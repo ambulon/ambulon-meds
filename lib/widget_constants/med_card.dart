@@ -58,12 +58,12 @@ class MedCard extends StatelessWidget {
   final String site;
   // final bool isZsafe;
   MedCard({
-    this.name = 'Paracetamol',
+    this.name = 'Name',
     this.imgUrl = '',
     this.price = 0.0,
     this.description = 'quantity and stuff',
     this.stars = 4,
-    this.site = 'alibaba.com',
+    this.site = 'site.com',
   });
 
   @override

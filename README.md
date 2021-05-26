@@ -1,15 +1,13 @@
 ```python
 cart state not loaded
-cart event load from prefs
+cart event load
 cart state loading
     cart state loaded data
-        cart event clear data           # clear SP and yield state init
-        cart event edit list
-            cart state init with list
+        # cart event clear data           # get cart again
+        # cart event update quantity
+        cart event remove item          # get cart again
         
-    cart state init
-        cart event load network data    # save to SP
-        cart state loaded data          # above
+    cart state empty                    # add illustration
 ```
 <br>
 

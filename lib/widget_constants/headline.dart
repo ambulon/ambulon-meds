@@ -36,7 +36,7 @@ class DefaultWidgets {
                     'view all',
                     style: TextStyle(
                       fontSize: ScreenUtil().setHeight(13),
-                      color: ColorTheme.bgColor,
+                      color: ColorTheme.primaryColor,
                       fontWeight: FontWeight.w500,
                     ),
                   ),

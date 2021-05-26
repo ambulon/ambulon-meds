@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medcomp/utils/colortheme.dart';
 
 class CustomAppBar {
   static AppBar def({
@@ -66,6 +67,39 @@ class CustomAppBar {
           color: Colors.white,
         ),
       ),
+    );
+  }
+
+  static AppBar cart({context}) {
+    return AppBar(
+      centerTitle: true,
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Icon(
+          Icons.arrow_back_ios_outlined,
+          size: ScreenUtil().setHeight(18),
+          color: Colors.black,
+        ),
+      ),
+      actions: [
+        Icon(
+          Icons.shopping_cart_outlined,
+          size: ScreenUtil().setHeight(22),
+          color: Colors.black,
+        ),
+        SizedBox(width: ScreenUtil().setWidth(20)),
+      ],
+      title: Text(
+        'Your Cart',
+        style: TextStyle(
+          color: ColorTheme.primaryColor,
+          fontSize: ScreenUtil().setHeight(18),
+        ),
+      ),
+      elevation: 0,
+      backgroundColor: Colors.white,
     );
   }
 }

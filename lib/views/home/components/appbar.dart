@@ -20,7 +20,7 @@ class CustomAppBarHome extends StatelessWidget {
       ..init(context);
     return Container(
       decoration: BoxDecoration(
-        color: ColorTheme.bgColor,
+        color: ColorTheme.primaryColor,
       ),
       child: Column(
         children: <Widget>[

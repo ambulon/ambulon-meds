@@ -5,13 +5,13 @@ class CartEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class CartEventLoadFromPrefs extends CartEvent {}
+class CartEventLoad extends CartEvent {}
 
-class CartEventEditList extends CartEvent {}
+// class CartEventRemoveItem extends CartEvent {
+//   final String name;
+//   CartEventRemoveItem(this.name);
+// }
 
-class CartEventClearData extends CartEvent {}
+class CartEventClearCart extends CartEvent {}
 
-class CartEventLoadNetworkData extends CartEvent {
-  final List list;
-  CartEventLoadNetworkData(this.list);
-}
+class CartEventUpdateQuantity extends CartEvent {}

@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:medcomp/events/cart.event.dart';
 import 'package:medcomp/repositories/cart.repo.dart';
 import 'package:medcomp/states/cart.state.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CartBloc extends Bloc<CartEvent, CartState> {
   @override
@@ -12,51 +11,31 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
   @override
   Stream<CartState> mapEventToState(CartEvent event) async* {
-    if (event is CartEventLoadFromPrefs) {
+    if (event is CartEventLoad) {
       yield CartStateLoading();
       try {
-        var res = await this._cartRepo.getPrefsData();
+        var res = await this._cartRepo.getData();
         if (res == null) {
-          yield CartStateInit([]);
+          yield CartStateEmpty();
         } else {
           yield CartStateLoadedData(res);
         }
       } catch (e) {
-        // TODO : remove error and put init
         yield CartStateError(e);
       }
     }
 
-    if (event is CartEventLoadNetworkData) {
-      yield CartStateLoading();
+    if (event is CartEventClearCart) {
       try {
-        var res = await this._cartRepo.getNetworkData(event.list);
-        yield CartStateLoadedData(res);
+        yield CartStateLoading();
+        var res = await this._cartRepo.clear();
+        if (res) {
+          yield CartStateEmpty();
+        } else {
+          yield CartStateError('error in clear cart maptoState');
+        }
       } catch (e) {
         yield CartStateError(e);
-      }
-    }
-
-    if (event is CartEventEditList) {
-      if (state is CartStateLoadedData) {
-        // TODO : get list here
-        List list = [];
-        yield CartStateLoading();
-        yield CartStateInit(list);
-      } else {
-        yield CartStateError('cant get the list');
-      }
-    }
-
-    if (event is CartEventClearData) {
-      try {
-        yield CartStateLoading();
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.remove('cartPref');
-        yield CartStateInit([]);
-      } catch (e) {
-        // TODO : remove error and put init
-        yield CartStateError('cart event clear data');
       }
     }
   }

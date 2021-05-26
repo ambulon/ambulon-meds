@@ -87,12 +87,12 @@ class _HomeState extends State<Home> {
 
   Widget loadPage(UserModel user) {
     return Scaffold(
-      backgroundColor: ColorTheme.bgColor,
+      backgroundColor: ColorTheme.primaryColor,
       body: CustomScrollView(
         physics: BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
-            backgroundColor: ColorTheme.bgColor,
+            backgroundColor: ColorTheme.primaryColor,
             expandedHeight: ScreenUtil().setHeight(170),
             flexibleSpace: FlexibleSpaceBar(
               background: CustomAppBarHome(

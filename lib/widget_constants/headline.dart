@@ -46,4 +46,39 @@ class DefaultWidgets {
       ),
     );
   }
+
+  static Widget cartHeadline({
+    @required Function onTap,
+  }) {
+    return Container(
+      alignment: Alignment.centerLeft,
+      margin: EdgeInsets.symmetric(
+        vertical: ScreenUtil().setHeight(10),
+        horizontal: ScreenUtil().setWidth(18),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              "Search Results for",
+              style: TextStyle(
+                fontSize: ScreenUtil().setHeight(16),
+                color: Colors.black,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          SizedBox(width: ScreenUtil().setWidth(10)),
+          GestureDetector(
+            onTap: onTap,
+            child: Icon(
+              Icons.add_shopping_cart,
+              size: ScreenUtil().setHeight(24),
+              color: ColorTheme.primaryColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medcomp/bloc/cart.bloc.dart';
+import 'package:medcomp/events/cart.event.dart';
 import 'package:medcomp/models/cart.model.dart';
 import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/styles.dart';
 import 'package:medcomp/widget_constants/custom_appbar.dart';
 import 'package:medcomp/widget_constants/med_card_cart.dart';
+import 'package:medcomp/widget_constants/toast.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'dart:convert';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+import 'package:esys_flutter_share/esys_flutter_share.dart';
+import 'package:flutter/rendering.dart';
 
 class CartDisplay extends StatefulWidget {
   final CartModel cartModel;
@@ -16,6 +25,12 @@ class CartDisplay extends StatefulWidget {
 
 class _CartDisplayState extends State<CartDisplay> {
   PageController pageController = PageController(initialPage: 0);
+  List<GlobalKey> _globalKey = [
+    GlobalKey(),
+    GlobalKey(),
+    GlobalKey(),
+    GlobalKey(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -31,19 +46,16 @@ class _CartDisplayState extends State<CartDisplay> {
             Expanded(
               child: Stack(
                 children: [
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(20), 0, 0, 0),
-                    child: PageView(
-                      physics: BouncingScrollPhysics(),
-                      controller: pageController,
-                      scrollDirection: Axis.vertical,
-                      children: [
-                        content(title: 'Best', totalPrice: widget.cartModel.totalPrice.minPrice),
-                        content(title: 'Netmeds', totalPrice: widget.cartModel.totalPrice.netmeds),
-                        content(title: '1mg', totalPrice: widget.cartModel.totalPrice.i1mg),
-                        content(title: 'Apollo', totalPrice: widget.cartModel.totalPrice.apollo),
-                      ],
-                    ),
+                  PageView(
+                    physics: BouncingScrollPhysics(),
+                    controller: pageController,
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      content(i: 0, title: 'Best', totalPrice: widget.cartModel.totalPrice.minPrice),
+                      content(i: 1, title: 'Netmeds', totalPrice: widget.cartModel.totalPrice.netmeds),
+                      content(i: 2, title: '1mg', totalPrice: widget.cartModel.totalPrice.i1mg),
+                      content(i: 3, title: 'Apollo', totalPrice: widget.cartModel.totalPrice.apollo),
+                    ],
                   ),
                   Align(
                     alignment: Alignment(-1, -1),
@@ -52,7 +64,7 @@ class _CartDisplayState extends State<CartDisplay> {
                       child: SmoothPageIndicator(
                         controller: pageController,
                         count: 4,
-                        axisDirection: Axis.vertical,
+                        axisDirection: Axis.horizontal,
                         onDotClicked: (i) {
                           pageController.animateToPage(
                             i,
@@ -107,46 +119,65 @@ class _CartDisplayState extends State<CartDisplay> {
   }
 
   Widget content({
+    int i,
     String title,
     double totalPrice,
   }) {
     return Container(
+      color: Colors.white,
       child: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: ScreenUtil().setHeight(12)),
-            Container(
-              padding: EdgeInsets.only(right: ScreenUtil().setWidth(25)),
-              width: double.infinity,
-              alignment: Alignment.centerRight,
-              child: Text(
-                title,
-                style: TextStyle(
-                  fontSize: ScreenUtil().setHeight(25),
-                  fontWeight: FontWeight.bold,
+        child: RepaintBoundary(
+          key: _globalKey[i],
+          child: Container(
+            color: Colors.white,
+            child: Column(
+              children: [
+                SizedBox(height: ScreenUtil().setHeight(12)),
+                Container(
+                  padding: EdgeInsets.only(right: ScreenUtil().setWidth(25)),
+                  width: double.infinity,
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: ScreenUtil().setHeight(25),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(right: ScreenUtil().setWidth(25)),
-              width: double.infinity,
-              alignment: Alignment.centerRight,
-              child: Text(
-                title == 'Best' ? 'Best Price : \₹ ${totalPrice.toStringAsFixed(2)}' : 'Total Price : \₹ ${totalPrice.toStringAsFixed(2)}',
-                style: TextStyle(
-                  fontSize: ScreenUtil().setHeight(15),
-                  color: Colors.black87,
+                Container(
+                  padding: EdgeInsets.only(right: ScreenUtil().setWidth(25)),
+                  width: double.infinity,
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    title == 'Best'
+                        ? 'Best Price : \₹ ${totalPrice.toStringAsFixed(2)}'
+                        : 'Total Price : \₹ ${totalPrice.toStringAsFixed(2)}',
+                    style: TextStyle(
+                      fontSize: ScreenUtil().setHeight(15),
+                      color: Colors.black87,
+                    ),
+                  ),
                 ),
-              ),
+                SizedBox(height: ScreenUtil().setHeight(12)),
+                for (var item in widget.cartModel.items)
+                  MedCardCart(
+                    price: titleToPrice(title, item.price),
+                    name: item.name,
+                    quantity: item.quantity,
+                  ),
+                SizedBox(height: ScreenUtil().setHeight(12)),
+                Text(
+                  'Stay Safe - www.ambulon.com',
+                  style: TextStyle(
+                    color: Colors.grey[800],
+                    fontSize: ScreenUtil().setHeight(11),
+                  ),
+                ),
+                SizedBox(height: ScreenUtil().setHeight(30)),
+              ],
             ),
-            SizedBox(height: ScreenUtil().setHeight(12)),
-            for (var item in widget.cartModel.items)
-              MedCardCart(
-                price: titleToPrice(title, item.price),
-                name: item.name,
-                quantity: item.quantity,
-              ),
-          ],
+          ),
         ),
       ),
     );
@@ -154,6 +185,9 @@ class _CartDisplayState extends State<CartDisplay> {
 
   GestureDetector clearButton() {
     return GestureDetector(
+      onTap: () {
+        BlocProvider.of<CartBloc>(context).add(CartEventClearCart());
+      },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(30), vertical: ScreenUtil().setHeight(12)),
         decoration: BoxDecoration(
@@ -187,6 +221,18 @@ class _CartDisplayState extends State<CartDisplay> {
 
   GestureDetector shareButton() {
     return GestureDetector(
+      onTap: () async {
+        try {
+          RenderRepaintBoundary boundary = _globalKey[pageController.page.toInt()].currentContext.findRenderObject();
+          ui.Image image = await boundary.toImage();
+          ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+          var pngBytes = byteData.buffer.asUint8List();
+          Share.file('esys image', 'ss32.png', pngBytes, 'image/png', text: 'My optional text.');
+        } catch (e) {
+          print(e);
+          ToastPreset.err(context: context, str: 'Something went wrong');
+        }
+      },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(30), vertical: ScreenUtil().setHeight(12)),
         decoration: BoxDecoration(

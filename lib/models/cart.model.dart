@@ -1,5 +1,3 @@
-import 'dart:math';
-
 class CartModel {
   List<Items> items;
   Price totalPrice;

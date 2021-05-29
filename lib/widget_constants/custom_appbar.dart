@@ -70,7 +70,7 @@ class CustomAppBar {
     );
   }
 
-  static AppBar cart({context}) {
+  static AppBar cart({context, bool empty = false}) {
     return AppBar(
       centerTitle: true,
       leading: GestureDetector(
@@ -83,21 +83,25 @@ class CustomAppBar {
           color: Colors.black,
         ),
       ),
-      actions: [
-        Icon(
-          Icons.shopping_cart_outlined,
-          size: ScreenUtil().setHeight(22),
-          color: Colors.black,
-        ),
-        SizedBox(width: ScreenUtil().setWidth(20)),
-      ],
-      title: Text(
-        'Your Cart',
-        style: TextStyle(
-          color: ColorTheme.primaryColor,
-          fontSize: ScreenUtil().setHeight(18),
-        ),
-      ),
+      actions: empty
+          ? []
+          : [
+              Icon(
+                Icons.shopping_cart_outlined,
+                size: ScreenUtil().setHeight(22),
+                color: Colors.black,
+              ),
+              SizedBox(width: ScreenUtil().setWidth(20)),
+            ],
+      title: empty
+          ? SizedBox()
+          : Text(
+              'Your Cart',
+              style: TextStyle(
+                color: ColorTheme.primaryColor,
+                fontSize: ScreenUtil().setHeight(18),
+              ),
+            ),
       elevation: 0,
       backgroundColor: Colors.white,
     );

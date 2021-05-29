@@ -6,14 +6,13 @@ import 'package:medcomp/utils/my_url.dart';
 class CartRepo {
   String message;
 
-  // TODO : replace throw w null
   Future<CartModel> getData() async {
     try {
       var res = await MyHttp.get('user/get-cart');
       if (res.statusCode == 200) {
         var body = jsonDecode(res.body);
         CartModel result = CartModel.fromJson(body);
-        if (result.items == []) {
+        if (result.items.length == 0) {
           return null;
         }
         return result;
@@ -21,7 +20,6 @@ class CartRepo {
         message = res.statusCode.toString() + ";" + res.body.toString();
         print("error in getData $message");
         throw "error in getData $message";
-        // return null;
       }
     } catch (e) {
       message = e.toString();

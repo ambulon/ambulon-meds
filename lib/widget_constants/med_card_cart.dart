@@ -7,6 +7,7 @@ import 'package:medcomp/events/cart.event.dart';
 import 'package:medcomp/repositories/cart.repo.dart';
 import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/styles.dart';
+import 'package:medcomp/widget_constants/loader.dart';
 import 'package:medcomp/widget_constants/toast.dart';
 
 class MedCardCart extends StatelessWidget {
@@ -96,13 +97,6 @@ class MedCardCart extends StatelessWidget {
                   SizedBox(height: ScreenUtil().setHeight(5)),
                   Row(
                     children: [
-                      // Icon(
-                      //   // Icons.insert_link_rounded,
-                      //   Icons.close_sharp,
-                      //   color: Colors.teal[900],
-                      //   size: ScreenUtil().setHeight(15),
-                      // ),
-                      // SizedBox(width: ScreenUtil().setWidth(3)),
                       Expanded(
                         child: Container(
                           child: Text(
@@ -138,15 +132,18 @@ class MedCardCart extends StatelessWidget {
   GestureDetector removeButton(context) {
     return GestureDetector(
       onTap: () async {
+        Loader.showLoaderDialog(context);
         CartRepo cartRepo = new CartRepo();
         bool res = await cartRepo.removeItem(name);
+        Navigator.pop(context);
         if (res) {
           ToastPreset.successful(context: context, str: 'Removed $name');
           BlocProvider.of<CartBloc>(context).add(CartEventLoad());
+        } else {
+          ToastPreset.err(context: context, str: 'Something went wrong');
         }
       },
       child: Container(
-        // padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(12), vertical: ScreenUtil().setHeight(8)),
         child: Center(
           child: Row(
             children: [

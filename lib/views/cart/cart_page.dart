@@ -32,9 +32,14 @@ class _CartPageState extends State<CartPage> {
       builder: (ctx, CartState state) {
         if (state is CartStateLoading) {
           return Scaffold(
-            appBar: CustomAppBar.def(title: 'Your Cart', context: context),
-            body: Center(
-              child: Loader.medCardShimmer(),
+            backgroundColor: Colors.white,
+            appBar: CustomAppBar.cart(context: context, empty: true),
+            body: Column(
+              children: [
+                Loader.medCardShimmer(),
+                Loader.medCardShimmer(),
+                Spacer(),
+              ],
             ),
           );
         }
@@ -43,12 +48,46 @@ class _CartPageState extends State<CartPage> {
         }
         if (state is CartStateEmpty) {
           return Scaffold(
-            body: Center(
-              child: Column(
-                children: [
-                  Text('Add items'),
-                ],
-              ),
+            backgroundColor: Colors.white,
+            appBar: CustomAppBar.cart(context: context, empty: true),
+            body: Column(
+              children: [
+                Spacer(),
+                Container(
+                  width: double.infinity,
+                  height: ScreenUtil().setHeight(Styles.get_height(context) ~/ 4),
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                    image: AssetImage('assets/cartempty.png'),
+                  )),
+                ),
+                SizedBox(height: ScreenUtil().setHeight(35)),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(12)),
+                  child: Text(
+                    'Seems like you haven\'t added anyting in your cart.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: ScreenUtil().setHeight(18),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(12)),
+                  child: Text(
+                    'Add multiple medicines and compare to get the prices.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.grey[700],
+                      fontSize: ScreenUtil().setHeight(15),
+                    ),
+                  ),
+                ),
+                SizedBox(height: ScreenUtil().setHeight(50)),
+                Spacer(),
+              ],
             ),
           );
         }

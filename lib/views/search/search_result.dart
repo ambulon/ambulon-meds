@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medcomp/bloc/search.bloc.dart';
 import 'package:medcomp/events/search.event.dart';
 import 'package:medcomp/models/search.model.dart';
+import 'package:medcomp/repositories/cart.repo.dart';
 import 'package:medcomp/states/search.state.dart';
 import 'package:medcomp/widget_constants/custom_appbar.dart';
 import 'package:medcomp/widget_constants/error.dart';
@@ -97,12 +98,18 @@ class _SearchResultState extends State<SearchResult> {
                   physics: BouncingScrollPhysics(),
                   child: Column(
                     children: [
-                      DefaultWidgets.headline(
-                        str: "Search results for ${data.name}",
-                        small: true,
-                        verticalMargin: true,
-                        showAll: false,
-                        showAllFunc: () {},
+                      DefaultWidgets.cartHeadline(
+                        onTap: () async {
+                          Loader.showLoaderDialog(context);
+                          CartRepo cartRepo = new CartRepo();
+                          bool res = await cartRepo.addItem(data.toJson());
+                          Navigator.pop(context);
+                          if (res) {
+                            ToastPreset.successful(context: context, str: 'Added to cart');
+                          } else {
+                            ToastPreset.err(context: context, str: 'Something went wrong');
+                          }
+                        },
                       ),
                       MedicineComparisionList.list(
                         str: data.name,

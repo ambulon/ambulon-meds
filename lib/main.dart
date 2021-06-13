@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:medcomp/temp.dart';
-import 'package:medcomp/views/home/home.dart';
 import 'bloc/main.bloc.dart';
 
 Future<void> main() async {
@@ -32,8 +31,7 @@ class MyApp extends StatelessWidget {
             Theme.of(context).textTheme,
           ),
         ),
-        // home: SplashScreen(),
-        home: Home(),
+        home: TempParent(),
       ),
     );
   }

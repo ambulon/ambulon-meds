@@ -1,12 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:medcomp/models/search.model.dart';
-import 'package:medcomp/repositories/cart.repo.dart';
 import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/styles.dart';
-import 'package:medcomp/widget_constants/loader.dart';
-import 'package:medcomp/widget_constants/toast.dart';
 
 class PopularSearches extends StatefulWidget {
   @override
@@ -33,19 +29,7 @@ class _PopularSearchesState extends State<PopularSearches> {
         children: [
           GestureDetector(
             onTap: () async {
-              // TODO : Remove this
-              Loader.showLoaderDialog(context);
-              CartRepo cartRepo = new CartRepo();
-              MedicineModel medModel1 = new MedicineModel('netmeds.com', 20.0, '');
-              MedicineModel medModel2 = new MedicineModel('apollo.com', 25.0, '');
-              SingleSearchResultModel model = new SingleSearchResultModel(name, [medModel1, medModel2]);
-              bool success = await cartRepo.addItem(model.toJson());
-              Navigator.pop(context);
-              if (success) {
-                ToastPreset.successful(context: context, str: 'Item Added');
-              } else {
-                ToastPreset.err(context: context, str: 'Error');
-              }
+              // TODO : Search API
             },
             child: CircleAvatar(
               backgroundColor: Colors.orangeAccent,

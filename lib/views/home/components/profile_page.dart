@@ -71,13 +71,16 @@ class ProfilePage extends StatelessWidget {
               try {
                 var res = await MyHttp.post('/logout', {});
                 if (res.statusCode == 200) {
-                  SharedPreferences prefs = await SharedPreferences.getInstance();
-                  prefs.remove('token');
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LoginPage()));
+                  // SharedPreferences prefs = await SharedPreferences.getInstance();
+                  // prefs.remove('token');
+                  // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LoginPage()));
                 } else {
                   print("logout error ${res.statusCode} ${res.body}");
                   ToastPreset.err(context: context, str: 'Logout error ${res.statusCode}');
                 }
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.remove('token');
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LoginPage()));
               } catch (e) {
                 print("logg out error : $e");
                 ToastPreset.err(context: context, str: e);

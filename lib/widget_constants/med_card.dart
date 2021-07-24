@@ -1,49 +1,57 @@
 // import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:medcomp/models/search.model.dart';
+import 'package:medcomp/models/med.model.dart';
 import 'package:medcomp/utils/styles.dart';
-import 'package:medcomp/views/search/search_result.dart';
+import 'package:medcomp/views/search/search_result_page.dart';
 import 'headline.dart';
 
 class MedicineComparisionList {
   static Widget list({
-    @required String str,
-    @required List<MedicineModel> medlist,
+    @required MedicineModel model,
     bool showTitle = true,
     bool compact = false,
     @required BuildContext context,
   }) {
-    int limit = medlist.length;
-    if (compact && limit > 4) {
-      limit = 4;
-    }
     return Column(
       children: [
         showTitle
             ? DefaultWidgets.headline(
-                str: str,
+                str: model.name,
                 small: false,
                 verticalMargin: true,
                 showAll: compact,
                 showAllFunc: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => SearchResult(
-                                str: str,
-                                preset: true,
-                              )));
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => SearchResult(
+                        str: model.name,
+                        preset: true,
+                      ),
+                    ),
+                  );
                 },
               )
             : SizedBox(),
-        for (int i = 0; i < limit; i++)
-          MedCard(
-            name: str,
-            price: medlist[i].price,
-            site: medlist[i].site,
-            description: medlist[i].des,
-          ),
+        MedCard(
+          name: model.name,
+          price: model.onemg,
+          site: "1mg.com",
+          description: "",
+        ),
+        MedCard(
+          name: model.name,
+          price: model.apollo,
+          site: "apollo.com",
+          description: "",
+        ),
+        MedCard(
+          name: model.name,
+          price: model.netmeds,
+          site: "netmeds.com",
+          description: "",
+        ),
       ],
     );
   }

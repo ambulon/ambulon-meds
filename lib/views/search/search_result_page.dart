@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medcomp/bloc/search.bloc.dart';
 import 'package:medcomp/events/search.event.dart';
-import 'package:medcomp/models/search.model.dart';
+import 'package:medcomp/models/med.model.dart';
 import 'package:medcomp/repositories/cart.repo.dart';
 import 'package:medcomp/states/search.state.dart';
+import 'package:medcomp/widget_constants/search.delegate.dart';
 import 'package:medcomp/widget_constants/custom_appbar.dart';
 import 'package:medcomp/widget_constants/error.dart';
 import 'package:medcomp/widget_constants/headline.dart';
 import 'package:medcomp/widget_constants/loader.dart';
 import 'package:medcomp/widget_constants/med_card.dart';
 import 'package:medcomp/widget_constants/toast.dart';
-
-import 'components/search_field.dart';
 
 class SearchResult extends StatefulWidget {
   final str;
@@ -53,7 +52,7 @@ class _SearchResultState extends State<SearchResult> {
             );
           }
           if (state is SearchStateLoaded) {
-            SingleSearchResultModel data = state.searchModel.dataList.last;
+            MedicineModel data = state.searchModel.dataList.last;
             return Scaffold(
               appBar: CustomAppBar.defForSearchResult(
                 showSearchButton: !widget.preset,
@@ -75,7 +74,8 @@ class _SearchResultState extends State<SearchResult> {
                 searchFunc: () {
                   showSearch(
                     context: context,
-                    delegate: SearchResultBar(
+                    delegate: MedicineSearch(
+                      customFunc: true,
                       func: (newStr) {
                         if (newStr != null && newStr != "") {
                           List temp = state.searchModel.strList;
@@ -100,6 +100,7 @@ class _SearchResultState extends State<SearchResult> {
                     children: [
                       DefaultWidgets.cartHeadline(
                         onTap: () async {
+                          // ToastPreset.err(context: context, str: 'CAnt add anyting to cart');
                           Loader.showLoaderDialog(context);
                           CartRepo cartRepo = new CartRepo();
                           bool res = await cartRepo.addItem(data.toJson());
@@ -112,12 +113,12 @@ class _SearchResultState extends State<SearchResult> {
                         },
                       ),
                       MedicineComparisionList.list(
-                        str: data.name,
-                        medlist: data.list,
+                        model: data,
                         showTitle: false,
                         compact: false,
                         context: context,
                       ),
+                      // Text('MedcineCOMPARISIONLIST.LIST fr ${state.searchModel.dataList.last.name}'),
                       // for (int i = 0; i < data.list.length; i++) Text("${data.list[i].site} : ${data.list[i].price}"),
                     ],
                   ),

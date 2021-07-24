@@ -1,49 +1,41 @@
 {
   "project_info": {
-    "project_number": "700062577420",
-    "project_id": "medcomp-e89bd",
-    "storage_bucket": "medcomp-e89bd.appspot.com"
+    "project_number": "196293537362",
+    "project_id": "ambulon-316f1",
+    "storage_bucket": "ambulon-316f1.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:700062577420:android:6213440ee82f62de3e8f29",
+        "mobilesdk_app_id": "1:196293537362:android:e0499be45b8e19cd00398b",
         "android_client_info": {
-          "package_name": "com.ambulon.medcomp"
+          "package_name": "com.ambulon.meds"
         }
       },
       "oauth_client": [
         {
-          "client_id": "700062577420-kgooaoddtrq9lacr1c06fu1djlnn73qr.apps.googleusercontent.com",
+          "client_id": "196293537362-72vn1verjn3novko1i147mkfrt3f33hs.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.ambulon.medcomp",
-            "certificate_hash": "d4175598c615586e6566b03b7e8cb668c64eb429"
-          }
-        },
-        {
-          "client_id": "700062577420-sssmue23qcr54hgt7972gh515f6q233a.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.ambulon.medcomp",
+            "package_name": "com.ambulon.meds",
             "certificate_hash": "77a09e001bbec79f8aff1d2853dd253281b4a183"
           }
         },
         {
-          "client_id": "700062577420-6kg595amfiodj4hp6h01iiuo9bdj2lh7.apps.googleusercontent.com",
+          "client_id": "196293537362-sj65b8dghahc11j8i6iu7bqc240t2pmu.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBgpXuk7dVbB_CkkmaX4PpAfrzPWjPegAs"
+          "current_key": "AIzaSyB3RAI2XqBlRDvTekTxBkVanZTMAfAwwUM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "700062577420-6kg595amfiodj4hp6h01iiuo9bdj2lh7.apps.googleusercontent.com",
+              "client_id": "196293537362-sj65b8dghahc11j8i6iu7bqc240t2pmu.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

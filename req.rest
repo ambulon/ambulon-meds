@@ -1,0 +1,98 @@
+@url = https://ambulon-meds.herokuapp.com
+@id = i2fsR7OLcRYHNjvPwGWXVOO4f8n1
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGY5OGM3NGUzYTU4ZDAwMTViMDg0MmQiLCJmX2lkIjoiaTJmc1I3T0xjUllITmp2UHdHV1hWT080ZjhuMSIsImlhdCI6MTYyNjk2NzUzNH0.wX05vNJK3MyntDQeI4k0sj0RTNwGpcpitYY3-W0GaN8
+@token2 = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGZhNGFjMTkxZTgzZjAwMTUxNjFjMTAiLCJmX2lkIjoieHgiLCJpYXQiOjE2MjcwMTU4NzR9.a8QDQKRe35uCuHOpC-jZTnjJ1m41VA50wiVtQCQ-hq0
+@med = Adapen Gel
+@medID = 60e182e18b1a1b3958fa642d
+
+
+
+### Search
+
+### Search by name
+GET {{url}}/user/get-price/{{med}}
+Authorization: Bearer {{token}}
+
+### ERROR NOT ADDING : add to search
+POST {{url}}/user/add-to-search
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "search" : "{{med}}"
+}
+
+### ERROR add to wishlist
+POST {{url}}/user/add-to-wishlist
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "medicineId" : "60e182e18b1a1b3958fa642d"
+}
+
+
+---------------------------------------------------------------------------------------
+### CART
+
+### GET CART
+GET {{url}}/user/get-cart
+Authorization: Bearer {{token}}
+
+### ERROR : ADD TO CART
+POST {{url}}/user/add-to-cart
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "medicineId" : "60e182e18b1a1b3958fa642d",
+    "quantity" : "1",
+    "char" : "a"
+}
+
+### ERROR rmmove from cart
+POST {{url}}/user/remove-from-cart
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "medicineId" : "60e182e18b1a1b3958fa642d"
+}
+
+### clear cart
+POST {{url}}/user/clear-cart
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+### sync cart
+POST {{url}}/user/sync-cart
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "cart" : ""
+}
+
+
+---------------------------------------------------------------------------------------
+### USER
+
+### User info
+GET {{url}}/user/get-details
+Authorization: Bearer {{token}}
+
+### Login
+GET {{url}}/get-token/{{id}}
+
+### Add User
+POST {{url}}/add-user
+Content-Type: application/json
+
+{
+    "f_id" : "xx",
+    "name" : "name test",
+    "email" : "email@gmail.com",
+    "age" : 19
+} 

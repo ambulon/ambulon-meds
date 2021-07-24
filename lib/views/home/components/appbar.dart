@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/styles.dart';
 import 'package:medcomp/views/home/components/profile_page.dart';
-import 'package:medcomp/views/home/components/search_page.dart';
+import 'package:medcomp/widget_constants/search.delegate.dart';
 import 'package:medcomp/widget_constants/toast.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 

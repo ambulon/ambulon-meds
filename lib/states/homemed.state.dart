@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:medcomp/models/search.model.dart';
 
 class HomeMedState extends Equatable {
   @override
@@ -11,8 +10,8 @@ class HomeMedStateNotLoaded extends HomeMedState {}
 class HomeMedStateLoading extends HomeMedState {}
 
 class HomeMedStateLoaded extends HomeMedState {
-  final SingleSearchResultModel model;
-  HomeMedStateLoaded(this.model);
+  // final MedicineModel model;
+  // HomeMedStateLoaded(this.model);
 }
 
 class HomeMedStateError extends HomeMedState {}

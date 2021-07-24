@@ -5,16 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medcomp/bloc/home.bloc.dart';
-import 'package:medcomp/bloc/homemed.bloc.dart';
 import 'package:medcomp/events/home.event.dart';
-import 'package:medcomp/events/homemed.event.dart';
 import 'package:medcomp/models/user.model.dart';
 import 'package:medcomp/states/home.state.dart';
-import 'package:medcomp/states/homemed.state.dart';
 import 'package:medcomp/views/cart/cart_page.dart';
+import 'package:medcomp/views/login/login_page.dart';
 import 'package:medcomp/widget_constants/headline.dart';
 import 'package:medcomp/widget_constants/loader.dart';
-import 'package:medcomp/widget_constants/med_card.dart';
 import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/styles.dart';
 import 'package:medcomp/views/home/components/popular_searches.dart';
@@ -31,7 +28,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     BlocProvider.of<HomeBloc>(context).add(HomeEventLoadData());
-    BlocProvider.of<HomeMedBloc>(context).add(HomeMedEventLoadData());
+    // BlocProvider.of<HomeMedBloc>(context).add(HomeMedEventLoadData());
   }
 
   @override
@@ -74,7 +71,23 @@ class _HomeState extends State<Home> {
             return Loader.def();
           }
           if (state is HomeStateError) {
-            return loadPage(null);
+            return Scaffold(
+              appBar: AppBar(
+                title: Text('error'),
+              ),
+              body: Center(
+                child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => LoginPage(),
+                        ),
+                      );
+                    },
+                    child: Text('please login first')),
+              ),
+            );
           }
           if (state is HomeStateLoaded) {
             return loadPage(state.userModel);
@@ -126,23 +139,23 @@ class _HomeState extends State<Home> {
                       // savedMedsWidget(),
                       createCartWidget(),
                       SizedBox(height: ScreenUtil().setHeight(12)),
-                      BlocConsumer<HomeMedBloc, HomeMedState>(
-                        listener: (ctx, HomeMedState state) {},
-                        builder: (ctx, HomeMedState state) {
-                          if (state is HomeMedStateLoading) {
-                            return Loader.medCardShimmer();
-                          }
-                          if (state is HomeMedStateLoaded) {
-                            return MedicineComparisionList.list(
-                              str: state.model.name,
-                              medlist: state.model.list,
-                              compact: true,
-                              context: context,
-                            );
-                          }
-                          return SizedBox();
-                        },
-                      ),
+                      // BlocConsumer<HomeMedBloc, HomeMedState>(
+                      //   listener: (ctx, HomeMedState state) {},
+                      //   builder: (ctx, HomeMedState state) {
+                      //     if (state is HomeMedStateLoading) {
+                      //       return Loader.medCardShimmer();
+                      //     }
+                      //     if (state is HomeMedStateLoaded) {
+                      //       return MedicineComparisionList.list(
+                      //         str: state.model.name,
+                      //         medlist: state.model.list,
+                      //         compact: true,
+                      //         context: context,
+                      //       );
+                      //     }
+                      //     return SizedBox();
+                      //   },
+                      // ),
                       SizedBox(height: ScreenUtil().setHeight(12)),
                     ],
                   ),

@@ -19,7 +19,7 @@ class HomeMedBloc extends Bloc<HomeMedEvent, HomeMedState> {
         if (search == null) {
           yield HomeMedStateError();
         } else {
-          yield HomeMedStateLoaded(search);
+          yield HomeMedStateLoaded();
         }
       } catch (e) {
         yield HomeMedStateError();

@@ -10,7 +10,6 @@ import 'package:medcomp/widget_constants/custom_appbar.dart';
 import 'package:medcomp/widget_constants/med_card_cart.dart';
 import 'package:medcomp/widget_constants/toast.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:esys_flutter_share/esys_flutter_share.dart';

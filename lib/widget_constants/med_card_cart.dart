@@ -1,26 +1,33 @@
 // import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medcomp/bloc/cart.bloc.dart';
 import 'package:medcomp/events/cart.event.dart';
+import 'package:medcomp/models/cart.model.dart';
 import 'package:medcomp/repositories/cart.repo.dart';
 import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/styles.dart';
 import 'package:medcomp/widget_constants/loader.dart';
 import 'package:medcomp/widget_constants/toast.dart';
+import 'package:medcomp/widget_constants/update.input.dart';
 
 class MedCardCart extends StatelessWidget {
-  final String name;
-  final String imgUrl;
+  final Items item;
+  // final String name;
+  // final String imgUrl;
   final double price;
-  final int quantity;
+  // final int quantity;
+  // final String id;
 
   MedCardCart({
-    this.name = 'Name',
-    this.imgUrl = '',
+    this.item,
+    // this.name = 'Name',
+    // this.imgUrl = '',
     this.price = 0.0,
-    this.quantity = 1,
+    // this.quantity = 1,
+    // @required this.id,
   });
 
   @override
@@ -72,7 +79,7 @@ class MedCardCart extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            '$name',
+                            '${item.name}',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -100,7 +107,7 @@ class MedCardCart extends StatelessWidget {
                       Expanded(
                         child: Container(
                           child: Text(
-                            "Quantity : $quantity",
+                            "Quantity : ${item.quantity}",
                             style: TextStyle(
                               fontSize: ScreenUtil().setHeight(12),
                               fontStyle: FontStyle.italic,
@@ -134,10 +141,10 @@ class MedCardCart extends StatelessWidget {
       onTap: () async {
         Loader.showLoaderDialog(context);
         CartRepo cartRepo = new CartRepo();
-        bool res = await cartRepo.removeItem(name);
+        bool res = await cartRepo.removeItem(item.id);
         Navigator.pop(context);
         if (res) {
-          ToastPreset.successful(context: context, str: 'Removed $name');
+          ToastPreset.successful(context: context, str: 'Removed ${item.name}');
           BlocProvider.of<CartBloc>(context).add(CartEventLoad());
         } else {
           ToastPreset.err(context: context, str: 'Something went wrong');
@@ -170,6 +177,13 @@ class MedCardCart extends StatelessWidget {
 
   GestureDetector updateQuantity(context) {
     return GestureDetector(
+      onTap: () {
+        showCupertinoDialog(
+            context: context,
+            builder: (_) => UpdateInput(
+                  item: item,
+                ));
+      },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(12), vertical: ScreenUtil().setHeight(7)),
         decoration: BoxDecoration(

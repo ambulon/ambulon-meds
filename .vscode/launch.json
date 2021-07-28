@@ -4,7 +4,7 @@
             "name": "Flutter (lib/views/search/search_result.dart)",
             "type": "dart",
             "request": "launch",
-            "program": "lib/views/search/search_result.dart"
+            "program": "lib/main.dart"
         }
     ]
 }

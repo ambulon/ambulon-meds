@@ -13,7 +13,7 @@
 GET {{url}}/user/get-price/{{med}}
 Authorization: Bearer {{token}}
 
-### ERROR NOT ADDING : add to search
+### add to search
 POST {{url}}/user/add-to-search
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -22,7 +22,7 @@ Content-Type: application/json
     "search" : "{{med}}"
 }
 
-### ERROR add to wishlist
+### add to wishlist
 POST {{url}}/user/add-to-wishlist
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -32,6 +32,7 @@ Content-Type: application/json
 }
 
 
+
 ---------------------------------------------------------------------------------------
 ### CART
 
@@ -39,24 +40,24 @@ Content-Type: application/json
 GET {{url}}/user/get-cart
 Authorization: Bearer {{token}}
 
-### ERROR : ADD TO CART
+### ADD TO CART
 POST {{url}}/user/add-to-cart
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "medicineId" : "60e182e18b1a1b3958fa642d",
-    "quantity" : "1",
+    "medicineId" : "60e186bc8b1a1b3958fefc2f",
+    "quantity" : "3",
     "char" : "a"
 }
 
-### ERROR rmmove from cart
+### remove from cart
 POST {{url}}/user/remove-from-cart
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "medicineId" : "60e182e18b1a1b3958fa642d"
+    "medicineId" : "60e186bc8b1a1b3958fefc2f"
 }
 
 ### clear cart
@@ -66,15 +67,19 @@ Content-Type: application/json
 
 {}
 
-### sync cart
+### POST sync-cart
 POST {{url}}/user/sync-cart
-Authorization: Bearer {{token}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGY5OGM3NGUzYTU4ZDAwMTViMDg0MmQiLCJmX2lkIjoiaTJmc1I3T0xjUllITmp2UHdHV1hWT080ZjhuMSIsImlhdCI6MTYyNjk2NzUzNH0.wX05vNJK3MyntDQeI4k0sj0RTNwGpcpitYY3-W0GaN8
 Content-Type: application/json
 
 {
-    "cart" : ""
+    "cart" : [
+        {
+            "medicineId" : "60e186bc8b1a1b3958fefc2f",
+            "quantity" : "2"
+        }
+    ]
 }
-
 
 ---------------------------------------------------------------------------------------
 ### USER

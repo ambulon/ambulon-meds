@@ -45,10 +45,27 @@ class CartRepo {
     }
   }
 
-  Future<bool> removeItem(String name) async {
+  Future<bool> removeItem(String id) async {
     try {
-      var data = {"name": name};
+      var data = {"medicineId": id};
       var res = await MyHttp.post('user/remove-from-cart', data);
+      if (res.statusCode == 200) {
+        return true;
+      } else {
+        message = res.statusCode.toString() + ";" + res.body.toString();
+        print("error in removeiten $message");
+        return false;
+      }
+    } catch (e) {
+      message = e.toString();
+      print("error in get removeiten $message");
+      return false;
+    }
+  }
+
+  Future<bool> updateQuantity(var data) async {
+    try {
+      var res = await MyHttp.post('user/sync-cart', data);
       if (res.statusCode == 200) {
         return true;
       } else {
@@ -65,7 +82,7 @@ class CartRepo {
 
   Future<bool> clear() async {
     try {
-      var res = await MyHttp.get('user/clear-cart');
+      var res = await MyHttp.post('user/clear-cart', {});
       if (res.statusCode == 200) {
         return true;
       } else {

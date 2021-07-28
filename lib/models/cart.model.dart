@@ -19,13 +19,15 @@ class Items {
   String name;
   int quantity;
   Price price;
+  String id;
 
-  Items({this.name, this.quantity, this.price});
+  Items({this.name, this.quantity, this.price, this.id});
 
   Items.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     quantity = json['quantity'];
     price = json['price'] != null ? new Price.fromJson(json['price']) : null;
+    id = json['medicineId'] ?? "";
   }
 }
 

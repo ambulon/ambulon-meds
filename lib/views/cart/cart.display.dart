@@ -92,7 +92,8 @@ class _CartDisplayState extends State<CartDisplay> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 clearButton(),
-                shareButton(),
+                // TODO : LATER : Add visit site button
+                // shareButton(),
               ],
             ),
             SizedBox(height: ScreenUtil().setHeight(15)),
@@ -162,17 +163,19 @@ class _CartDisplayState extends State<CartDisplay> {
                 for (var item in widget.cartModel.items)
                   MedCardCart(
                     price: titleToPrice(title, item.price),
-                    name: item.name,
-                    quantity: item.quantity,
+                    item: item,
+                    // name: item.name,
+                    // quantity: item.quantity,
+                    // id: item.id,
                   ),
-                SizedBox(height: ScreenUtil().setHeight(12)),
-                Text(
-                  'Stay Safe - www.ambulon.com',
-                  style: TextStyle(
-                    color: Colors.grey[800],
-                    fontSize: ScreenUtil().setHeight(11),
-                  ),
-                ),
+                // SizedBox(height: ScreenUtil().setHeight(12)),
+                // Text(
+                //   'Stay Safe - www.ambulon.com',
+                //   style: TextStyle(
+                //     color: Colors.grey[800],
+                //     fontSize: ScreenUtil().setHeight(11),
+                //   ),
+                // ),
                 SizedBox(height: ScreenUtil().setHeight(30)),
               ],
             ),

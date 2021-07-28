@@ -10,11 +10,9 @@ import 'package:medcomp/models/user.model.dart';
 import 'package:medcomp/states/home.state.dart';
 import 'package:medcomp/views/cart/cart_page.dart';
 import 'package:medcomp/views/login/login_page.dart';
-import 'package:medcomp/widget_constants/headline.dart';
 import 'package:medcomp/widget_constants/loader.dart';
 import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/styles.dart';
-import 'package:medcomp/views/home/components/popular_searches.dart';
 import 'package:medcomp/views/saved/saved.dart';
 import 'components/appbar.dart';
 
@@ -127,15 +125,15 @@ class _HomeState extends State<Home> {
                   child: Column(
                     children: <Widget>[
                       SizedBox(height: ScreenUtil().setHeight(12)),
-                      DefaultWidgets.headline(
-                        str: 'Popular Searches',
-                        small: false,
-                        verticalMargin: true,
-                        showAll: false,
-                        showAllFunc: () {},
-                      ),
-                      PopularSearches(),
-                      SizedBox(height: ScreenUtil().setHeight(12)),
+                      // DefaultWidgets.headline(
+                      //   str: 'Popular Searches',
+                      //   small: false,
+                      //   verticalMargin: true,
+                      //   showAll: false,
+                      //   showAllFunc: () {},
+                      // ),
+                      // PopularSearches(),
+                      // SizedBox(height: ScreenUtil().setHeight(12)),
                       // savedMedsWidget(),
                       createCartWidget(),
                       SizedBox(height: ScreenUtil().setHeight(12)),

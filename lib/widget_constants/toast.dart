@@ -6,20 +6,20 @@ import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/styles.dart';
 
 class ToastPreset {
-  static successful({String str, @required BuildContext context}) {
-    showCupertinoDialog(
+  static successful({@required String str, @required BuildContext context}) async {
+    await showCupertinoDialog(
         context: context,
-        builder: (_) => Toast(
+        builder: (_) => CustomToast(
               color: ColorTheme.green,
               isError: false,
               msg: str,
             ));
   }
 
-  static err({String str, @required BuildContext context}) {
-    showCupertinoDialog(
+  static err({@required String str, @required BuildContext context}) async {
+    await showCupertinoDialog(
         context: context,
-        builder: (_) => Toast(
+        builder: (_) => CustomToast(
               color: ColorTheme.red,
               isError: true,
               msg: str,
@@ -27,17 +27,17 @@ class ToastPreset {
   }
 }
 
-class Toast extends StatefulWidget {
+class CustomToast extends StatefulWidget {
   final Color color;
   final String msg;
   final bool isError;
-  Toast({this.color, this.msg, this.isError});
+  CustomToast({this.color, this.msg, this.isError});
 
   @override
-  _ToastState createState() => _ToastState();
+  _CustomToastState createState() => _CustomToastState();
 }
 
-class _ToastState extends State<Toast> {
+class _CustomToastState extends State<CustomToast> {
   Timer timer;
 
   @override
@@ -65,41 +65,55 @@ class _ToastState extends State<Toast> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil(width: Styles.get_width(context), height: Styles.get_height(context), allowFontScaling: true);
+    ScreenUtil.instance =
+        ScreenUtil(width: Styles.get_width(context), height: Styles.get_height(context), allowFontScaling: true)
+          ..init(context);
     return Column(
       children: <Widget>[
         Spacer(),
         Container(
           margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.15),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(5),
-            child: Material(
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: ScreenUtil().setHeight(10)),
-                decoration: BoxDecoration(
-                  color: widget.color,
-                ),
-                alignment: Alignment.center,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(
-                      widget.isError ? Icons.cancel : Icons.check_circle,
-                      color: Colors.white,
-                      size: ScreenUtil().setHeight(20),
-                    ),
-                    SizedBox(width: ScreenUtil().setWidth(10)),
-                    Text(widget.msg,
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: ScreenUtil().setHeight(15))),
-                  ],
-                ),
-              ),
-            ),
-          ),
+          child: ui(),
         ),
         SizedBox(height: ScreenUtil().setHeight(60)),
       ],
+    );
+  }
+
+  Widget ui() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(5),
+      child: Material(
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(vertical: ScreenUtil().setHeight(10), horizontal: ScreenUtil().setWidth(10)),
+          decoration: BoxDecoration(
+            color: widget.color,
+          ),
+          alignment: Alignment.center,
+          child: RichText(
+            text: TextSpan(
+              children: [
+                WidgetSpan(
+                  child: Icon(
+                    widget.isError ? Icons.cancel : Icons.check_circle,
+                    color: Colors.white,
+                    size: ScreenUtil().setHeight(16),
+                  ),
+                ),
+                TextSpan(
+                  text: "  ${widget.msg}",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: ScreenUtil().setHeight(15),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

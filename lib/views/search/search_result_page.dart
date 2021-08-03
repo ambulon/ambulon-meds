@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medcomp/bloc/search.bloc.dart';
 import 'package:medcomp/events/search.event.dart';
 import 'package:medcomp/models/med.model.dart';
 import 'package:medcomp/repositories/cart.repo.dart';
 import 'package:medcomp/states/search.state.dart';
+import 'package:medcomp/utils/styles.dart';
 import 'package:medcomp/widget_constants/search.delegate.dart';
 import 'package:medcomp/widget_constants/custom_appbar.dart';
 import 'package:medcomp/widget_constants/error.dart';
@@ -32,6 +34,9 @@ class _SearchResultState extends State<SearchResult> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.instance =
+        ScreenUtil(width: Styles.get_width(context), height: Styles.get_height(context), allowFontScaling: true)
+          ..init(context);
     return WillPopScope(
       onWillPop: () {
         Navigator.pop(context);

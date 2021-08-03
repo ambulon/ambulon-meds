@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:fdottedline/fdottedline.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,34 +30,11 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil(width: Styles.get_width(context), height: Styles.get_height(context), allowFontScaling: true)
-      ..init(context);
+    ScreenUtil.instance =
+        ScreenUtil(width: Styles.get_width(context), height: Styles.get_height(context), allowFontScaling: true)
+          ..init(context);
     return WillPopScope(
-      onWillPop: () {
-        showDialog(
-            context: context,
-            builder: (_) => CupertinoAlertDialog(
-                  title: Text("Quit App"),
-                  content: Text("Are you sure you want to exit the app?"),
-                  actions: <Widget>[
-                    CupertinoDialogAction(
-                        isDefaultAction: true,
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: Text("Nope")),
-                    CupertinoDialogAction(
-                        textStyle: TextStyle(color: Colors.red),
-                        isDefaultAction: true,
-                        onPressed: () async {
-                          // Navigator.pop(context);
-                          exit(0);
-                        },
-                        child: Text("Yes, sure")),
-                  ],
-                ));
-        return;
-      },
+      onWillPop: () => Future<bool>.value(false),
       child: BlocConsumer<HomeBloc, HomeState>(
         listener: (BuildContext ctx, HomeState state) {},
         builder: (BuildContext ctx, HomeState state) {
@@ -71,19 +47,21 @@ class _HomeState extends State<Home> {
           if (state is HomeStateError) {
             return Scaffold(
               appBar: AppBar(
+                automaticallyImplyLeading: false,
                 title: Text('error'),
               ),
               body: Center(
                 child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => LoginPage(),
-                        ),
-                      );
-                    },
-                    child: Text('please login first')),
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => LoginPage(),
+                      ),
+                    );
+                  },
+                  child: Text('please login first'),
+                ),
               ),
             );
           }
@@ -103,6 +81,7 @@ class _HomeState extends State<Home> {
         physics: BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
+            automaticallyImplyLeading: false,
             backgroundColor: ColorTheme.primaryColor,
             expandedHeight: ScreenUtil().setHeight(170),
             flexibleSpace: FlexibleSpaceBar(

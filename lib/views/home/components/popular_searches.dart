@@ -28,9 +28,7 @@ class _PopularSearchesState extends State<PopularSearches> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           GestureDetector(
-            onTap: () async {
-              // TODO : LATER : Search API
-            },
+            onTap: () async {},
             child: CircleAvatar(
               backgroundColor: Colors.orangeAccent,
               radius: isTablet ? ScreenUtil().setWidth(60) : MediaQuery.of(context).size.width * 0.10,
@@ -52,8 +50,9 @@ class _PopularSearchesState extends State<PopularSearches> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil(width: Styles.get_width(context), height: Styles.get_height(context), allowFontScaling: true)
-      ..init(context);
+    ScreenUtil.instance =
+        ScreenUtil(width: Styles.get_width(context), height: Styles.get_height(context), allowFontScaling: true)
+          ..init(context);
     isTablet = MediaQuery.of(context).size.width > 730;
     return Container(
       padding: EdgeInsets.only(left: ScreenUtil().setWidth(2)),

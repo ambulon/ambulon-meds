@@ -96,8 +96,9 @@ POST {{url}}/add-user
 Content-Type: application/json
 
 {
-    "f_id" : "xx",
+    "f_id" : "xxx",
     "name" : "name test",
-    "email" : "email@gmail.com",
+    "email" : "email2@gmail.com",
+    "imageUrl" : "",
     "age" : 19
 } 

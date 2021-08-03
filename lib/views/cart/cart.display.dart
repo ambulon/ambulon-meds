@@ -33,8 +33,9 @@ class _CartDisplayState extends State<CartDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil(width: Styles.get_width(context), height: Styles.get_height(context), allowFontScaling: true)
-      ..init(context);
+    ScreenUtil.instance =
+        ScreenUtil(width: Styles.get_width(context), height: Styles.get_height(context), allowFontScaling: true)
+          ..init(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomAppBar.cart(context: context),
@@ -92,8 +93,6 @@ class _CartDisplayState extends State<CartDisplay> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 clearButton(),
-                // TODO : LATER : Add visit site button
-                // shareButton(),
               ],
             ),
             SizedBox(height: ScreenUtil().setHeight(15)),

@@ -1,18 +1,18 @@
 import 'package:fdottedline/fdottedline.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medcomp/bloc/home.bloc.dart';
+import 'package:medcomp/constants/products_grid.dart';
 import 'package:medcomp/events/home.event.dart';
-import 'package:medcomp/models/user.model.dart';
 import 'package:medcomp/states/home.state.dart';
 import 'package:medcomp/views/cart/cart_page.dart';
 import 'package:medcomp/views/login/login_page.dart';
 import 'package:medcomp/constants/loader.dart';
 import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/styles.dart';
-import 'package:medcomp/views/saved/saved.dart';
 import 'components/appbar.dart';
 
 class Home extends StatefulWidget {
@@ -25,7 +25,6 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     BlocProvider.of<HomeBloc>(context).add(HomeEventLoadData());
-    // BlocProvider.of<HomeMedBloc>(context).add(HomeMedEventLoadData());
   }
 
   @override
@@ -66,7 +65,79 @@ class _HomeState extends State<Home> {
             );
           }
           if (state is HomeStateLoaded) {
-            return loadPage(state.userModel);
+            return Scaffold(
+              backgroundColor: ColorTheme.grey,
+              body: Stack(
+                children: [
+                  CustomScrollView(
+                    // physics: BouncingScrollPhysics(),
+                    slivers: [
+                      SliverAppBar(
+                        automaticallyImplyLeading: false,
+                        backgroundColor: ColorTheme.grey,
+                        expandedHeight: ScreenUtil().setHeight(210),
+                        flexibleSpace: FlexibleSpaceBar(
+                          background: CustomAppBarHome(user: state.userModel),
+                          centerTitle: true,
+                        ),
+                      ),
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            return Container(
+                              padding: EdgeInsets.symmetric(
+                                vertical: ScreenUtil().setHeight(10),
+                                horizontal: ScreenUtil().setWidth(15),
+                              ),
+                              margin: EdgeInsets.only(top: ScreenUtil().setHeight(5)),
+                              decoration: BoxDecoration(
+                                boxShadow: kElevationToShadow[8],
+                                color: ColorTheme.fontWhite,
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(7),
+                                  topLeft: Radius.circular(7),
+                                ),
+                              ),
+                              child: Column(
+                                children: <Widget>[
+                                  SizedBox(height: ScreenUtil().setHeight(12)),
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      'More Products',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: ColorTheme.fontBlack,
+                                      ),
+                                    ),
+                                  ),
+                                  ProductsGrid(['', '', '', '', '']),
+                                ],
+                              ),
+                            );
+                          },
+                          childCount: 1,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Spacer(),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: ScreenUtil().setHeight(10),
+                          horizontal: ScreenUtil().setWidth(15),
+                        ),
+                        child: cart(),
+                      ),
+                      SizedBox(height: 20),
+                    ],
+                  ),
+                ],
+              ),
+            );
           }
           return SizedBox();
         },
@@ -74,79 +145,10 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget loadPage(UserModel user) {
-    return Scaffold(
-      backgroundColor: ColorTheme.primaryColor,
-      body: CustomScrollView(
-        physics: BouncingScrollPhysics(),
-        slivers: [
-          SliverAppBar(
-            automaticallyImplyLeading: false,
-            backgroundColor: ColorTheme.primaryColor,
-            expandedHeight: ScreenUtil().setHeight(170),
-            flexibleSpace: FlexibleSpaceBar(
-              background: CustomAppBarHome(
-                email: user?.email,
-                name: user?.name,
-                photo: user?.photoUrl,
-              ),
-              centerTitle: true,
-            ),
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-                  ),
-                  child: Column(
-                    children: <Widget>[
-                      SizedBox(height: ScreenUtil().setHeight(12)),
-                      // DefaultWidgets.headline(
-                      //   str: 'Popular Searches',
-                      //   small: false,
-                      //   verticalMargin: true,
-                      //   showAll: false,
-                      //   showAllFunc: () {},
-                      // ),
-                      // PopularSearches(),
-                      // SizedBox(height: ScreenUtil().setHeight(12)),
-                      // savedMedsWidget(),
-                      createCartWidget(),
-                      SizedBox(height: ScreenUtil().setHeight(12)),
-                      // BlocConsumer<HomeMedBloc, HomeMedState>(
-                      //   listener: (ctx, HomeMedState state) {},
-                      //   builder: (ctx, HomeMedState state) {
-                      //     if (state is HomeMedStateLoading) {
-                      //       return Loader.medCardShimmer();
-                      //     }
-                      //     if (state is HomeMedStateLoaded) {
-                      //       return MedicineComparisionList.list(
-                      //         str: state.model.name,
-                      //         medlist: state.model.list,
-                      //         compact: true,
-                      //         context: context,
-                      //       );
-                      //     }
-                      //     return SizedBox();
-                      //   },
-                      // ),
-                      SizedBox(height: ScreenUtil().setHeight(12)),
-                    ],
-                  ),
-                );
-              },
-              childCount: 1,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget createCartWidget() {
+  Widget cart() {
+    int iconH = 52;
+    int iconG = 14;
+    double border = 12;
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -155,104 +157,66 @@ class _HomeState extends State<Home> {
         );
       },
       child: Container(
-        width: double.infinity,
-        height: ScreenUtil().setHeight(110),
-        margin: EdgeInsets.symmetric(vertical: ScreenUtil().setHeight(10), horizontal: ScreenUtil().setWidth(15)),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [
-            Colors.teal[600],
-            Colors.teal[800],
-          ]),
-          boxShadow: kElevationToShadow[2],
-          borderRadius: BorderRadius.circular(8),
+        padding: EdgeInsets.symmetric(
+          vertical: ScreenUtil().setHeight(iconG),
+          horizontal: ScreenUtil().setWidth(iconG),
         ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              FDottedLine(
-                color: Colors.white,
-                strokeWidth: 2.0,
-                dottedLength: 10.0,
-                space: 2.0,
-                corner: FDottedLineCorner.all(8),
-                height: ScreenUtil().setHeight(90),
-                width: ScreenUtil().setHeight(90),
-                child: Container(
-                  padding: EdgeInsets.all(ScreenUtil().setHeight(8)),
-                  child: Icon(
-                    Icons.shopping_cart_outlined,
-                    color: Colors.white,
-                    size: ScreenUtil().setHeight(35),
+        decoration: BoxDecoration(
+          color: ColorTheme.greyDark,
+          boxShadow: kElevationToShadow[2],
+          borderRadius: BorderRadius.circular(border),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: ScreenUtil().setHeight(iconH),
+              height: ScreenUtil().setHeight(iconH),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    ColorTheme.fontBlack.withOpacity(0.5),
+                    ColorTheme.fontBlack,
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(border - 3),
+              ),
+              child: Icon(
+                Icons.shopping_cart,
+                size: ScreenUtil().setHeight(25),
+                color: ColorTheme.fontWhite,
+              ),
+            ),
+            SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Your cart',
+                  style: TextStyle(
+                    color: ColorTheme.fontWhite,
+                    fontWeight: FontWeight.bold,
+                    fontSize: ScreenUtil().setHeight(16),
                   ),
                 ),
-              ),
-              Text(
-                'Your Cart',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: ScreenUtil().setHeight(13),
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget savedMedsWidget() {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => SavedMeds()),
-        );
-      },
-      child: Container(
-        width: double.infinity,
-        height: ScreenUtil().setHeight(110),
-        margin: EdgeInsets.symmetric(vertical: ScreenUtil().setHeight(10), horizontal: ScreenUtil().setWidth(15)),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [
-            Colors.teal[600],
-            Colors.teal[800],
-          ]),
-          boxShadow: kElevationToShadow[2],
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              FDottedLine(
-                color: Colors.white,
-                strokeWidth: 2.0,
-                dottedLength: 10.0,
-                space: 2.0,
-                corner: FDottedLineCorner.all(8),
-                height: ScreenUtil().setHeight(90),
-                width: ScreenUtil().setHeight(90),
-                child: Container(
-                  padding: EdgeInsets.all(ScreenUtil().setHeight(8)),
-                  child: Icon(
-                    Icons.add,
-                    color: Colors.white,
-                    size: ScreenUtil().setHeight(35),
+                Text(
+                  'Tap to view your cart items',
+                  style: TextStyle(
+                    color: ColorTheme.fontWhite,
+                    fontSize: ScreenUtil().setHeight(14),
                   ),
                 ),
-              ),
-              Text(
-                'Saved Items',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: ScreenUtil().setHeight(13),
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
+              ],
+            ),
+            Spacer(),
+            Icon(
+              Icons.arrow_forward_ios,
+              color: ColorTheme.grey,
+              size: ScreenUtil().setHeight(25),
+            ),
+          ],
         ),
       ),
     );

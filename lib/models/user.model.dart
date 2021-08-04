@@ -17,7 +17,7 @@ class UserModel {
   UserModel.fromJson(Map<String, dynamic> json) {
     String imageTemp;
     try {
-      imageTemp = json["imageUrl"];
+      imageTemp = json["image"];
     } catch (e) {}
     if (imageTemp == null) {
       imageTemp = "https://i.pravatar.cc/300";

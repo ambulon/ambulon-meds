@@ -1,3 +1,7 @@
+import 'dart:math';
+
+import 'package:medcomp/app.config.dart';
+
 class MedicineModel {
   String id;
   String name;
@@ -28,7 +32,8 @@ class MedicineModel {
       this.onemg = double.tryParse(json['_1mg'].toString()) ?? 0.0,
       this.apollo = double.tryParse(json['apollo'].toString()) ?? 0.0,
       this.netmeds = double.tryParse(json['netmeds'].toString()) ?? 0.0,
-      this.image = "",
+      this.image = json["image"] ??
+          'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=715&q=80https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=715&q=80',
       this.manufacturer = "made by",
       this.chemicals = "",
       this.quantity = "",
@@ -41,5 +46,61 @@ class MedicineModel {
       "quantity": 1,
       "char": this.name[0].toLowerCase(),
     };
+  }
+
+  double get bestBuyPrice {
+    List<double> l = [];
+    if (this.netmeds != -1) {
+      l.add(this.netmeds);
+    }
+    if (this.apollo != -1) {
+      l.add(this.apollo);
+    }
+    if (this.onemg != -1) {
+      l.add(this.onemg);
+    }
+    return l.reduce(min);
+  }
+
+  String get bestBuySite {
+    List<double> l = [];
+    if (this.netmeds != -1) {
+      l.add(this.netmeds);
+    }
+    if (this.apollo != -1) {
+      l.add(this.apollo);
+    }
+    if (this.onemg != -1) {
+      l.add(this.onemg);
+    }
+    if (l.reduce(min) == this.netmeds) {
+      return AppConfig.netmeds;
+    } else if (l.reduce(min) == this.apollo) {
+      return AppConfig.apollo;
+    } else if (l.reduce(min) == this.onemg) {
+      return AppConfig.onemg;
+    } else {
+      return AppConfig.all;
+    }
+  }
+
+  double brandToPrice(String brand) {
+    switch (brand) {
+      case AppConfig.netmeds:
+        return this.netmeds;
+        break;
+      case AppConfig.apollo:
+        return this.apollo;
+        break;
+      case AppConfig.onemg:
+        return this.onemg;
+        break;
+      default:
+        return -1;
+    }
+  }
+
+  String get des {
+    return 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,';
   }
 }

@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   startup() async {
-    await Future.delayed(new Duration(milliseconds: 1500));
+    await Future.delayed(new Duration(milliseconds: 1000));
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("token");
     if (token != null) {

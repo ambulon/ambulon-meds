@@ -6,10 +6,10 @@ import 'package:medcomp/bloc/cart.bloc.dart';
 import 'package:medcomp/events/cart.event.dart';
 import 'package:medcomp/states/cart.state.dart';
 import 'package:medcomp/views/cart/cart.display.dart';
-import 'package:medcomp/widget_constants/custom_appbar.dart';
+import 'package:medcomp/constants/custom_appbar.dart';
 import 'package:medcomp/utils/styles.dart';
-import 'package:medcomp/widget_constants/error.dart';
-import 'package:medcomp/widget_constants/loader.dart';
+import 'package:medcomp/constants/error.dart';
+import 'package:medcomp/constants/loader.dart';
 
 class CartPage extends StatefulWidget {
   @override
@@ -25,8 +25,9 @@ class _CartPageState extends State<CartPage> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil(width: Styles.get_width(context), height: Styles.get_height(context), allowFontScaling: true)
-      ..init(context);
+    ScreenUtil.instance =
+        ScreenUtil(width: Styles.get_width(context), height: Styles.get_height(context), allowFontScaling: true)
+          ..init(context);
     return BlocConsumer<CartBloc, CartState>(
       listener: (ctx, CartState state) {},
       builder: (ctx, CartState state) {

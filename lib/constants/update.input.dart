@@ -7,7 +7,7 @@ import 'package:medcomp/events/cart.event.dart';
 import 'package:medcomp/models/cart.model.dart';
 import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/styles.dart';
-import 'package:medcomp/widget_constants/toast.dart';
+import 'package:medcomp/constants/toast.dart';
 
 class UpdateInput extends StatefulWidget {
   final Items item;
@@ -22,8 +22,9 @@ class _UpdateInputState extends State<UpdateInput> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil(width: Styles.get_width(context), height: Styles.get_height(context), allowFontScaling: true)
-      ..init(context);
+    ScreenUtil.instance =
+        ScreenUtil(width: Styles.get_width(context), height: Styles.get_height(context), allowFontScaling: true)
+          ..init(context);
     var clipRRect = ClipRRect(
       borderRadius: BorderRadius.circular(8),
       child: Material(
@@ -40,7 +41,8 @@ class _UpdateInputState extends State<UpdateInput> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'Change Credits to be used',
-                  style: TextStyle(color: Colors.black, fontSize: ScreenUtil().setHeight(20), fontWeight: FontWeight.bold),
+                  style:
+                      TextStyle(color: Colors.black, fontSize: ScreenUtil().setHeight(20), fontWeight: FontWeight.bold),
                 ),
               ),
               SizedBox(height: ScreenUtil().setHeight(5)),
@@ -60,7 +62,8 @@ class _UpdateInputState extends State<UpdateInput> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         ),
-                        contentPadding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(15), vertical: ScreenUtil().setHeight(12)),
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: ScreenUtil().setWidth(15), vertical: ScreenUtil().setHeight(12)),
                       ),
                     ),
                   ),
@@ -90,7 +93,8 @@ class _UpdateInputState extends State<UpdateInput> {
                       }
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: ScreenUtil().setHeight(12), horizontal: ScreenUtil().setWidth(25)),
+                      padding: EdgeInsets.symmetric(
+                          vertical: ScreenUtil().setHeight(12), horizontal: ScreenUtil().setWidth(25)),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: ColorTheme.primaryColor,
@@ -98,7 +102,8 @@ class _UpdateInputState extends State<UpdateInput> {
                       child: Center(
                         child: Text(
                           'Update',
-                          style: TextStyle(color: Colors.white, fontSize: ScreenUtil().setHeight(14), fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              color: Colors.white, fontSize: ScreenUtil().setHeight(14), fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
@@ -109,7 +114,8 @@ class _UpdateInputState extends State<UpdateInput> {
                       Navigator.pop(context);
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: ScreenUtil().setHeight(12), horizontal: ScreenUtil().setWidth(25)),
+                      padding: EdgeInsets.symmetric(
+                          vertical: ScreenUtil().setHeight(12), horizontal: ScreenUtil().setWidth(25)),
                       // width: MediaQuery.of(context).size.width * 0.35,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
@@ -118,7 +124,8 @@ class _UpdateInputState extends State<UpdateInput> {
                       child: Center(
                         child: Text(
                           'Back',
-                          style: TextStyle(color: Colors.black, fontSize: ScreenUtil().setHeight(14), fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              color: Colors.black, fontSize: ScreenUtil().setHeight(14), fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),

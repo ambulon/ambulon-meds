@@ -9,7 +9,7 @@ import 'package:medcomp/models/user.model.dart';
 import 'package:medcomp/states/home.state.dart';
 import 'package:medcomp/views/cart/cart_page.dart';
 import 'package:medcomp/views/login/login_page.dart';
-import 'package:medcomp/widget_constants/loader.dart';
+import 'package:medcomp/constants/loader.dart';
 import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/styles.dart';
 import 'package:medcomp/views/saved/saved.dart';

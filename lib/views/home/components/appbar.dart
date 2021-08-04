@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/styles.dart';
 import 'package:medcomp/views/home/components/profile_page.dart';
-import 'package:medcomp/widget_constants/search.delegate.dart';
-import 'package:medcomp/widget_constants/toast.dart';
+import 'package:medcomp/constants/search.delegate.dart';
+import 'package:medcomp/constants/toast.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class CustomAppBarHome extends StatelessWidget {
@@ -16,8 +16,9 @@ class CustomAppBarHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil(width: Styles.get_width(context), height: Styles.get_height(context), allowFontScaling: true)
-      ..init(context);
+    ScreenUtil.instance =
+        ScreenUtil(width: Styles.get_width(context), height: Styles.get_height(context), allowFontScaling: true)
+          ..init(context);
     return Container(
       decoration: BoxDecoration(
         color: ColorTheme.primaryColor,
@@ -78,7 +79,8 @@ class CustomAppBarHome extends StatelessWidget {
               child: Container(
                 width: double.infinity,
                 height: ScreenUtil().setHeight(50),
-                padding: EdgeInsets.symmetric(vertical: ScreenUtil().setHeight(10), horizontal: ScreenUtil().setWidth(10)),
+                padding:
+                    EdgeInsets.symmetric(vertical: ScreenUtil().setHeight(10), horizontal: ScreenUtil().setWidth(10)),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: Colors.grey.withOpacity(0.4),

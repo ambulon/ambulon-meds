@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:medcomp/widget_constants/custom_appbar.dart';
+import 'package:medcomp/constants/custom_appbar.dart';
 import 'package:medcomp/utils/styles.dart';
 
 class SavedMeds extends StatefulWidget {
@@ -28,8 +28,9 @@ class _SavedMedsState extends State<SavedMeds> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil(width: Styles.get_width(context), height: Styles.get_height(context), allowFontScaling: true)
-      ..init(context);
+    ScreenUtil.instance =
+        ScreenUtil(width: Styles.get_width(context), height: Styles.get_height(context), allowFontScaling: true)
+          ..init(context);
     return Scaffold(
       appBar: CustomAppBar.def(title: 'Saved Items', context: context),
       body: noItem(),

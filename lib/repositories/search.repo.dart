@@ -17,6 +17,9 @@ class SearchRepo {
       if (res.statusCode == 200) {
         var resBody = jsonDecode(res.body);
         MedicineModel model = new MedicineModel.fromJson(resBody['med']);
+        if (model.apollo == -1 && model.onemg == -1 && model.netmeds == -1) {
+          throw ("No record found for the medicine");
+        }
         dataList.add(model);
         SearchModel result = new SearchModel(strList, dataList);
         // SearchModel result = mew SearchModel.fromJson(resBody['med'], strList, dataList);

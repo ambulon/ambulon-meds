@@ -3,9 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:medcomp/views/search/search_result_page.dart';
-import 'package:medcomp/views/splash_screen.dart';
 import 'bloc/main.bloc.dart';
+import 'views/splash_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,6 +32,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         home: SplashScreen(),
+        // home: SearchResult(str: 'Adapen Gel'),
       ),
     );
   }

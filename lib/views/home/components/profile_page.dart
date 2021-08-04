@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medcomp/utils/my_url.dart';
 import 'package:medcomp/views/login/login_page.dart';
-import 'package:medcomp/widget_constants/toast.dart';
+import 'package:medcomp/constants/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatelessWidget {

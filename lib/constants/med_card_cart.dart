@@ -9,9 +9,9 @@ import 'package:medcomp/models/cart.model.dart';
 import 'package:medcomp/repositories/cart.repo.dart';
 import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/styles.dart';
-import 'package:medcomp/widget_constants/loader.dart';
-import 'package:medcomp/widget_constants/toast.dart';
-import 'package:medcomp/widget_constants/update.input.dart';
+import 'package:medcomp/constants/loader.dart';
+import 'package:medcomp/constants/toast.dart';
+import 'package:medcomp/constants/update.input.dart';
 
 class MedCardCart extends StatelessWidget {
   final Items item;
@@ -32,8 +32,9 @@ class MedCardCart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil(width: Styles.get_width(context), height: Styles.get_height(context), allowFontScaling: true)
-      ..init(context);
+    ScreenUtil.instance =
+        ScreenUtil(width: Styles.get_width(context), height: Styles.get_height(context), allowFontScaling: true)
+          ..init(context);
     return Container(
       margin: EdgeInsets.symmetric(vertical: ScreenUtil().setHeight(10), horizontal: ScreenUtil().setWidth(15)),
       decoration: BoxDecoration(

@@ -1,6 +1,4 @@
-import 'package:fdottedline/fdottedline.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -70,7 +68,7 @@ class _HomeState extends State<Home> {
               body: Stack(
                 children: [
                   CustomScrollView(
-                    // physics: BouncingScrollPhysics(),
+                    physics: BouncingScrollPhysics(),
                     slivers: [
                       SliverAppBar(
                         automaticallyImplyLeading: false,

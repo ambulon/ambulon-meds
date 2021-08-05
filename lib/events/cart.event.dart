@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:medcomp/models/cart.model.dart';
+import 'package:medcomp/models/cartitem.model.dart';
 
 class CartEvent extends Equatable {
   @override
@@ -8,14 +8,9 @@ class CartEvent extends Equatable {
 
 class CartEventLoad extends CartEvent {}
 
-// class CartEventRemoveItem extends CartEvent {
-//   final String name;
-//   CartEventRemoveItem(this.name);
-// }
-
 class CartEventClearCart extends CartEvent {}
 
 class CartEventUpdateQuantity extends CartEvent {
-  final Items updatedItem;
+  final Item updatedItem;
   CartEventUpdateQuantity(this.updatedItem);
 }

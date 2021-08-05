@@ -63,7 +63,7 @@ class CartRepo {
     }
   }
 
-  Future<bool> updateQuantity(var data) async {
+  Future<bool> syncCart(var data) async {
     try {
       var res = await MyHttp.post('user/sync-cart', data);
       if (res.statusCode == 200) {

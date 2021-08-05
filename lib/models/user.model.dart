@@ -4,7 +4,6 @@ class UserModel {
   String name;
   String email;
   String photoUrl;
-  // List<MedicineModel> wishlist;
 
   UserModel(
     this.id,

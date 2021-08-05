@@ -26,7 +26,7 @@ class SearchResult extends StatefulWidget {
 
 class _SearchResultState extends State<SearchResult> {
   String newStr;
-  String selected = 'All';
+  String selected = AppConfig.all;
 
   @override
   void initState() {
@@ -49,7 +49,7 @@ class _SearchResultState extends State<SearchResult> {
   }
 
   Widget brandSelector(brand, price) {
-    if (brand != 'All' && price == -1) {
+    if (brand != AppConfig.all && price == -1) {
       return SizedBox();
     }
     return GestureDetector(
@@ -79,7 +79,7 @@ class _SearchResultState extends State<SearchResult> {
       child: Column(
         children: [
           Text(
-            'Rs. ${price.toStringAsFixed(0)}',
+            '${AppConfig.rs} ${price.toStringAsFixed(0)}',
             style: GoogleFonts.montserrat(
               fontSize: 18,
               fontWeight: FontWeight.bold,

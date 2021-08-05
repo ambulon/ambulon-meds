@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:medcomp/app.config.dart';
 
 class MedicineModel {

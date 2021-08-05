@@ -1,11 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-// import 'dart:convert';
 import 'package:medcomp/models/med.model.dart';
 import 'package:medcomp/models/search.model.dart';
 import 'package:medcomp/utils/my_url.dart';
-// import 'package:medcomp/utils/my_url.dart';
-// import 'dart:developer';
 
 class SearchRepo {
   String message;

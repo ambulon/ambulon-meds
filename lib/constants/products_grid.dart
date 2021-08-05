@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medcomp/app.config.dart';
 import 'package:medcomp/utils/colortheme.dart';
 
 class ProductsGrid extends StatelessWidget {
@@ -65,7 +66,7 @@ class ProductBox extends StatelessWidget {
           ),
           Container(
             alignment: Alignment.centerRight,
-            child: Text('Rs. 30'),
+            child: Text('${AppConfig.rs} 30'),
           ),
         ],
       ),

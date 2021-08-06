@@ -2,8 +2,8 @@
 
 todo
 - [ ] home page change loading to splash screen ui 
-- [ ] add icon and change app name
+- [x] add icon and change app name
 - [ ] add Banner in home page
 - [ ] error page
 - [ ] loading page
-- [ ] profile page
+- [ ] profile page - add tnc

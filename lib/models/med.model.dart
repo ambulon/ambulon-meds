@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:medcomp/app.config.dart';
+import 'package:medcomp/models/searchhistory.model.dart';
 
 class MedicineModel {
   String id;
@@ -101,5 +102,9 @@ class MedicineModel {
 
   String get des {
     return 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,';
+  }
+
+  toSearchHistoryMap() {
+    return SearchHistoryModel(id: this.id, image: this.image, name: this.name).toJson();
   }
 }

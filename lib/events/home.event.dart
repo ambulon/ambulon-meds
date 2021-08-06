@@ -6,3 +6,5 @@ class HomeEvent extends Equatable {
 }
 
 class HomeEventLoadData extends HomeEvent {}
+
+class HomeEventRefreshSearches extends HomeEvent {}

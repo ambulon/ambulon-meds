@@ -3,15 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medcomp/bloc/home.bloc.dart';
+import 'package:medcomp/constants/error.dart';
 import 'package:medcomp/constants/products_grid.dart';
 import 'package:medcomp/events/home.event.dart';
+import 'package:medcomp/models/banner.model.dart';
+import 'package:medcomp/models/searchhistory.model.dart';
 import 'package:medcomp/states/home.state.dart';
 import 'package:medcomp/views/cart/cart_page.dart';
-import 'package:medcomp/views/login/login_page.dart';
-import 'package:medcomp/constants/loader.dart';
 import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/styles.dart';
+import 'package:medcomp/views/search/search_result_page.dart';
 import 'components/appbar.dart';
+import 'package:carousel_pro/carousel_pro.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -39,32 +42,17 @@ class _HomeState extends State<Home> {
             return SizedBox();
           }
           if (state is HomeStateLoading) {
-            return Loader.def();
+            return loading();
           }
           if (state is HomeStateError) {
-            return Scaffold(
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                title: Text('error'),
-              ),
-              body: Center(
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => LoginPage(),
-                      ),
-                    );
-                  },
-                  child: Text('please login first'),
-                ),
-              ),
+            return ErrorPage(
+              message: state.message,
+              gotoLogin: true,
             );
           }
           if (state is HomeStateLoaded) {
             return Scaffold(
-              backgroundColor: ColorTheme.grey,
+              backgroundColor: Color(0xffA0A6A9),
               body: Stack(
                 children: [
                   CustomScrollView(
@@ -98,11 +86,63 @@ class _HomeState extends State<Home> {
                               ),
                               child: Column(
                                 children: <Widget>[
-                                  SizedBox(height: ScreenUtil().setHeight(12)),
+                                  SizedBox(height: ScreenUtil().setHeight(15)),
+                                  state.banners.length == 0
+                                      ? SizedBox()
+                                      : Container(
+                                          height: ScreenUtil().setHeight(200),
+                                          child: Carousel(
+                                            dotSize: 0,
+                                            indicatorBgPadding: 0,
+                                            boxFit: BoxFit.contain,
+                                            images: [
+                                              for (BannerModel i in state.banners)
+                                                Image(
+                                                  fit: BoxFit.cover,
+                                                  image: AssetImage(i.image),
+                                                ),
+                                            ],
+                                            animationCurve: Curves.fastOutSlowIn,
+                                            animationDuration: Duration(milliseconds: 2000),
+                                          )),
+                                  SizedBox(height: ScreenUtil().setHeight(30)),
+                                  state.searchHistory.length == 0
+                                      ? SizedBox()
+                                      : Column(
+                                          children: [
+                                            Container(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                'Your Searches',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: ColorTheme.fontBlack,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height: ScreenUtil().setHeight(2)),
+                                            GridView.count(
+                                              padding: EdgeInsets.zero,
+                                              crossAxisCount: 3,
+                                              crossAxisSpacing: 0,
+                                              mainAxisSpacing: 0,
+                                              shrinkWrap: true,
+                                              physics: NeverScrollableScrollPhysics(),
+                                              children: List.generate(
+                                                state.searchHistory.length,
+                                                (index) {
+                                                  return searchBox(state.searchHistory[index]);
+                                                },
+                                              ),
+                                            ),
+                                            SizedBox(height: ScreenUtil().setHeight(30)),
+                                          ],
+                                        ),
                                   Container(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
-                                      'More Products',
+                                      'Top picks',
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
@@ -139,6 +179,87 @@ class _HomeState extends State<Home> {
           }
           return SizedBox();
         },
+      ),
+    );
+  }
+
+  Widget searchBox(SearchHistoryModel model) {
+    return AspectRatio(
+      aspectRatio: 1,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => SearchResult(
+                str: model.name,
+                preset: true,
+              ),
+            ),
+          );
+        },
+        child: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Spacer(),
+              CircleAvatar(
+                radius: MediaQuery.of(context).size.width / 10,
+                backgroundColor: ColorTheme.grey,
+                backgroundImage: NetworkImage(model.image),
+              ),
+              SizedBox(height: ScreenUtil().setHeight(5)),
+              Container(
+                child: Text(
+                  model.name,
+                  style: TextStyle(
+                    color: ColorTheme.fontBlack,
+                    fontSize: ScreenUtil().setHeight(14),
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Spacer(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget loading() {
+    return Scaffold(
+      backgroundColor: ColorTheme.fontWhite,
+      body: Container(
+        constraints: BoxConstraints.expand(),
+        decoration: BoxDecoration(
+          color: ColorTheme.fontWhite,
+        ),
+        child: Column(
+          children: [
+            Expanded(flex: 3, child: SizedBox()),
+            Hero(
+              tag: 'logo',
+              child: Container(
+                child: Image(
+                  height: ScreenUtil().setHeight(120),
+                  width: ScreenUtil().setHeight(120),
+                  image: AssetImage('assets/app-logo.png'),
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            SizedBox(
+              width: ScreenUtil().setWidth(60),
+              child: LinearProgressIndicator(
+                color: ColorTheme.red.withOpacity(0.6),
+                backgroundColor: ColorTheme.blue.withOpacity(0.6),
+              ),
+            ),
+            Expanded(flex: 6, child: SizedBox()),
+          ],
+        ),
       ),
     );
   }

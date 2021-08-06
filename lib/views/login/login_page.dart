@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medcomp/constants/web.view.dart';
 import 'package:medcomp/repositories/auth.repo.dart';
 import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/styles.dart';
@@ -29,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               Spacer(),
               Image(
-                image: AssetImage('assets/logo.png'),
+                image: AssetImage('assets/app-logo.png'),
                 height: MediaQuery.of(context).size.width * 0.17,
                 width: MediaQuery.of(context).size.width * 0.17,
               ),
@@ -63,6 +64,77 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               Spacer(),
+              Container(
+                child: Row(
+                  children: [
+                    Text(
+                      'By continuing, you agree to our ',
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setHeight(13),
+                        color: ColorTheme.fontWhite,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => WebViewPage(link: 'https://ambulon-1.flycricket.io/privacy.html'),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Terms & Conditions',
+                        style: TextStyle(
+                          fontSize: ScreenUtil().setHeight(13),
+                          fontWeight: FontWeight.bold,
+                          color: ColorTheme.fontWhite,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      ' and ',
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setHeight(13),
+                        color: ColorTheme.fontWhite,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => WebViewPage(link: 'https://ambulon.flycricket.io/privacy.html'),
+                    ),
+                  );
+                },
+                child: Text(
+                  'Privacy Policy',
+                  style: TextStyle(
+                    fontSize: ScreenUtil().setHeight(13),
+                    fontWeight: FontWeight.bold,
+                    color: ColorTheme.fontWhite,
+                  ),
+                ),
+              ),
+              //     children: <TextSpan>[
+              //       TextSpan(
+              //         text: 'Terms & Conditions',
+              //         recognizer: new TapGestureRecognizer()..onTap = () {},
+              //         style: TextStyle(fontWeight: FontWeight.bold),
+              //       ),
+              //       TextSpan(text: ' and '),
+              //       TextSpan(
+              //         text: 'Privacy Policy',
+              //         style: TextStyle(fontWeight: FontWeight.bold),
+              //       ),
+              //     ],
+              //   ),
+              // )),
+              SizedBox(height: ScreenUtil().setHeight(25)),
             ],
           ),
         ),

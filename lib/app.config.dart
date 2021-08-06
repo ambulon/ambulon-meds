@@ -9,4 +9,6 @@ class AppConfig {
   static const String netmeds = 'Netmeds';
   static const String apollo = 'Apollo';
   static const String onemg = '1mg';
+
+  static const String prefsSearchHistory = 'search_history';
 }

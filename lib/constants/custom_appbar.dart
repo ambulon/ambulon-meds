@@ -18,7 +18,7 @@ class CustomAppBar {
           color: Colors.white,
         ),
       ),
-      backgroundColor: Colors.teal[600],
+      backgroundColor: ColorTheme.greyDark,
       centerTitle: true,
       title: Text(
         title,

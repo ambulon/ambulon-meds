@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medcomp/app.config.dart';
+import 'package:medcomp/bloc/home.bloc.dart';
 import 'package:medcomp/bloc/search.bloc.dart';
+import 'package:medcomp/events/home.event.dart';
 import 'package:medcomp/events/search.event.dart';
 import 'package:medcomp/models/med.model.dart';
 import 'package:medcomp/repositories/cart.repo.dart';
@@ -138,7 +140,6 @@ class _SearchResultState extends State<SearchResult> {
           ..init(context);
     return WillPopScope(
       onWillPop: () {
-        Navigator.pop(context);
         return;
       },
       child: BlocConsumer<SearchBloc, SearchState>(
@@ -151,8 +152,12 @@ class _SearchResultState extends State<SearchResult> {
             return Loader.def();
           }
           if (state is SearchStateError) {
+            BlocProvider.of<HomeBloc>(context).add(HomeEventRefreshSearches());
             return ErrorPage(
               message: state.message,
+              popFunction: () {
+                Navigator.pop(context);
+              },
             );
           }
           if (state is SearchStateLoaded) {
@@ -167,10 +172,12 @@ class _SearchResultState extends State<SearchResult> {
                       SizedBox(width: 15),
                       appbarIconButton(Icons.arrow_back, () {
                         if (widget.preset) {
+                          BlocProvider.of<HomeBloc>(context).add(HomeEventRefreshSearches());
                           Navigator.pop(context);
                         } else {
                           List temp = state.searchModel.strList;
                           if (temp.length == 1) {
+                            BlocProvider.of<HomeBloc>(context).add(HomeEventRefreshSearches());
                             Navigator.pop(context);
                             Navigator.pop(context);
                           } else {
@@ -179,28 +186,30 @@ class _SearchResultState extends State<SearchResult> {
                         }
                       }),
                       Spacer(),
-                      appbarIconButton(Icons.search, () {
-                        showSearch(
-                          context: context,
-                          delegate: MedicineSearch(
-                            customFunc: true,
-                            func: (newStr) {
-                              if (newStr != null && newStr != "") {
-                                List temp = state.searchModel.strList;
-                                temp.add(newStr);
-                                BlocProvider.of<SearchBloc>(context).add(SearchEventLoadData(
-                                  strList: temp,
-                                  dataList: state.searchModel.dataList,
-                                ));
-                              } else {
-                                ToastPreset.err(context: context, str: 'ENTER');
-                              }
-                            },
-                          ),
-                          query: "",
-                          // query: state.searchModel.strList.last,
-                        );
-                      }),
+                      widget.preset
+                          ? SizedBox()
+                          : appbarIconButton(Icons.search, () {
+                              showSearch(
+                                context: context,
+                                delegate: MedicineSearch(
+                                  customFunc: true,
+                                  func: (newStr) {
+                                    if (newStr != null && newStr != "") {
+                                      List temp = state.searchModel.strList;
+                                      temp.add(newStr);
+                                      BlocProvider.of<SearchBloc>(context).add(SearchEventLoadData(
+                                        strList: temp,
+                                        dataList: state.searchModel.dataList,
+                                      ));
+                                    } else {
+                                      ToastPreset.err(context: context, str: 'ENTER');
+                                    }
+                                  },
+                                ),
+                                query: "",
+                                // query: state.searchModel.strList.last,
+                              );
+                            }),
                       SizedBox(width: 15),
                     ],
                     backgroundColor: ColorTheme.greyDark,

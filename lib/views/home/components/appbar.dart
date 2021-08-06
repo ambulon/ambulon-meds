@@ -19,6 +19,13 @@ class CustomAppBarHome extends StatelessWidget {
         ScreenUtil(width: Styles.get_width(context), height: Styles.get_height(context), allowFontScaling: true)
           ..init(context);
     return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/bg.jpg'),
+          fit: BoxFit.cover,
+          colorFilter: ColorFilter.mode(Colors.white.withOpacity(0.25), BlendMode.dstATop),
+        ),
+      ),
       padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(20)),
       child: Column(
         children: <Widget>[

@@ -1,12 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:medcomp/app.config.dart';
+import 'package:medcomp/models/banner.model.dart';
+import 'package:medcomp/models/searchhistory.model.dart';
 import 'package:medcomp/models/user.model.dart';
 import 'package:medcomp/utils/my_url.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeRepo {
   String message;
 
-  Future<UserModel> getDetails() async {
+  Future<UserModel> getUserDetails() async {
     try {
       var res = await MyHttp.get("user/get-details");
       if (res.statusCode == 200) {
@@ -23,6 +27,31 @@ class HomeRepo {
       message = e.toString();
       print(message);
       return null;
+    }
+  }
+
+  Future<List<BannerModel>> getBanner() async {
+    BannerModel banner = new BannerModel(image: "assets/banner1.jpg");
+    return [banner, banner, banner];
+  }
+
+  Future<List<SearchHistoryModel>> searchHistory() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var data = prefs.getString(AppConfig.prefsSearchHistory);
+      if (data == null) {
+        return [];
+      }
+      var list = jsonDecode(data) as List;
+      List<SearchHistoryModel> result = [];
+      for (var i in list) {
+        result.add(new SearchHistoryModel.fromJson(jsonDecode(i)));
+      }
+      return result;
+    } catch (e) {
+      message = e.toString();
+      print(message);
+      return [];
     }
   }
 }

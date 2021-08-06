@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medcomp/app.config.dart';
+import 'package:medcomp/bloc/home.bloc.dart';
+import 'package:medcomp/constants/web.view.dart';
+import 'package:medcomp/events/home.event.dart';
+import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/my_url.dart';
 import 'package:medcomp/views/login/login_page.dart';
 import 'package:medcomp/constants/toast.dart';
@@ -11,20 +17,39 @@ class ProfilePage extends StatelessWidget {
   final photo;
   ProfilePage({@required this.name, @required this.email, @required this.photo});
 
-  Widget defaultHeadline(str, bool small) {
+  Widget defaultHeadline(
+    str,
+    bool small,
+    IconData icon,
+  ) {
     return Container(
-      alignment: Alignment.centerLeft,
-      margin: EdgeInsets.symmetric(
-        // vertical: ScreenUtil().setHeight(10),
-        horizontal: ScreenUtil().setWidth(18),
+      margin: EdgeInsets.only(
+        bottom: ScreenUtil().setHeight(small ? 0 : 20),
+        left: ScreenUtil().setWidth(18),
       ),
-      child: Text(
-        str,
-        style: TextStyle(
-          fontSize: ScreenUtil().setHeight(small ? 16 : 18),
-          color: Colors.black,
-          fontWeight: small ? FontWeight.w600 : FontWeight.bold,
-        ),
+      alignment: Alignment.centerLeft,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          icon != null
+              ? Container(
+                  margin: EdgeInsets.only(right: ScreenUtil().setWidth(10)),
+                  child: Icon(
+                    icon,
+                    color: ColorTheme.greyDark,
+                    size: ScreenUtil().setHeight(20),
+                  ),
+                )
+              : SizedBox(),
+          Text(
+            str,
+            style: TextStyle(
+              fontSize: ScreenUtil().setHeight(small ? 13 : 18),
+              color: ColorTheme.greyDark,
+              fontWeight: small ? FontWeight.w400 : FontWeight.bold,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -32,11 +57,11 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: ScreenUtil().setHeight(300),
+      height: ScreenUtil().setHeight(350),
       color: Colors.white,
       child: Column(
         children: [
-          SizedBox(height: ScreenUtil().setHeight(20)),
+          SizedBox(height: ScreenUtil().setHeight(35)),
           Container(
             child: Row(
               children: [
@@ -45,8 +70,8 @@ class ProfilePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      defaultHeadline(name, true),
-                      defaultHeadline(email, false),
+                      defaultHeadline(email, true, null),
+                      defaultHeadline(name, false, null),
                     ],
                   ),
                 ),
@@ -60,22 +85,43 @@ class ProfilePage extends StatelessWidget {
             ),
           ),
           SizedBox(height: ScreenUtil().setHeight(40)),
-          defaultHeadline('Terms and Conditions', true),
-          SizedBox(height: ScreenUtil().setHeight(15)),
-          defaultHeadline('Report a bug', true),
-          SizedBox(height: ScreenUtil().setHeight(15)),
-          defaultHeadline('Feedback', true),
-          SizedBox(height: ScreenUtil().setHeight(15)),
           GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => WebViewPage(link: 'https://ambulon-1.flycricket.io/privacy.html'),
+                ),
+              );
+            },
+            child: defaultHeadline('Terms and Conditions', false, Icons.book),
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => WebViewPage(link: 'https://ambulon.flycricket.io/privacy.html'),
+                ),
+              );
+            },
+            child: defaultHeadline('Privacy Policy', false, Icons.privacy_tip),
+          ),
+          GestureDetector(
+            onTap: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.remove(AppConfig.prefsSearchHistory);
+              BlocProvider.of<HomeBloc>(context).add(HomeEventRefreshSearches());
+              Navigator.pop(context);
+              ToastPreset.successful(str: 'Cleared', context: context);
+            },
+            child: defaultHeadline('Clear Searches', false, Icons.clear),
+          ),
+          InkWell(
             onTap: () async {
               try {
                 var res = await MyHttp.post('/logout', {});
-                if (res.statusCode == 200) {
-                  // SharedPreferences prefs = await SharedPreferences.getInstance();
-                  // prefs.remove('token');
-                  // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LoginPage()));
-                } else {
-                  print("logout error ${res.statusCode} ${res.body}");
+                if (res.statusCode != 200) {
                   ToastPreset.err(context: context, str: 'Logout error ${res.statusCode}');
                 }
                 SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -86,13 +132,9 @@ class ProfilePage extends StatelessWidget {
                 ToastPreset.err(context: context, str: e);
               }
             },
-            child: defaultHeadline('Log out', true),
+            child: defaultHeadline('Log out', false, Icons.logout),
           ),
-          SizedBox(height: ScreenUtil().setHeight(40)),
-          // log out
-          // terms and condition
-          // report a bug
-          // feedback
+          Spacer(),
         ],
       ),
     );

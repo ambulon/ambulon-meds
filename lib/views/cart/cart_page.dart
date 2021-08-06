@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medcomp/bloc/cart.bloc.dart';
 import 'package:medcomp/events/cart.event.dart';
 import 'package:medcomp/states/cart.state.dart';
+import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/views/cart/cart.display.dart';
 import 'package:medcomp/constants/custom_appbar.dart';
 import 'package:medcomp/utils/styles.dart';
@@ -33,10 +34,10 @@ class _CartPageState extends State<CartPage> {
       builder: (ctx, CartState state) {
         if (state is CartStateLoading) {
           return Scaffold(
-            backgroundColor: Colors.white,
-            appBar: CustomAppBar.cart(context: context, empty: true),
+            backgroundColor: ColorTheme.fontWhite,
             body: Column(
               children: [
+                Spacer(),
                 Loader.medCardShimmer(),
                 Loader.medCardShimmer(),
                 Spacer(),
@@ -49,46 +50,50 @@ class _CartPageState extends State<CartPage> {
         }
         if (state is CartStateEmpty) {
           return Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: ColorTheme.fontWhite,
             appBar: CustomAppBar.cart(context: context, empty: true),
-            body: Column(
-              children: [
-                Spacer(),
-                Container(
-                  width: double.infinity,
-                  height: ScreenUtil().setHeight(Styles.get_height(context) ~/ 4),
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                    image: AssetImage('assets/cartempty.png'),
-                  )),
-                ),
-                SizedBox(height: ScreenUtil().setHeight(35)),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(12)),
-                  child: Text(
-                    'Seems like you haven\'t added anyting in your cart.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: ScreenUtil().setHeight(18),
-                      fontWeight: FontWeight.w600,
+            body: Container(
+              margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(30)),
+              alignment: Alignment.center,
+              child: Column(
+                children: [
+                  Spacer(),
+                  Container(
+                    width: double.infinity,
+                    height: ScreenUtil().setHeight(Styles.get_height(context) ~/ 6),
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                      image: AssetImage('assets/cartempty.png'),
+                    )),
+                  ),
+                  SizedBox(height: ScreenUtil().setHeight(40)),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(12)),
+                    child: Text(
+                      'Seems like you haven\'t added anyting',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: ScreenUtil().setHeight(18),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(12)),
-                  child: Text(
-                    'Add multiple medicines and compare to get the prices.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.grey[700],
-                      fontSize: ScreenUtil().setHeight(15),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(12)),
+                    child: Text(
+                      'Add multiple medicines and get the results for the best prices.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.grey[700],
+                        fontSize: ScreenUtil().setHeight(15),
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: ScreenUtil().setHeight(50)),
-                Spacer(),
-              ],
+                  SizedBox(height: ScreenUtil().setHeight(50)),
+                  Spacer(),
+                ],
+              ),
             ),
           );
         }

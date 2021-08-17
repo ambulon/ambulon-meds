@@ -1,4 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 class Styles {
   // Aspect Ratio taken is H/W = 1.7, w = h/1.7
@@ -44,5 +47,55 @@ class Styles {
     } else {
       return h_tablet;
     }
+  }
+
+  static get wForLaptop {
+    return w_small;
+  }
+
+  static Widget responsiveBuilder(page) {
+    return ScreenTypeLayout(
+      mobile: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.white,
+        body: Container(
+          constraints: BoxConstraints.expand(),
+          child: page,
+        ),
+      ),
+      desktop: Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: Container(
+            width: ScreenUtil().setWidth(Styles.wForLaptop),
+            child: page,
+          ),
+        ),
+      ),
+    );
+  }
+
+  static Widget responsivePopupBuilder(content) {
+    return ScreenTypeLayout(
+      mobile: Container(
+        margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(15), vertical: ScreenUtil().setHeight(15)),
+        child: content,
+      ),
+      desktop: Container(
+        width: ScreenUtil().setWidth(Styles.wForLaptop),
+        margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(15), vertical: ScreenUtil().setHeight(15)),
+        child: content,
+      ),
+    );
+  }
+
+  static Widget rippleBuilder({Widget child}) {
+    return Container(
+      color: Colors.transparent,
+      child: Material(
+        color: Colors.transparent,
+        child: child,
+      ),
+    );
   }
 }

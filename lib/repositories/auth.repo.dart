@@ -31,6 +31,7 @@ class AuthRepo {
     } catch (e) {
       Navigator.pop(context);
       ToastPreset.err(context: context, str: 'Error $e');
+      print(e);
     }
   }
 

@@ -23,9 +23,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # cloud_firestore: 0.13.7
+  # firebase_auth: 0.16.1
+  # google_sign_in: 4.5.9
+  # firebase_core : 0.4.5
+  responsive_builder:
   cloud_firestore: 
   firebase_auth: 
   google_sign_in:
+  google_sign_in_web:
   firebase_core :
   google_fonts:
   shared_preferences: ^0.5.6+1

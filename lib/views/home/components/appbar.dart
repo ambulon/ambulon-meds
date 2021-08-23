@@ -7,7 +7,6 @@ import 'package:medcomp/utils/styles.dart';
 import 'package:medcomp/views/cart/cart_page.dart';
 import 'package:medcomp/views/home/components/profile_page.dart';
 import 'package:medcomp/constants/search.delegate.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class CustomAppBarHome extends StatelessWidget {
   final UserModel user;
@@ -16,7 +15,7 @@ class CustomAppBarHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance =
-        ScreenUtil(width: Styles.get_width(context), height: Styles.get_height(context), allowFontScaling: true)
+        ScreenUtil(width: Styles.getWidth(context), height: Styles.getHeight(context), allowFontScaling: true)
           ..init(context);
     return Container(
       decoration: BoxDecoration(
@@ -53,15 +52,14 @@ class CustomAppBarHome extends StatelessWidget {
               SizedBox(width: 20),
               GestureDetector(
                 onTap: () {
-                  showBarModalBottomSheet(
-                    context: context,
-                    isDismissible: true,
-                    enableDrag: true,
-                    builder: (_) => ProfilePage(
-                      email: user.email ?? "",
-                      name: user.name ?? "",
-                      photo: user.photoUrl ?? "",
-                    ),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => ProfilePage(
+                              email: user.email ?? "",
+                              name: user.name ?? "",
+                              photo: user.photoUrl ?? "",
+                            )),
                   );
                 },
                 child: Container(

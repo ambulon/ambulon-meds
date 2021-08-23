@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medcomp/app.config.dart';
+import 'package:medcomp/utils/styles.dart';
 import 'package:medcomp/views/search/search_result_page.dart';
 
 class MedicineSearch extends SearchDelegate<String> {
@@ -67,7 +68,8 @@ class MedicineSearch extends SearchDelegate<String> {
                           }
                         },
                         child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(12), vertical: ScreenUtil().setHeight(7)),
+                          margin: EdgeInsets.symmetric(
+                              horizontal: ScreenUtil().setWidth(12), vertical: ScreenUtil().setHeight(7)),
                           child: Text(vals[index], style: textStyle),
                         ),
                       );
@@ -77,7 +79,6 @@ class MedicineSearch extends SearchDelegate<String> {
                   },
                 );
               } else {
-                // return Text('Search For $query', style: textStyle);
                 return SizedBox();
               }
             },
@@ -87,11 +88,11 @@ class MedicineSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return results();
+    return Styles.responsiveBuilder(results());
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return results();
+    return Styles.responsiveBuilder(results());
   }
 }

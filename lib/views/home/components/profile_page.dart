@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medcomp/app.config.dart';
 import 'package:medcomp/bloc/home.bloc.dart';
+import 'package:medcomp/constants/custom_appbar.dart';
 import 'package:medcomp/constants/web.view.dart';
 import 'package:medcomp/events/home.event.dart';
 import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/my_url.dart';
+import 'package:medcomp/utils/styles.dart';
 import 'package:medcomp/views/login/login_page.dart';
 import 'package:medcomp/constants/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -56,12 +58,15 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: ScreenUtil().setHeight(350),
-      color: Colors.white,
-      child: Column(
+    return Styles.responsiveBuilder(ui(context));
+  }
+
+  Widget ui(context) {
+    return Scaffold(
+      appBar: CustomAppBar.def(title: 'Profile', context: context),
+      body: Column(
         children: [
-          SizedBox(height: ScreenUtil().setHeight(35)),
+          SizedBox(height: ScreenUtil().setHeight(20)),
           Container(
             child: Row(
               children: [

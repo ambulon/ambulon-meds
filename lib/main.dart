@@ -32,7 +32,6 @@ class MyApp extends StatelessWidget {
           ),
         ),
         home: SplashScreen(),
-        // home: SearchResult(str: 'Adapen Gel'),
       ),
     );
   }

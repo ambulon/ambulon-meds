@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,7 +32,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance =
-        ScreenUtil(width: Styles.get_width(context), height: Styles.get_height(context), allowFontScaling: true)
+        ScreenUtil(width: Styles.getWidth(context), height: Styles.getHeight(context), allowFontScaling: true)
           ..init(context);
     return WillPopScope(
       onWillPop: () => Future<bool>.value(false),
@@ -51,7 +52,7 @@ class _HomeState extends State<Home> {
             );
           }
           if (state is HomeStateLoaded) {
-            return Scaffold(
+            Widget page = Scaffold(
               backgroundColor: Color(0xffA0A6A9),
               body: Stack(
                 children: [
@@ -106,7 +107,7 @@ class _HomeState extends State<Home> {
                                             animationDuration: Duration(milliseconds: 2000),
                                           )),
                                   SizedBox(height: ScreenUtil().setHeight(30)),
-                                  state.searchHistory.length == 0
+                                  state.searchHistory.length == 0 || kIsWeb
                                       ? SizedBox()
                                       : Column(
                                           children: [
@@ -121,21 +122,25 @@ class _HomeState extends State<Home> {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(height: ScreenUtil().setHeight(2)),
-                                            GridView.count(
-                                              padding: EdgeInsets.zero,
-                                              crossAxisCount: 3,
-                                              crossAxisSpacing: 0,
-                                              mainAxisSpacing: 0,
-                                              shrinkWrap: true,
-                                              physics: NeverScrollableScrollPhysics(),
-                                              children: List.generate(
-                                                state.searchHistory.length,
-                                                (index) {
-                                                  return searchBox(state.searchHistory[index]);
-                                                },
-                                              ),
-                                            ),
+                                            kIsWeb ? SizedBox() : SizedBox(height: ScreenUtil().setHeight(2)),
+                                            kIsWeb
+                                                ? SizedBox()
+                                                : Container(
+                                                    child: GridView.count(
+                                                      padding: EdgeInsets.zero,
+                                                      crossAxisCount: 3,
+                                                      crossAxisSpacing: 0,
+                                                      mainAxisSpacing: 0,
+                                                      shrinkWrap: true,
+                                                      physics: NeverScrollableScrollPhysics(),
+                                                      children: List.generate(
+                                                        state.searchHistory.length,
+                                                        (index) {
+                                                          return searchBox(state.searchHistory[index]);
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ),
                                             SizedBox(height: ScreenUtil().setHeight(30)),
                                           ],
                                         ),
@@ -176,6 +181,7 @@ class _HomeState extends State<Home> {
                 ],
               ),
             );
+            return Styles.responsiveBuilder(page);
           }
           return SizedBox();
         },
@@ -204,7 +210,7 @@ class _HomeState extends State<Home> {
             children: [
               Spacer(),
               CircleAvatar(
-                radius: MediaQuery.of(context).size.width / 10,
+                radius: Styles.getWidth(context) / 10,
                 backgroundColor: ColorTheme.grey,
                 backgroundImage: NetworkImage(model.image),
               ),
@@ -265,8 +271,8 @@ class _HomeState extends State<Home> {
   }
 
   Widget cart() {
-    int iconH = 52;
-    int iconG = 14;
+    int iconH = 46;
+    int iconG = 12;
     double border = 12;
     return GestureDetector(
       onTap: () {

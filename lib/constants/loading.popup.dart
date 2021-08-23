@@ -1,11 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medcomp/utils/colortheme.dart';
+import 'package:medcomp/utils/styles.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 class LoadingPopupGenerator {
   static def({@required text, @required context}) {
     showCupertinoDialog(
-        context: context, builder: (_) => LoadingPopup(text: text));
+      context: context,
+      builder: (_) => LoadingPopup(text: text),
+    );
   }
 }
 
@@ -19,6 +24,9 @@ class LoadingPopup extends StatefulWidget {
 class _LoadingPopupState extends State<LoadingPopup> {
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.instance =
+        ScreenUtil(width: Styles.getWidth(context), height: Styles.getHeight(context), allowFontScaling: true)
+          ..init(context);
     var clipRRect = ClipRRect(
       borderRadius: BorderRadius.circular(8),
       child: Material(
@@ -45,8 +53,7 @@ class _LoadingPopupState extends State<LoadingPopup> {
               SizedBox(height: 15),
               Container(
                 width: double.infinity,
-                child: LinearProgressIndicator(
-                    backgroundColor: ColorTheme.greyDark),
+                child: LinearProgressIndicator(backgroundColor: ColorTheme.greyDark),
               ),
               SizedBox(height: 8),
             ],
@@ -57,9 +64,16 @@ class _LoadingPopupState extends State<LoadingPopup> {
     return Column(
       children: <Widget>[
         Spacer(),
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-          child: clipRRect,
+        ScreenTypeLayout(
+          mobile: Container(
+            margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(50), vertical: ScreenUtil().setHeight(15)),
+            child: clipRRect,
+          ),
+          desktop: Container(
+            width: ScreenUtil().setWidth(Styles.wForLaptop),
+            margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(50), vertical: ScreenUtil().setHeight(15)),
+            child: clipRRect,
+          ),
         ),
         Spacer(),
       ],

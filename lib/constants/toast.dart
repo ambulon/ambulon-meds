@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/styles.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 class ToastPreset {
   static successful({@required String str, @required BuildContext context}) async {
@@ -66,14 +67,20 @@ class _CustomToastState extends State<CustomToast> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance =
-        ScreenUtil(width: Styles.get_width(context), height: Styles.get_height(context), allowFontScaling: true)
+        ScreenUtil(width: Styles.getWidth(context), height: Styles.getHeight(context), allowFontScaling: true)
           ..init(context);
     return Column(
       children: <Widget>[
         Spacer(),
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.15),
-          child: ui(),
+        ScreenTypeLayout(
+          mobile: Container(
+            margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.15),
+            child: ui(),
+          ),
+          desktop: Container(
+            margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.35),
+            child: ui(),
+          ),
         ),
         SizedBox(height: ScreenUtil().setHeight(60)),
       ],

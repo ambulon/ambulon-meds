@@ -9,9 +9,10 @@ class MedicineModel {
   double apollo;
   double netmeds;
   String image;
-  String manufacturer;
-  String chemicals;
-  String quantity;
+  // String manufacturer;
+  // String chemicals;
+  // String quantity;
+  String des;
 
   MedicineModel(
     this.id,
@@ -20,23 +21,35 @@ class MedicineModel {
     this.apollo,
     this.netmeds,
     this.image,
-    this.manufacturer,
-    this.chemicals,
-    this.quantity,
+    this.des,
+    // this.manufacturer,
+    // this.chemicals,
+    // this.quantity,
   );
 
   MedicineModel.fromJson(Map<String, dynamic> json) {
+    String desc;
+    if (json['size'] != null) {
+      desc = json['size'];
+    }
+    if (json["manufacturer"] != null) {
+      desc += "\n" + "Manufactured by " + json["manufacturer"];
+    }
+    if (json['composition'] != null) {
+      desc += "\n" + "Compositions " + json["manufacturer"];
+    }
     MedicineModel(
       this.id = json['_id'] ?? "",
       this.name = json['name'] ?? "",
       this.onemg = double.tryParse(json['_1mg'].toString()) ?? 0.0,
       this.apollo = double.tryParse(json['apollo'].toString()) ?? 0.0,
       this.netmeds = double.tryParse(json['netmeds'].toString()) ?? 0.0,
-      this.image = json["image"] ??
+      this.image = json["imageUrl"] ??
           'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=715&q=80https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=715&q=80',
-      this.manufacturer = "made by",
-      this.chemicals = "",
-      this.quantity = "",
+      // this.manufacturer = "made by",
+      // this.chemicals = "",
+      // this.quantity = "",
+      this.des = desc,
     );
   }
 
@@ -100,9 +113,9 @@ class MedicineModel {
     }
   }
 
-  String get des {
-    return 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,';
-  }
+  // String get des {
+  //   return 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,';
+  // }
 
   toSearchHistoryMap() {
     return SearchHistoryModel(id: this.id, image: this.image, name: this.name).toJson();

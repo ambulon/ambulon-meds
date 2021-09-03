@@ -7,8 +7,7 @@ import 'package:medcomp/repositories/auth.repo.dart';
 import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/styles.dart';
 import 'package:flutter/material.dart';
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html' as html;
+import 'webfake.dart' if (dart.library.html) 'webreal.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -85,7 +84,8 @@ class _LoginPageState extends State<LoginPage> {
                   GestureDetector(
                     onTap: () async {
                       if (kIsWeb) {
-                        html.window.open('https://ambulon-1.flycricket.io/privacy.html', 'new tab');
+                        // html.window.open('https://ambulon-1.flycricket.io/privacy.html', 'new tab');
+                        openSite('https://ambulon-1.flycricket.io/privacy.html');
                       } else {
                         Navigator.push(
                           context,
@@ -117,7 +117,8 @@ class _LoginPageState extends State<LoginPage> {
             GestureDetector(
               onTap: () {
                 if (kIsWeb) {
-                  html.window.open('https://ambulon.flycricket.io/privacy.html', 'new tab');
+                  openSite('https://ambulon.flycricket.io/privacy.html');
+                  // html.window.open('https://ambulon.flycricket.io/privacy.html', 'new tab');
                 } else {
                   Navigator.push(
                     context,

@@ -31,8 +31,10 @@ class HomeRepo {
   }
 
   Future<List<BannerModel>> getBanner() async {
-    BannerModel banner = new BannerModel(image: "assets/banner1.jpg");
-    return [banner, banner, banner];
+    BannerModel banner1 = new BannerModel(image: MyUrl.url('Banner1.jpg'));
+    BannerModel banner2 = new BannerModel(image: MyUrl.url('Banner2.jpg'));
+    BannerModel banner3 = new BannerModel(image: MyUrl.url('Banner3.jpg'));
+    return [banner1, banner2, banner3];
   }
 
   Future<List<SearchHistoryModel>> searchHistory() async {

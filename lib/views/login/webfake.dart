@@ -1,0 +1,1 @@
+openSite(url) {}

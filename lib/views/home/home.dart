@@ -100,7 +100,7 @@ class _HomeState extends State<Home> {
                                               for (BannerModel i in state.banners)
                                                 Image(
                                                   fit: BoxFit.cover,
-                                                  image: AssetImage(i.image),
+                                                  image: NetworkImage(i.image),
                                                 ),
                                             ],
                                             animationCurve: Curves.fastOutSlowIn,

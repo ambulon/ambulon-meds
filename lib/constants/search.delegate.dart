@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medcomp/app.config.dart';
 import 'package:medcomp/utils/styles.dart';
+import 'package:medcomp/views/search/request.dart';
 import 'package:medcomp/views/search/search_result_page.dart';
 
 class MedicineSearch extends SearchDelegate<String> {
@@ -48,7 +49,20 @@ class MedicineSearch extends SearchDelegate<String> {
             builder: (context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
                 if (snapshot.data.docs.length == 0) {
-                  return Text('no medicine found, Search for $query', style: textStyle);
+                  return Column(
+                    children: [
+                      SizedBox(height: 30),
+                      Text('no medicine found with name $query', style: textStyle),
+                      SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => RequestMedicine(text: query)));
+                        },
+                        child: Text('Request for medicine'),
+                      ),
+                    ],
+                  );
                 }
                 QueryDocumentSnapshot qds = snapshot.data.docs[0];
                 List vals = qds.get('list');

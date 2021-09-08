@@ -49,47 +49,39 @@ class MedicineSearch extends SearchDelegate<String> {
             builder: (context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
                 if (snapshot.data.docs.length == 0) {
-                  return Column(
-                    children: [
-                      SizedBox(height: 30),
-                      Text('no medicine found with name $query', style: textStyle),
-                      SizedBox(height: 10),
-                      ElevatedButton(
-                        onPressed: () {
-                          FocusScope.of(context).unfocus();
-                          Navigator.push(context, MaterialPageRoute(builder: (_) => RequestMedicine(text: query)));
-                        },
-                        child: Text('Request for medicine'),
-                      ),
-                    ],
-                  );
+                  return requestBox(context);
                 }
                 QueryDocumentSnapshot qds = snapshot.data.docs[0];
                 List vals = qds.get('list');
+                List newList = [];
+                for (var str in vals) {
+                  if (str.toString().toLowerCase().contains(query.toLowerCase())) {
+                    newList.add(str);
+                  }
+                }
+                if (newList.length == 0) {
+                  return requestBox(context);
+                }
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: ScrollPhysics(),
-                  itemCount: vals.length,
+                  itemCount: newList.length,
                   itemBuilder: (context, index) {
-                    if (vals[index].toString().toLowerCase().contains(query.toLowerCase())) {
-                      return GestureDetector(
-                        onTap: () {
-                          if (customFunc) {
-                            Navigator.pop(context);
-                            func(vals[index]);
-                          } else {
-                            Navigator.push(context, MaterialPageRoute(builder: (_) => SearchResult(str: vals[index])));
-                          }
-                        },
-                        child: Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: ScreenUtil().setWidth(12), vertical: ScreenUtil().setHeight(7)),
-                          child: Text(vals[index], style: textStyle),
-                        ),
-                      );
-                    } else {
-                      return SizedBox();
-                    }
+                    return GestureDetector(
+                      onTap: () {
+                        if (customFunc) {
+                          Navigator.pop(context);
+                          func(vals[index]);
+                        } else {
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => SearchResult(str: vals[index])));
+                        }
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: ScreenUtil().setWidth(12), vertical: ScreenUtil().setHeight(7)),
+                        child: Text(vals[index], style: textStyle),
+                      ),
+                    );
                   },
                 );
               } else {
@@ -98,6 +90,23 @@ class MedicineSearch extends SearchDelegate<String> {
             },
           )
         : SizedBox();
+  }
+
+  Column requestBox(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(height: 30),
+        Text('no medicine found with name $query', style: textStyle),
+        SizedBox(height: 10),
+        ElevatedButton(
+          onPressed: () {
+            FocusScope.of(context).unfocus();
+            Navigator.push(context, MaterialPageRoute(builder: (_) => RequestMedicine(text: query)));
+          },
+          child: Text('Request for medicine'),
+        ),
+      ],
+    );
   }
 
   @override

@@ -9,6 +9,7 @@ import 'package:medcomp/events/home.event.dart';
 import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/my_url.dart';
 import 'package:medcomp/utils/styles.dart';
+import 'package:medcomp/views/home/components/saviour_poster.dart';
 import 'package:medcomp/views/login/login_page.dart';
 import 'package:medcomp/constants/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -62,6 +63,7 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget ui(context) {
+    var networkImage = NetworkImage(photo);
     return Scaffold(
       appBar: CustomAppBar.def(title: 'Profile', context: context),
       body: Column(
@@ -83,13 +85,19 @@ class ProfilePage extends StatelessWidget {
                 Spacer(),
                 CircleAvatar(
                   radius: ScreenUtil().setHeight(30),
-                  backgroundImage: NetworkImage(photo),
+                  backgroundImage: networkImage,
                 ),
                 SizedBox(width: ScreenUtil().setWidth(18)),
               ],
             ),
           ),
           SizedBox(height: ScreenUtil().setHeight(40)),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) => SaviourPoster(img: networkImage)));
+            },
+            child: defaultHeadline('Saviour Poster', false, Icons.shield),
+          ),
           GestureDetector(
             onTap: () {
               Navigator.push(

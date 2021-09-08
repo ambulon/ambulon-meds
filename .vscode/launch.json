@@ -10,7 +10,7 @@
             "name": "Fl-chrome",
             "type": "dart",
             "request": "launch",
-            "args": ["-d", "chrome","--web-port", "5000"]
+            "args": ["-d", "chrome","--web-port", "5000", "--dart-define=FLUTTER_WEB_AUTO_DETECT=true"]
         }
     ]
 }

@@ -84,7 +84,7 @@ class ErrorPage extends StatelessWidget {
                         Navigator.push(context, MaterialPageRoute(builder: (_) => LoginPage()));
                       },
                       child: Text(
-                        "LOGIN AGAIN".toUpperCase(),
+                        "Try logging in again".toUpperCase(),
                         style: TextStyle(color: Colors.white),
                       ),
                     ),

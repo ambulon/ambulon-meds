@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:medcomp/app.config.dart';
 import 'package:medcomp/models/banner.model.dart';
+import 'package:medcomp/models/med.model.dart';
 import 'package:medcomp/models/searchhistory.model.dart';
 import 'package:medcomp/models/user.model.dart';
 import 'package:medcomp/utils/my_url.dart';
@@ -21,12 +22,10 @@ class HomeRepo {
       } else {
         print("Error code for home repo is ${res.statusCode} ${res.body}");
         message = "Error code for home repo is ${res.statusCode} ${res.body}";
-        return null;
+        throw message;
       }
     } catch (e) {
-      message = e.toString();
-      print(message);
-      return null;
+      throw e;
     }
   }
 
@@ -53,6 +52,25 @@ class HomeRepo {
     } catch (e) {
       message = e.toString();
       print(message);
+      return [];
+    }
+  }
+
+  Future<List<MedicineModel>> getMoreicks() async {
+    try {
+      var res = await MyHttp.get("user/get-toppicks");
+      if (res.statusCode == 200) {
+        var resBody = jsonDecode(res.body);
+        List<MedicineModel> result = [];
+        for (var r in resBody["topPicks"]) {
+          result.add(new MedicineModel.fromJson(r));
+        }
+        return result;
+      } else {
+        print("Error code for home repo is ${res.statusCode} ${res.body}");
+        return [];
+      }
+    } catch (e) {
       return [];
     }
   }

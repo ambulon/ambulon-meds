@@ -17,17 +17,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         var user = await this._homeRepo.getUserDetails();
         var banners = await this._homeRepo.getBanner();
         var searchHistory = await this._homeRepo.searchHistory();
-        if (user == null) {
-          String error = this._homeRepo.message;
-          yield HomeStateError("User not logged in : $error");
-        } else {
-          yield HomeStateLoaded(
-            userModel: user,
-            banners: banners,
-            searchHistory: searchHistory,
-            topPicks: [],
-          );
-        }
+        var toppicks = await this._homeRepo.getMoreicks();
+
+        yield HomeStateLoaded(
+          userModel: user,
+          banners: banners,
+          searchHistory: searchHistory,
+          topPicks: toppicks,
+        );
 
         // yield HomeStateLoading();
         // yield HomeStateLoaded(

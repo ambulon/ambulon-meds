@@ -46,10 +46,11 @@ class _HomeState extends State<Home> {
             return loading();
           }
           if (state is HomeStateError) {
-            return ErrorPage(
+            return Styles.responsiveBuilder(ErrorPage(
               message: state.message,
               gotoLogin: true,
-            );
+            ));
+            // return Text(state.message);
           }
           if (state is HomeStateLoaded) {
             Widget page = Scaffold(
@@ -155,7 +156,7 @@ class _HomeState extends State<Home> {
                                       ),
                                     ),
                                   ),
-                                  ProductsGrid(['', '', '', '', '']),
+                                  ProductsGrid(state.topPicks),
                                 ],
                               ),
                             );

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:medcomp/app.config.dart';
+import 'package:medcomp/models/med.model.dart';
 import 'package:medcomp/utils/colortheme.dart';
+import 'package:medcomp/views/search/search_result_page.dart';
 
 class ProductsGrid extends StatelessWidget {
-  final List list;
+  final List<MedicineModel> list;
   ProductsGrid(this.list);
 
   @override
@@ -19,7 +21,7 @@ class ProductsGrid extends StatelessWidget {
       children: List.generate(
         list.length,
         (index) {
-          return ProductBox();
+          return ProductBox(model: list[index]);
         },
       ),
     );
@@ -27,14 +29,15 @@ class ProductsGrid extends StatelessWidget {
 }
 
 class ProductBox extends StatelessWidget {
-  const ProductBox({
-    Key key,
-  }) : super(key: key);
+  final MedicineModel model;
+  ProductBox({this.model});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async {},
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (_) => SearchResult(str: model.name, preset: true)));
+      },
       child: Column(
         children: [
           Expanded(
@@ -45,9 +48,7 @@ class ProductBox extends StatelessWidget {
                   Radius.circular(1),
                 ),
                 image: DecorationImage(
-                  image: NetworkImage(
-                    'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=715&q=80https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=715&q=80',
-                  ),
+                  image: NetworkImage(model.image),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -57,7 +58,7 @@ class ProductBox extends StatelessWidget {
           Container(
             alignment: Alignment.centerLeft,
             child: Text(
-              'Adapen Gel',
+              model.name,
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -67,7 +68,7 @@ class ProductBox extends StatelessWidget {
           ),
           Container(
             alignment: Alignment.centerRight,
-            child: Text('${AppConfig.rs} 30'),
+            child: Text('${AppConfig.rs} ${model.bestBuyPrice.toStringAsFixed(0)}'),
           ),
         ],
       ),

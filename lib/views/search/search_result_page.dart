@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,6 +17,8 @@ import 'package:medcomp/constants/search.delegate.dart';
 import 'package:medcomp/constants/error.dart';
 import 'package:medcomp/constants/loader.dart';
 import 'package:medcomp/constants/toast.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:medcomp/views/login/webfake.dart' if (dart.library.html) 'package:medcomp/views/login/webreal.dart';
 
 class SearchResult extends StatefulWidget {
   final str;
@@ -74,14 +77,14 @@ class _SearchResultState extends State<SearchResult> {
   }
 
   Widget allBrandPriceBox(String brand, double price) {
-    if (price == -1) {
-      return SizedBox();
-    }
+    // if (price == -1) {
+    //   return SizedBox();
+    // }
     return Container(
       child: Column(
         children: [
           Text(
-            '${AppConfig.rs} ${price.toStringAsFixed(0)}',
+            price == -1 ? 'NA' : '${AppConfig.rs} ${price.toStringAsFixed(2)}',
             style: GoogleFonts.montserrat(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -276,7 +279,9 @@ class _SearchResultState extends State<SearchResult> {
                                           ),
                                         ),
                                         Text(
-                                          selected == AppConfig.all ? '${data.name}' : '${data.brandToPrice(selected)}',
+                                          selected == AppConfig.all
+                                              ? '${data.name}'
+                                              : '₹ ${data.brandToPrice(selected)}',
                                           style: GoogleFonts.montserrat(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,
@@ -307,21 +312,38 @@ class _SearchResultState extends State<SearchResult> {
                                 ),
                               ),
                               selected != AppConfig.all
-                                  ? Container(
-                                      width: double.infinity,
-                                      padding: EdgeInsets.symmetric(vertical: 15),
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(4),
-                                        color: ColorTheme.green,
-                                      ),
-                                      // TODO : Add here link
-                                      child: Text(
-                                        'BUY FROM SITE',
-                                        style: TextStyle(
-                                          color: ColorTheme.fontWhite,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
+                                  ? GestureDetector(
+                                      onTap: () async {
+                                        String url;
+                                        if (selected == AppConfig.netmeds)
+                                          url = AppConfig.netmedsLink;
+                                        else if (selected == AppConfig.apollo)
+                                          url = AppConfig.apolloLink;
+                                        else
+                                          url = AppConfig.onemgLink;
+                                        if (kIsWeb) {
+                                          openSite(url);
+                                        } else {
+                                          if (await canLaunch(url)) {
+                                            launch(url);
+                                          }
+                                        }
+                                      },
+                                      child: Container(
+                                        width: double.infinity,
+                                        padding: EdgeInsets.symmetric(vertical: 15),
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(4),
+                                          color: ColorTheme.green,
+                                        ),
+                                        child: Text(
+                                          'BUY FROM SITE',
+                                          style: TextStyle(
+                                            color: ColorTheme.fontWhite,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                          ),
                                         ),
                                       ),
                                     )

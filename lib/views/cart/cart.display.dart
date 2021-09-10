@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +14,8 @@ import 'package:medcomp/utils/styles.dart';
 import 'package:medcomp/constants/med_card_cart.dart';
 import 'package:flutter/rendering.dart';
 import 'package:medcomp/views/home/components/coupons.dart';
+import 'package:medcomp/views/login/webfake.dart' if (dart.library.html) 'package:medcomp/views/login/webreal.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CartDisplay extends StatefulWidget {
   final CartModel cartModel;
@@ -267,7 +270,31 @@ class _CartDisplayState extends State<CartDisplay> {
                   SizedBox(width: ScreenUtil().setWidth(15)),
                   buttons(
                     'Visit Site',
-                    () {},
+                    () async {
+                      String url;
+                      if (selected == AppConfig.recommended) {
+                        print(widget.cartModel.recBrand);
+                        if (widget.cartModel.recBrand == AppConfig.netmeds)
+                          url = AppConfig.netmedsLink;
+                        else if (widget.cartModel.recBrand == AppConfig.apollo)
+                          url = AppConfig.apolloLink;
+                        else
+                          url = AppConfig.onemgLink;
+                      }
+                      if (selected == AppConfig.netmeds)
+                        url = AppConfig.netmedsLink;
+                      else if (selected == AppConfig.apollo)
+                        url = AppConfig.apolloLink;
+                      else
+                        url = AppConfig.onemgLink;
+                      if (kIsWeb) {
+                        openSite(url);
+                      } else {
+                        if (await canLaunch(url)) {
+                          launch(url);
+                        }
+                      }
+                    },
                     ColorTheme.blue,
                   ),
                 ],

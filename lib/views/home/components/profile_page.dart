@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +14,7 @@ import 'package:medcomp/views/home/components/saviour_poster.dart';
 import 'package:medcomp/views/login/login_page.dart';
 import 'package:medcomp/constants/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:medcomp/views/login/webfake.dart' if (dart.library.html) 'package:medcomp/views/login/webreal.dart';
 
 class ProfilePage extends StatelessWidget {
   final name;
@@ -100,23 +102,31 @@ class ProfilePage extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => WebViewPage(link: 'https://ambulon-1.flycricket.io/privacy.html'),
-                ),
-              );
+              if (kIsWeb) {
+                openSite('https://ambulon-1.flycricket.io/privacy.html');
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => WebViewPage(link: 'https://ambulon-1.flycricket.io/privacy.html'),
+                  ),
+                );
+              }
             },
             child: defaultHeadline('Terms and Conditions', false, Icons.book),
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => WebViewPage(link: 'https://ambulon.flycricket.io/privacy.html'),
-                ),
-              );
+              if (kIsWeb) {
+                openSite('https://ambulon-1.flycricket.io/privacy.html');
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => WebViewPage(link: 'https://ambulon.flycricket.io/privacy.html'),
+                  ),
+                );
+              }
             },
             child: defaultHeadline('Privacy Policy', false, Icons.privacy_tip),
           ),

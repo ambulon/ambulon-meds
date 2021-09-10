@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: MainBloc.allBlocs(),
       child: MaterialApp(
+        title: 'Ambulon',
         debugShowCheckedModeBanner: false,
         theme: ThemeData.light().copyWith(
           primaryColor: Colors.teal[900],

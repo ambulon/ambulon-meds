@@ -1,13 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:medcomp/app.config.dart';
-import 'package:medcomp/models/banner.model.dart';
 import 'package:medcomp/models/coupons.model.dart';
-import 'package:medcomp/models/med.model.dart';
-import 'package:medcomp/models/searchhistory.model.dart';
-import 'package:medcomp/models/user.model.dart';
 import 'package:medcomp/utils/my_url.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CouponsRepo {
   String message;

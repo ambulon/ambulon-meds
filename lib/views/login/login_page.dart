@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             SizedBox(height: ScreenUtil().setHeight(30)),
             Text(
-              'AMBULON MEDS',
+              'AMBULON',
               style: GoogleFonts.montserrat(
                 fontSize: ScreenUtil().setHeight(40),
                 color: Colors.white,
@@ -84,7 +84,6 @@ class _LoginPageState extends State<LoginPage> {
                   GestureDetector(
                     onTap: () async {
                       if (kIsWeb) {
-                        // html.window.open('https://ambulon-1.flycricket.io/privacy.html', 'new tab');
                         openSite('https://ambulon-1.flycricket.io/privacy.html');
                       } else {
                         Navigator.push(

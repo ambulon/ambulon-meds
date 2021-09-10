@@ -11,4 +11,8 @@ class AppConfig {
   static const String onemg = '1mg';
 
   static const String prefsSearchHistory = 'search_history';
+
+  static const String netmedsLink = 'https://ekaro.in/enkr20210910s4766674';
+  static const String apolloLink = 'https://www.apollopharmacy.in/';
+  static const String onemgLink = 'https://ekaro.in/enkr20210910s4766612';
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medcomp/constants/quotes.dart';
+import 'package:medcomp/utils/styles.dart';
 import 'package:shimmer/shimmer.dart';
 
 class Loader {
@@ -26,6 +28,39 @@ class Loader {
     return Scaffold(
       body: Center(
         child: Text('loading'),
+      ),
+    );
+  }
+
+  static Widget gifLoader(context) {
+    return Styles.responsiveBuilder(
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: Styles.getHeight(context) * 0.4,
+            height: Styles.getHeight(context) * 0.4,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+              image: AssetImage('error.png'),
+              fit: BoxFit.contain,
+            )),
+          ),
+          SizedBox(height: 40),
+          Container(
+            width: Styles.getWidth(context) * 0.75,
+            alignment: Alignment.center,
+            child: Text(
+              Quotes.randomQuote,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 13,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

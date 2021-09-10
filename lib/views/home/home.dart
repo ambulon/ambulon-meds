@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medcomp/bloc/home.bloc.dart';
 import 'package:medcomp/constants/error.dart';
 import 'package:medcomp/constants/products_grid.dart';
+import 'package:medcomp/constants/quotes.dart';
 import 'package:medcomp/events/home.event.dart';
 import 'package:medcomp/models/banner.model.dart';
 import 'package:medcomp/models/med.model.dart';
@@ -314,6 +315,19 @@ class _HomeState extends State<Home> {
               child: LinearProgressIndicator(
                 color: ColorTheme.red.withOpacity(0.6),
                 backgroundColor: ColorTheme.blue.withOpacity(0.6),
+              ),
+            ),
+            SizedBox(height: 40),
+            Container(
+              width: Styles.getWidth(context) * 0.75,
+              alignment: Alignment.center,
+              child: Text(
+                Quotes.randomQuote,
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 13,
+                  fontStyle: FontStyle.italic,
+                ),
               ),
             ),
             Expanded(flex: 6, child: SizedBox()),

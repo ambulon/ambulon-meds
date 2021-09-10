@@ -156,7 +156,7 @@ class _SearchResultState extends State<SearchResult> {
             return SizedBox();
           }
           if (state is SearchStateLoading) {
-            return Loader.def();
+            return Loader.gifLoader(context);
           }
           if (state is SearchStateError) {
             BlocProvider.of<HomeBloc>(context).add(HomeEventRefreshSearches());

@@ -6,6 +6,7 @@ import 'package:medcomp/app.config.dart';
 import 'package:medcomp/bloc/coupons.bloc.dart';
 import 'package:medcomp/constants/custom_appbar.dart';
 import 'package:medcomp/constants/error.dart';
+import 'package:medcomp/constants/loader.dart';
 import 'package:medcomp/events/coupons.event.dart';
 import 'package:medcomp/models/coupons.model.dart';
 import 'package:medcomp/states/coupons.state.dart';
@@ -40,12 +41,7 @@ class _CouponsPageState extends State<CouponsPage> {
             return SizedBox();
           }
           if (state is CouponsStateLoading) {
-            return Styles.responsiveBuilder(Scaffold(
-                backgroundColor: Colors.white,
-                appBar: CustomAppBar.def(context: context, title: 'Coupons'),
-                body: Center(
-                  child: Text('loading'),
-                )));
+            return Loader.gifLoader(context);
           }
           if (state is CouponsStateError) {
             return Styles.responsiveBuilder(ErrorPage(

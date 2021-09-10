@@ -71,6 +71,7 @@ class HomeRepo {
         return [];
       }
     } catch (e) {
+      print("error here $e");
       return [];
     }
   }

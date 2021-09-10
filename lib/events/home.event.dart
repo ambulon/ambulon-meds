@@ -8,3 +8,5 @@ class HomeEvent extends Equatable {
 class HomeEventLoadData extends HomeEvent {}
 
 class HomeEventRefreshSearches extends HomeEvent {}
+
+class HomeEventRefreshToppicks extends HomeEvent {}

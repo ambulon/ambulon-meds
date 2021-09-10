@@ -8,11 +8,13 @@ import 'package:medcomp/constants/error.dart';
 import 'package:medcomp/constants/products_grid.dart';
 import 'package:medcomp/events/home.event.dart';
 import 'package:medcomp/models/banner.model.dart';
+import 'package:medcomp/models/med.model.dart';
 import 'package:medcomp/models/searchhistory.model.dart';
 import 'package:medcomp/states/home.state.dart';
 import 'package:medcomp/views/cart/cart_page.dart';
 import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/styles.dart';
+import 'package:medcomp/views/home/components/coupons.dart';
 import 'package:medcomp/views/search/search_result_page.dart';
 import 'components/appbar.dart';
 import 'package:carousel_pro/carousel_pro.dart';
@@ -53,142 +55,192 @@ class _HomeState extends State<Home> {
             // return Text(state.message);
           }
           if (state is HomeStateLoaded) {
-            Widget page = Scaffold(
-              backgroundColor: Color(0xffA0A6A9),
-              body: Stack(
-                children: [
-                  CustomScrollView(
-                    physics: BouncingScrollPhysics(),
-                    slivers: [
-                      SliverAppBar(
-                        automaticallyImplyLeading: false,
-                        backgroundColor: ColorTheme.grey,
-                        expandedHeight: ScreenUtil().setHeight(210),
-                        flexibleSpace: FlexibleSpaceBar(
-                          background: CustomAppBarHome(user: state.userModel),
-                          centerTitle: true,
-                        ),
-                      ),
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                            return Container(
-                              padding: EdgeInsets.symmetric(
-                                vertical: ScreenUtil().setHeight(10),
-                                horizontal: ScreenUtil().setWidth(15),
-                              ),
-                              margin: EdgeInsets.only(top: ScreenUtil().setHeight(5)),
-                              decoration: BoxDecoration(
-                                boxShadow: kElevationToShadow[8],
-                                color: ColorTheme.fontWhite,
-                                borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(7),
-                                  topLeft: Radius.circular(7),
-                                ),
-                              ),
-                              child: Column(
-                                children: <Widget>[
-                                  SizedBox(height: ScreenUtil().setHeight(15)),
-                                  state.banners.length == 0
-                                      ? SizedBox()
-                                      : Container(
-                                          height: ScreenUtil().setHeight(200),
-                                          child: Carousel(
-                                            dotSize: 0,
-                                            indicatorBgPadding: 0,
-                                            boxFit: BoxFit.contain,
-                                            images: [
-                                              for (BannerModel i in state.banners)
-                                                Image(
-                                                  fit: BoxFit.cover,
-                                                  image: NetworkImage(i.image),
-                                                ),
-                                            ],
-                                            animationCurve: Curves.fastOutSlowIn,
-                                            animationDuration: Duration(milliseconds: 2000),
-                                          )),
-                                  SizedBox(height: ScreenUtil().setHeight(30)),
-                                  state.searchHistory.length == 0 || kIsWeb
-                                      ? SizedBox()
-                                      : Column(
-                                          children: [
-                                            Container(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                'Your Searches',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: ColorTheme.fontBlack,
-                                                ),
-                                              ),
-                                            ),
-                                            kIsWeb ? SizedBox() : SizedBox(height: ScreenUtil().setHeight(2)),
-                                            kIsWeb
-                                                ? SizedBox()
-                                                : Container(
-                                                    child: GridView.count(
-                                                      padding: EdgeInsets.zero,
-                                                      crossAxisCount: 3,
-                                                      crossAxisSpacing: 0,
-                                                      mainAxisSpacing: 0,
-                                                      shrinkWrap: true,
-                                                      physics: NeverScrollableScrollPhysics(),
-                                                      children: List.generate(
-                                                        state.searchHistory.length,
-                                                        (index) {
-                                                          return searchBox(state.searchHistory[index]);
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ),
-                                            SizedBox(height: ScreenUtil().setHeight(30)),
-                                          ],
-                                        ),
-                                  Container(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'Top picks',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: ColorTheme.fontBlack,
-                                      ),
-                                    ),
-                                  ),
-                                  ProductsGrid(state.topPicks),
-                                ],
-                              ),
-                            );
-                          },
-                          childCount: 1,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Spacer(),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          vertical: ScreenUtil().setHeight(10),
-                          horizontal: ScreenUtil().setWidth(15),
-                        ),
-                        child: cart(),
-                      ),
-                      SizedBox(height: 20),
-                    ],
-                  ),
-                ],
-              ),
-            );
-            return Styles.responsiveBuilder(page);
+            return Styles.responsiveBuilder(page(state, state.topPicks));
+          }
+          if (state is HomeStateTopPicksLoading) {
+            return Styles.responsiveBuilder(page(state, []));
           }
           return SizedBox();
         },
       ),
     );
   }
+
+  Widget page(state, List<MedicineModel> topPicks) => Scaffold(
+        backgroundColor: Color(0xffA0A6A9),
+        body: Stack(
+          children: [
+            CustomScrollView(
+              physics: BouncingScrollPhysics(),
+              slivers: [
+                SliverAppBar(
+                  automaticallyImplyLeading: false,
+                  backgroundColor: ColorTheme.grey,
+                  expandedHeight: ScreenUtil().setHeight(210),
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: CustomAppBarHome(user: state.userModel),
+                    centerTitle: true,
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      return Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: ScreenUtil().setHeight(10),
+                          horizontal: ScreenUtil().setWidth(15),
+                        ),
+                        margin: EdgeInsets.only(top: ScreenUtil().setHeight(5)),
+                        decoration: BoxDecoration(
+                          boxShadow: kElevationToShadow[8],
+                          color: ColorTheme.fontWhite,
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(7),
+                            topLeft: Radius.circular(7),
+                          ),
+                        ),
+                        child: Column(
+                          children: <Widget>[
+                            SizedBox(height: ScreenUtil().setHeight(15)),
+                            state.banners.length == 0
+                                ? SizedBox()
+                                : Container(
+                                    height: ScreenUtil().setHeight(200),
+                                    child: Carousel(
+                                      dotSize: 0,
+                                      indicatorBgPadding: 0,
+                                      boxFit: BoxFit.contain,
+                                      images: [
+                                        for (BannerModel i in state.banners)
+                                          Image(
+                                            fit: BoxFit.cover,
+                                            image: NetworkImage(i.image),
+                                          ),
+                                      ],
+                                      animationCurve: Curves.fastOutSlowIn,
+                                      animationDuration: Duration(milliseconds: 2000),
+                                    )),
+                            SizedBox(height: ScreenUtil().setHeight(20)),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'View Coupons',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: ColorTheme.fontBlack,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: ScreenUtil().setHeight(8)),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (_) => CouponsPage()));
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                height: ScreenUtil().setHeight(200),
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                  image: AssetImage('assets/coupons.png'),
+                                  fit: BoxFit.cover,
+                                )),
+                              ),
+                            ),
+                            SizedBox(height: ScreenUtil().setHeight(30)),
+                            state.searchHistory.length == 0 || kIsWeb
+                                ? SizedBox()
+                                : Column(
+                                    children: [
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'Your Searches',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: ColorTheme.fontBlack,
+                                          ),
+                                        ),
+                                      ),
+                                      kIsWeb ? SizedBox() : SizedBox(height: ScreenUtil().setHeight(2)),
+                                      kIsWeb
+                                          ? SizedBox()
+                                          : Container(
+                                              child: GridView.count(
+                                                padding: EdgeInsets.zero,
+                                                crossAxisCount: 3,
+                                                crossAxisSpacing: 0,
+                                                mainAxisSpacing: 0,
+                                                shrinkWrap: true,
+                                                physics: NeverScrollableScrollPhysics(),
+                                                children: List.generate(
+                                                  state.searchHistory.length,
+                                                  (index) {
+                                                    return searchBox(state.searchHistory[index]);
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                      SizedBox(height: ScreenUtil().setHeight(30)),
+                                    ],
+                                  ),
+                            topPicks.length == 0
+                                ? SizedBox()
+                                : Container(
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          'Top picks',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: ColorTheme.fontBlack,
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        InkWell(
+                                          onTap: () {
+                                            BlocProvider.of<HomeBloc>(context).add(HomeEventRefreshToppicks());
+                                          },
+                                          child: Text(
+                                            'refresh',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                              color: ColorTheme.greyDark,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                            ProductsGrid(topPicks),
+                          ],
+                        ),
+                      );
+                    },
+                    childCount: 1,
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                Spacer(),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    vertical: ScreenUtil().setHeight(10),
+                    horizontal: ScreenUtil().setWidth(15),
+                  ),
+                  child: cart(),
+                ),
+                SizedBox(height: 20),
+              ],
+            ),
+          ],
+        ),
+      );
 
   Widget searchBox(SearchHistoryModel model) {
     return AspectRatio(

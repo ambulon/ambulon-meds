@@ -52,5 +52,25 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         yield HomeStateError(e);
       }
     }
+    if (event is HomeEventRefreshToppicks) {
+      var oldState = state as HomeStateLoaded;
+      // yield HomeStateLoading();
+      yield HomeStateTopPicksLoading(
+        userModel: oldState.userModel,
+        banners: oldState.banners,
+        searchHistory: oldState.searchHistory,
+      );
+      try {
+        var newData = await this._homeRepo.getMoreicks();
+        yield HomeStateLoaded(
+          userModel: oldState.userModel,
+          banners: oldState.banners,
+          searchHistory: oldState.searchHistory,
+          topPicks: newData,
+        );
+      } catch (e) {
+        yield HomeStateError(e);
+      }
+    }
   }
 }

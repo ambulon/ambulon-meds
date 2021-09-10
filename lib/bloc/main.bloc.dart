@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medcomp/bloc/coupons.bloc.dart';
 import 'cart.bloc.dart';
 import 'home.bloc.dart';
 import 'homemed.bloc.dart';
@@ -11,6 +12,7 @@ class MainBloc {
       BlocProvider<SearchBloc>(create: (ctx) => SearchBloc()),
       BlocProvider<HomeMedBloc>(create: (ctx) => HomeMedBloc()),
       BlocProvider<CartBloc>(create: (ctx) => CartBloc()),
+      BlocProvider<CouponsBloc>(create: (ctx) => CouponsBloc()),
     ];
   }
 }

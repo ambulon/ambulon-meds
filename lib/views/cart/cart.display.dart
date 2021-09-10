@@ -12,6 +12,7 @@ import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/styles.dart';
 import 'package:medcomp/constants/med_card_cart.dart';
 import 'package:flutter/rendering.dart';
+import 'package:medcomp/views/home/components/coupons.dart';
 
 class CartDisplay extends StatefulWidget {
   final CartModel cartModel;
@@ -271,7 +272,29 @@ class _CartDisplayState extends State<CartDisplay> {
                   ),
                 ],
               ),
-              SizedBox(height: ScreenUtil().setHeight(25)),
+              SizedBox(height: ScreenUtil().setHeight(15)),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => CouponsPage()));
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    color: ColorTheme.blue.withOpacity(0.3),
+                  ),
+                  child: Text(
+                    'View Coupons',
+                    style: TextStyle(
+                      color: ColorTheme.blue,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: ScreenUtil().setHeight(15)),
             ],
           ),
         ),

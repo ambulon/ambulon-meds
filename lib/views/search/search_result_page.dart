@@ -315,6 +315,7 @@ class _SearchResultState extends State<SearchResult> {
                                         borderRadius: BorderRadius.circular(4),
                                         color: ColorTheme.green,
                                       ),
+                                      // TODO : Add here link
                                       child: Text(
                                         'BUY FROM SITE',
                                         style: TextStyle(

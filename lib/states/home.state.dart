@@ -25,3 +25,10 @@ class HomeStateError extends HomeState {
   final message;
   HomeStateError(this.message);
 }
+
+class HomeStateTopPicksLoading extends HomeState {
+  final UserModel userModel;
+  final List<BannerModel> banners;
+  final List<SearchHistoryModel> searchHistory;
+  HomeStateTopPicksLoading({this.userModel, this.banners, this.searchHistory});
+}

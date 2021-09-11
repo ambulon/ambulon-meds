@@ -43,7 +43,7 @@ class Loader {
             height: Styles.getHeight(context) * 0.4,
             decoration: BoxDecoration(
                 image: DecorationImage(
-              image: AssetImage('error.png'),
+              image: AssetImage('loader-logo.jpeg'),
               fit: BoxFit.contain,
             )),
           ),

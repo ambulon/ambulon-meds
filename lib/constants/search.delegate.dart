@@ -44,7 +44,7 @@ class MedicineSearch extends SearchDelegate<String> {
             stream: FirebaseFirestore.instance
                 .collection(AppConfig.firestoreCollection)
                 .doc(AppConfig.firebaseDoc)
-                .collection(query[0].toUpperCase() + query[1])
+                .collection(query[0].toUpperCase() + query[1].toLowerCase())
                 .snapshots(),
             builder: (context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
@@ -54,36 +54,59 @@ class MedicineSearch extends SearchDelegate<String> {
                 QueryDocumentSnapshot qds = snapshot.data.docs[0];
                 List vals = qds.get('list');
                 List newList = [];
-                for (var str in vals) {
-                  if (str.toString().toLowerCase().contains(query.toLowerCase())) {
+
+                for (String str in vals) {
+                  if (str.toLowerCase().contains(query.toLowerCase())) {
                     newList.add(str);
                   }
                 }
                 if (newList.length == 0) {
                   return requestBox(context);
                 }
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: ScrollPhysics(),
-                  itemCount: newList.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        if (customFunc) {
-                          Navigator.pop(context);
-                          func(vals[index]);
-                        } else {
-                          Navigator.push(context, MaterialPageRoute(builder: (_) => SearchResult(str: vals[index])));
-                        }
-                      },
-                      child: Container(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: ScreenUtil().setWidth(12), vertical: ScreenUtil().setHeight(7)),
-                        child: Text(vals[index], style: textStyle),
-                      ),
-                    );
-                  },
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      for (var str in newList)
+                        GestureDetector(
+                          onTap: () {
+                            if (customFunc) {
+                              Navigator.pop(context);
+                              func(str);
+                            } else {
+                              Navigator.push(context, MaterialPageRoute(builder: (_) => SearchResult(str: str)));
+                            }
+                          },
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: ScreenUtil().setWidth(12), vertical: ScreenUtil().setHeight(7)),
+                            child: Text(str, style: textStyle),
+                          ),
+                        )
+                    ],
+                  ),
                 );
+                // return ListView.builder(
+                //   shrinkWrap: true,
+                //   physics: ScrollPhysics(),
+                //   itemCount: newList.length,
+                //   itemBuilder: (context, index) {
+                //     return GestureDetector(
+                //       onTap: () {
+                //         if (customFunc) {
+                //           Navigator.pop(context);
+                //           func(vals[index]);
+                //         } else {
+                //           Navigator.push(context, MaterialPageRoute(builder: (_) => SearchResult(str: vals[index])));
+                //         }
+                //       },
+                //       child: Container(
+                //         margin: EdgeInsets.symmetric(
+                //             horizontal: ScreenUtil().setWidth(12), vertical: ScreenUtil().setHeight(7)),
+                //         child: Text(vals[index], style: textStyle),
+                //       ),
+                //     );
+                //   },
+                // );
               } else {
                 return SizedBox();
               }

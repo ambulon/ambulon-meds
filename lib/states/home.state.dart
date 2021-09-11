@@ -30,5 +30,6 @@ class HomeStateTopPicksLoading extends HomeState {
   final UserModel userModel;
   final List<BannerModel> banners;
   final List<SearchHistoryModel> searchHistory;
-  HomeStateTopPicksLoading({this.userModel, this.banners, this.searchHistory});
+  final List<MedicineModel> topPicks;
+  HomeStateTopPicksLoading({this.userModel, this.banners, this.searchHistory, this.topPicks});
 }

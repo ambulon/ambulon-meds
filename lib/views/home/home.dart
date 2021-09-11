@@ -192,7 +192,7 @@ class _HomeState extends State<Home> {
                                     child: Row(
                                       children: [
                                         Text(
-                                          'Top picks',
+                                          'Top Picks',
                                           style: TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
@@ -204,19 +204,30 @@ class _HomeState extends State<Home> {
                                           onTap: () {
                                             BlocProvider.of<HomeBloc>(context).add(HomeEventRefreshToppicks());
                                           },
-                                          child: Text(
-                                            'refresh',
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,
-                                              color: ColorTheme.greyDark,
-                                            ),
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.add_box,
+                                                size: ScreenUtil().setHeight(25),
+                                                color: ColorTheme.blue,
+                                              ),
+                                              SizedBox(width: ScreenUtil().setWidth(5)),
+                                              Text(
+                                                'view more',
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: ColorTheme.blue,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
                             ProductsGrid(topPicks),
+                            SizedBox(height: ScreenUtil().setHeight(120)),
                           ],
                         ),
                       );

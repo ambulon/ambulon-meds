@@ -280,6 +280,14 @@ class _CartDisplayState extends State<CartDisplay> {
                           url = AppConfig.apolloLink;
                         else
                           url = AppConfig.onemgLink;
+                        if (kIsWeb) {
+                          openSite(url);
+                        } else {
+                          if (await canLaunch(url)) {
+                            launch(url);
+                          }
+                        }
+                        return;
                       }
                       if (selected == AppConfig.netmeds)
                         url = AppConfig.netmedsLink;

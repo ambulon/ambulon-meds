@@ -51,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             Text(
-              'Compare medicine price\nand buy best price',
+              'Compare medicine prices\nand buy at best price',
               style: GoogleFonts.montserrat(
                 fontSize: ScreenUtil().setHeight(28),
                 fontWeight: FontWeight.w400,

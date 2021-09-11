@@ -39,11 +39,11 @@ class Loader {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: Styles.getHeight(context) * 0.4,
-            height: Styles.getHeight(context) * 0.4,
+            width: Styles.getHeight(context) * 0.3,
+            height: Styles.getHeight(context) * 0.3,
             decoration: BoxDecoration(
                 image: DecorationImage(
-              image: AssetImage('loader-logo.jpeg'),
+              image: AssetImage('assets/loader-logo.jpeg'),
               fit: BoxFit.contain,
             )),
           ),

@@ -21,7 +21,9 @@ class SaviourPoster extends StatefulWidget {
 class _SaviourPosterState extends State<SaviourPoster> {
   GlobalKey _globalKey = new GlobalKey();
   String text =
-      'Every AMBULON user becomes a saviour as they share their profile page on their socials because\nwe donate sanitary pads to under privileged girl children and plant trees as our users increase, hence more you share, we\'ll get more users and you become as saviour.';
+      "Hello savior,\nGreetings from Team Ambulon. Thankyou for joining us.\nWe'll try to serve you with best offers available on the various medical online stores.\nWe aspire to bring a revolution and thanks for being an integral part of it.";
+  // String text =
+  // 'Every AMBULON user becomes a saviour as they share their profile page on their socials because\nwe donate sanitary pads to under privileged girl children and plant trees as our users increase, hence more you share, we\'ll get more users and you become as saviour.';
 
   @override
   Widget build(BuildContext context) {

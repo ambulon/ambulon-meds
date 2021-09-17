@@ -7,7 +7,10 @@ firebase deploy --only hosting
 ### signing app
  - change icon with the help of flutter_icons:
  - change app name from AndroidManifest.xml > android:label=<name>
- - copy keystore command to generate keyfile.jks from <a href="https://flutter.dev/docs/deployment/android">here</a> or use this command ```  keytool -genkey -v -keystore ~/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload```
+ - copy keystore command to generate keyfile.jks from <a href="https://flutter.dev/docs/deployment/android">here</a> or use this command ```  keytool -genkey -v -keystore ~/<appname>-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload```
+ - store the passwords you enter, you will need it later.
+ - now get the SHA keys if you've added Authentication, ```keytool -list -v -keystore ~/<appname>-key.jks -alias {alias_name i.e. upload}``` and for password enter keyPassword.
+ - Add this SHA keys in your firebase
  - create a file, android/key.properties and these lines
  ```
 storePassword=<password from previous step>

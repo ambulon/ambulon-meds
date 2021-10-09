@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:medcomp/app.config.dart';
 import 'package:medcomp/utils/styles.dart';
 import 'package:medcomp/views/search/request.dart';
 import 'package:medcomp/views/search/search_result_page.dart';
@@ -38,81 +38,67 @@ class MedicineSearch extends SearchDelegate<String> {
         });
   }
 
-  Widget results() {
-    return query != null && query.length > 1
-        ? StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection(AppConfig.firestoreCollection)
-                .doc(AppConfig.firebaseDoc)
-                .collection(query[0].toUpperCase() + query[1].toLowerCase())
-                .snapshots(),
-            builder: (context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData) {
-                if (snapshot.data.docs.length == 0) {
-                  return requestBox(context);
-                }
-                QueryDocumentSnapshot qds = snapshot.data.docs[0];
-                List vals = qds.get('list');
-                List newList = [];
+  Future<String> loadAsset(str) async {
+    return await rootBundle.loadString(str);
+  }
 
-                for (String str in vals) {
-                  if (str.toLowerCase().contains(query.toLowerCase())) {
-                    newList.add(str);
-                  }
-                }
-                if (newList.length == 0) {
-                  return requestBox(context);
-                }
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      for (var str in newList)
-                        GestureDetector(
-                          onTap: () {
-                            if (customFunc) {
-                              Navigator.pop(context);
-                              func(str);
-                            } else {
-                              Navigator.push(context, MaterialPageRoute(builder: (_) => SearchResult(str: str)));
-                            }
-                          },
-                          child: Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: ScreenUtil().setWidth(12), vertical: ScreenUtil().setHeight(7)),
-                            child: Text(str, style: textStyle),
-                          ),
-                        )
-                    ],
-                  ),
-                );
-                // return ListView.builder(
-                //   shrinkWrap: true,
-                //   physics: ScrollPhysics(),
-                //   itemCount: newList.length,
-                //   itemBuilder: (context, index) {
-                //     return GestureDetector(
-                //       onTap: () {
-                //         if (customFunc) {
-                //           Navigator.pop(context);
-                //           func(vals[index]);
-                //         } else {
-                //           Navigator.push(context, MaterialPageRoute(builder: (_) => SearchResult(str: vals[index])));
-                //         }
-                //       },
-                //       child: Container(
-                //         margin: EdgeInsets.symmetric(
-                //             horizontal: ScreenUtil().setWidth(12), vertical: ScreenUtil().setHeight(7)),
-                //         child: Text(vals[index], style: textStyle),
-                //       ),
-                //     );
-                //   },
-                // );
-              } else {
-                return SizedBox();
+  Future<List<dynamic>> funcOnChange() async {
+    var value = await loadAsset('assets/csv/${query[0].toUpperCase() + query[1].toLowerCase()}.csv');
+    List temp2 = [];
+    try {
+      List<List<dynamic>> _data = CsvToListConverter().convert(value);
+      // print(_data[0]);
+      _data[0].removeAt(0);
+      for (var s in _data[0]) {
+        if (s.toString().toLowerCase().contains(query.toLowerCase())) {
+          temp2.add(s);
+        }
+      }
+    } catch (e) {
+      print("error $e");
+    }
+    return temp2;
+  }
+
+  Widget results() {
+    if (query != null && query.length > 1) {
+      return FutureBuilder(
+          future: funcOnChange(),
+          builder: (ctx, value) {
+            if (value.hasData) {
+              if (value.data.length == 0) {
+                return requestBox(ctx);
               }
-            },
-          )
-        : SizedBox();
+              return ListView.builder(
+                itemCount: value.data.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      if (customFunc) {
+                        Navigator.pop(context);
+                        func(value.data[index].toString().split("\n")[0]);
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => SearchResult(str: value.data[index].toString().split("\n")[0])));
+                      }
+                    },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: ScreenUtil().setWidth(12), vertical: ScreenUtil().setHeight(7)),
+                      child: Text(value.data[index].toString().split("\n")[0], style: textStyle),
+                    ),
+                  );
+                },
+              );
+            } else {
+              return SizedBox();
+            }
+          });
+    } else {
+      return SizedBox();
+    }
   }
 
   Column requestBox(BuildContext context) {

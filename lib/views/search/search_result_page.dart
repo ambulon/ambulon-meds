@@ -145,31 +145,44 @@ class _SearchResultState extends State<SearchResult> {
   }
 
   Widget page() {
-    return WillPopScope(
-      onWillPop: () {
-        return;
-      },
-      child: BlocConsumer<SearchBloc, SearchState>(
-        listener: (BuildContext ctx, SearchState state) {},
-        builder: (BuildContext ctx, SearchState state) {
-          if (state is SearchStateNotLoaded) {
-            return SizedBox();
-          }
-          if (state is SearchStateLoading) {
-            return Loader.gifLoader(context);
-          }
-          if (state is SearchStateError) {
-            BlocProvider.of<HomeBloc>(context).add(HomeEventRefreshSearches());
-            return ErrorPage(
-              message: state.message,
-              popFunction: () {
+    return BlocConsumer<SearchBloc, SearchState>(
+      listener: (BuildContext ctx, SearchState state) {},
+      builder: (BuildContext ctx, SearchState state) {
+        if (state is SearchStateNotLoaded) {
+          return SizedBox();
+        }
+        if (state is SearchStateLoading) {
+          return Loader.gifLoader(context);
+        }
+        if (state is SearchStateError) {
+          BlocProvider.of<HomeBloc>(context).add(HomeEventRefreshSearches());
+          return ErrorPage(
+            message: state.message,
+            popFunction: () {
+              Navigator.pop(context);
+            },
+          );
+        }
+        if (state is SearchStateLoaded) {
+          MedicineModel data = state.searchModel.dataList.last;
+          return WillPopScope(
+            onWillPop: () async {
+              if (widget.preset) {
+                BlocProvider.of<HomeBloc>(context).add(HomeEventRefreshSearches());
                 Navigator.pop(context);
-              },
-            );
-          }
-          if (state is SearchStateLoaded) {
-            MedicineModel data = state.searchModel.dataList.last;
-            return Scaffold(
+              } else {
+                List temp = state.searchModel.strList;
+                if (temp.length == 1) {
+                  BlocProvider.of<HomeBloc>(context).add(HomeEventRefreshSearches());
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                } else {
+                  BlocProvider.of<SearchBloc>(context).add(SearchEventRemoveSearch());
+                }
+              }
+              return false;
+            },
+            child: Scaffold(
               backgroundColor: ColorTheme.fontWhite,
               body: CustomScrollView(
                 slivers: [
@@ -314,13 +327,14 @@ class _SearchResultState extends State<SearchResult> {
                               selected != AppConfig.all
                                   ? GestureDetector(
                                       onTap: () async {
-                                        String url;
+                                        String url = "HTTPS://GOOGLE.COM";
                                         if (selected == AppConfig.netmeds)
                                           url = AppConfig.netmedsLink;
                                         else if (selected == AppConfig.apollo)
                                           url = AppConfig.apolloLink;
                                         else
                                           url = AppConfig.onemgLink;
+
                                         if (kIsWeb) {
                                           openSite(url);
                                         } else {
@@ -418,11 +432,11 @@ class _SearchResultState extends State<SearchResult> {
                   ),
                 ],
               ),
-            );
-          }
-          return SizedBox();
-        },
-      ),
+            ),
+          );
+        }
+        return SizedBox();
+      },
     );
   }
 }

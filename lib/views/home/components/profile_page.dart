@@ -7,6 +7,7 @@ import 'package:medcomp/bloc/home.bloc.dart';
 import 'package:medcomp/constants/custom_appbar.dart';
 import 'package:medcomp/constants/web.view.dart';
 import 'package:medcomp/events/home.event.dart';
+import 'package:medcomp/main.dart';
 import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/my_url.dart';
 import 'package:medcomp/utils/styles.dart';
@@ -158,6 +159,11 @@ class ProfilePage extends StatelessWidget {
             child: defaultHeadline('Log out', false, Icons.logout),
           ),
           Spacer(),
+          Text(
+            'Version build : ${Version.code}',
+            style: TextStyle(fontSize: 11),
+          ),
+          SizedBox(height: 12),
         ],
       ),
     );

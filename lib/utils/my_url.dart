@@ -1,6 +1,7 @@
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyUrl {
   static String url(String endPoint) {
@@ -10,6 +11,10 @@ class MyUrl {
 }
 
 class MyHttp {
+  // TODO : Change back
+  // static var token =
+  //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MTNjYmQ2NGQzNWI2YzAwMTY1MjBkYmMiLCJmX2lkIjoicEJ6bTNmRk4xNFlMZ0xkNWlseFFJZU5jb0xyMiIsImlhdCI6MTYzMzE1Mjk1OX0.ygSHSYpeN7F9QNMuDxLBBfpJ7TzNsY420DibukFU3hI";
+
   static Future<http.Response> put(String endPoint, dynamic data) async {
     var sp = await SharedPreferences.getInstance();
     String token = sp.getString("token");

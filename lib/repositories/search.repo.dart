@@ -35,7 +35,9 @@ class SearchRepo {
 
   Future<SearchModel> getDetails(strList, dataList) async {
     try {
-      var res = await MyHttp.get("user/get-price/${strList.last}");
+      var temp = strList.last.toString().replaceAll('/', '%18');
+      // var temp = strList.last;
+      var res = await MyHttp.get("user/get-price/$temp");
 
       if (res.statusCode == 200) {
         var resBody = jsonDecode(res.body);

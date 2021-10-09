@@ -280,6 +280,7 @@ class _CartDisplayState extends State<CartDisplay> {
                           url = AppConfig.apolloLink;
                         else
                           url = AppConfig.onemgLink;
+
                         if (kIsWeb) {
                           openSite(url);
                         } else {

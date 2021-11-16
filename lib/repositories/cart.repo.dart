@@ -28,20 +28,18 @@ class CartRepo {
     }
   }
 
-  Future<bool> addItem(var data) async {
+  Future<String> addItem(var data) async {
     try {
       var res = await MyHttp.post('user/add-to-cart', data);
       if (res.statusCode == 200) {
-        return true;
+        return "true";
       } else {
         message = res.statusCode.toString() + ";" + res.body.toString();
-        print("error in removeiten $message");
-        return false;
+        return "error in add iten $message";
       }
     } catch (e) {
       message = e.toString();
-      print("error in get removeiten $message");
-      return false;
+      return "error in get add iten $message";
     }
   }
 

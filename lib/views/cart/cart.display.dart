@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:medcomp/app.config.dart';
 import 'package:medcomp/bloc/cart.bloc.dart';
 import 'package:medcomp/constants/loader.dart';
+import 'package:medcomp/constants/toast.dart';
 import 'package:medcomp/events/cart.event.dart';
 import 'package:medcomp/models/cart.model.dart';
 import 'package:medcomp/repositories/cart.repo.dart';
@@ -284,8 +285,10 @@ class _CartDisplayState extends State<CartDisplay> {
                         if (kIsWeb) {
                           openSite(url);
                         } else {
-                          if (await canLaunch(url)) {
+                          try {
                             launch(url);
+                          } catch (e) {
+                            ToastPreset.err(str: 'error $e', context: context);
                           }
                         }
                         return;
@@ -299,8 +302,10 @@ class _CartDisplayState extends State<CartDisplay> {
                       if (kIsWeb) {
                         openSite(url);
                       } else {
-                        if (await canLaunch(url)) {
+                        try {
                           launch(url);
+                        } catch (e) {
+                          ToastPreset.err(str: 'error $e', context: context);
                         }
                       }
                     },

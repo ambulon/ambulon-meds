@@ -338,8 +338,10 @@ class _SearchResultState extends State<SearchResult> {
                                         if (kIsWeb) {
                                           openSite(url);
                                         } else {
-                                          if (await canLaunch(url)) {
+                                          try {
                                             launch(url);
+                                          } catch (e) {
+                                            ToastPreset.err(str: 'error $e', context: context);
                                           }
                                         }
                                       },
@@ -400,12 +402,12 @@ class _SearchResultState extends State<SearchResult> {
                                   buttons('ADD TO CART', () async {
                                     Loader.showLoaderDialog(context);
                                     CartRepo cartRepo = new CartRepo();
-                                    bool res = await cartRepo.addItem(data.toJson());
+                                    String res = await cartRepo.addItem(data.toJson());
                                     Navigator.pop(context);
-                                    if (res) {
+                                    if (res == "true") {
                                       ToastPreset.successful(context: context, str: 'Added to cart');
                                     } else {
-                                      ToastPreset.err(context: context, str: 'Something went wrong');
+                                      ToastPreset.err(context: context, str: res);
                                     }
                                   }),
                                 ],

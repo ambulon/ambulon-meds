@@ -15,4 +15,6 @@ class AppConfig {
   static const String netmedsLink = 'https://ekaro.in/enkr20210910s4766674';
   static const String apolloLink = 'https://www.apollopharmacy.in/';
   static const String onemgLink = 'https://ekaro.in/enkr20210910s4766612';
+  static const String prPolicy = 'https://ambulon.github.io/pr-policy/';
+  static const String tnc = 'https://ambulon.github.io/tnc/';
 }

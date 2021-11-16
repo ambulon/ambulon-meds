@@ -3,13 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medcomp/constants/custom_appbar.dart';
-import 'package:medcomp/constants/toast.dart';
 import 'package:medcomp/utils/styles.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
 
 class SaviourPoster extends StatefulWidget {
   final NetworkImage img;
@@ -22,9 +16,6 @@ class _SaviourPosterState extends State<SaviourPoster> {
   GlobalKey _globalKey = new GlobalKey();
   String text =
       "Hello savior,\nGreetings from Team Ambulon. Thankyou for joining us.\nWe'll try to serve you with best offers available on the various medical online stores.\nWe aspire to bring a revolution and thanks for being an integral part of it.";
-  // String text =
-  // 'Every AMBULON user becomes a saviour as they share their profile page on their socials because\nwe donate sanitary pads to under privileged girl children and plant trees as our users increase, hence more you share, we\'ll get more users and you become as saviour.';
-
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance =
@@ -123,36 +114,36 @@ class _SaviourPosterState extends State<SaviourPoster> {
               ),
             ),
             SizedBox(height: 30),
-            kIsWeb
-                ? SizedBox()
-                : ElevatedButton(
-                    onPressed: () async {
-                      try {
-                        RenderRepaintBoundary boundary = _globalKey.currentContext.findRenderObject();
-                        if (boundary.debugNeedsPaint) {
-                          ToastPreset.err(str: 'boundary debug needs paint', context: context);
-                          return;
-                        }
-                        ui.Image image = await boundary.toImage(pixelRatio: 3);
-                        final directory = (await getExternalStorageDirectory()).path;
-                        ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-                        Uint8List pngBytes = byteData.buffer.asUint8List();
-                        File imgFile = new File('$directory/screenshot.png');
-                        imgFile.writeAsBytes(pngBytes);
-                        final RenderBox box = context.findRenderObject();
+            // kIsWeb
+            //     ? SizedBox()
+            //     : ElevatedButton(
+            //         onPressed: () async {
+            //           try {
+            //             RenderRepaintBoundary boundary = _globalKey.currentContext.findRenderObject();
+            //             if (boundary.debugNeedsPaint) {
+            //               ToastPreset.err(str: 'boundary debug needs paint', context: context);
+            //               return;
+            //             }
+            //             ui.Image image = await boundary.toImage(pixelRatio: 3);
+            //             final directory = (await getExternalStorageDirectory()).path;
+            //             ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+            //             Uint8List pngBytes = byteData.buffer.asUint8List();
+            //             File imgFile = new File('$directory/screenshot.png');
+            //             imgFile.writeAsBytes(pngBytes);
+            //             final RenderBox box = context.findRenderObject();
 
-                        Share.shareFiles(
-                          ['$directory/screenshot.png'],
-                          subject: 'Ambulon Saviour Poster',
-                          text: '',
-                          sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
-                        );
-                      } catch (e) {
-                        ToastPreset.err(str: 'exception $e', context: context);
-                      }
-                    },
-                    child: Text('Share Now'),
-                  ),
+            //             Share.shareFiles(
+            //               ['$directory/screenshot.png'],
+            //               subject: 'Ambulon Saviour Poster',
+            //               text: '',
+            //               sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
+            //             );
+            //           } catch (e) {
+            //             ToastPreset.err(str: 'exception $e', context: context);
+            //           }
+            //         },
+            //         child: Text('Share Now'),
+            //       ),
             Spacer(),
           ],
         ),

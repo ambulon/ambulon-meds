@@ -104,13 +104,11 @@ class ProfilePage extends StatelessWidget {
           GestureDetector(
             onTap: () {
               if (kIsWeb) {
-                openSite('https://ambulon-1.flycricket.io/privacy.html');
+                openSite(AppConfig.tnc);
               } else {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (_) => WebViewPage(link: 'https://ambulon-1.flycricket.io/privacy.html'),
-                  ),
+                  MaterialPageRoute(builder: (_) => WebViewPage(link: AppConfig.tnc)),
                 );
               }
             },
@@ -119,13 +117,11 @@ class ProfilePage extends StatelessWidget {
           GestureDetector(
             onTap: () {
               if (kIsWeb) {
-                openSite('https://ambulon-1.flycricket.io/privacy.html');
+                openSite(AppConfig.prPolicy);
               } else {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (_) => WebViewPage(link: 'https://ambulon.flycricket.io/privacy.html'),
-                  ),
+                  MaterialPageRoute(builder: (_) => WebViewPage(link: AppConfig.prPolicy)),
                 );
               }
             },

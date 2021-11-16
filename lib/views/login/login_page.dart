@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medcomp/app.config.dart';
 import 'package:medcomp/constants/web.view.dart';
 import 'package:medcomp/repositories/auth.repo.dart';
 import 'package:medcomp/utils/colortheme.dart';
@@ -84,13 +85,11 @@ class _LoginPageState extends State<LoginPage> {
                   GestureDetector(
                     onTap: () async {
                       if (kIsWeb) {
-                        openSite('https://ambulon-1.flycricket.io/privacy.html');
+                        openSite(AppConfig.tnc);
                       } else {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (_) => WebViewPage(link: 'https://ambulon-1.flycricket.io/privacy.html'),
-                          ),
+                          MaterialPageRoute(builder: (_) => WebViewPage(link: AppConfig.tnc)),
                         );
                       }
                     },
@@ -116,14 +115,11 @@ class _LoginPageState extends State<LoginPage> {
             GestureDetector(
               onTap: () {
                 if (kIsWeb) {
-                  openSite('https://ambulon.flycricket.io/privacy.html');
-                  // html.window.open('https://ambulon.flycricket.io/privacy.html', 'new tab');
+                  openSite(AppConfig.prPolicy);
                 } else {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (_) => WebViewPage(link: 'https://ambulon.flycricket.io/privacy.html'),
-                    ),
+                    MaterialPageRoute(builder: (_) => WebViewPage(link: AppConfig.prPolicy)),
                   );
                 }
               },
@@ -136,20 +132,6 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            //     children: <TextSpan>[
-            //       TextSpan(
-            //         text: 'Terms & Conditions',
-            //         recognizer: new TapGestureRecognizer()..onTap = () {},
-            //         style: TextStyle(fontWeight: FontWeight.bold),
-            //       ),
-            //       TextSpan(text: ' and '),
-            //       TextSpan(
-            //         text: 'Privacy Policy',
-            //         style: TextStyle(fontWeight: FontWeight.bold),
-            //       ),
-            //     ],
-            //   ),
-            // )),
             SizedBox(height: ScreenUtil().setHeight(25)),
           ],
         ),

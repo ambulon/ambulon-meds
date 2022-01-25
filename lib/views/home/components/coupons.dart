@@ -1,5 +1,3 @@
-// ignore_for_file: non_constant_identifier_names
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,23 +19,32 @@ class CouponsPage extends StatefulWidget {
 }
 
 class _CouponsPageState extends State<CouponsPage> {
-  String selected = AppConfig.all.toLowerCase();
-  //int current_ind = 0;
+  // no use
+  // String selected = AppConfig.all.toLowerCase();
+  // int current_ind = 0;
 
   List<String> brand = [
     AppConfig.all,
     AppConfig.netmeds,
     AppConfig.apollo,
-    AppConfig.onemg
+    AppConfig.onemg,
   ];
 
-  changeselected(int current_ind) {
-    setState(() {
-      selected = brand[current_ind].toLowerCase();
-      print(current_ind);
-      print(selected);
-    });
-  }
+  List<Widget> tabtitle = [
+    Text(AppConfig.all),
+    Text(AppConfig.netmeds),
+    Text(AppConfig.apollo),
+    Text(AppConfig.onemg),
+  ];
+
+  // no use
+  // changeselected(int current_ind) {
+  //   setState(() {
+  //     selected = brand[current_ind].toLowerCase();
+  //     print(current_ind);
+  //     print(selected);
+  //   });
+  // }
 
   List<CouponsModel> result = [
     CouponsModel("1", "abc", AppConfig.netmeds),
@@ -53,11 +60,9 @@ class _CouponsPageState extends State<CouponsPage> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil(
-        width: Styles.getWidth(context),
-        height: Styles.getHeight(context),
-        allowFontScaling: true)
-      ..init(context);
+    ScreenUtil.instance =
+        ScreenUtil(width: Styles.getWidth(context), height: Styles.getHeight(context), allowFontScaling: true)
+          ..init(context);
     return page();
     return WillPopScope(
       onWillPop: () => Future<bool>.value(false),
@@ -93,59 +98,34 @@ class _CouponsPageState extends State<CouponsPage> {
       length: 4,
       child: Scaffold(
           backgroundColor: Colors.white,
-          // appBar: CustomAppBar.defForCoupons(
-          //   context: context,
-          //   title: 'Coupons',
-          //   tablist: tabtitle,
-          //   changeselected: changeselected,
-          // ),
-          appBar: AppBar(
-            leading: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Icon(
-                Icons.arrow_back_ios_outlined,
-                size: ScreenUtil().setHeight(18),
-                color: Colors.white,
-              ),
-            ),
-            backgroundColor: ColorTheme.greyDark,
-            centerTitle: true,
-            title: Text(
-              'Coupons',
-              style: TextStyle(color: Colors.white, fontSize: 22),
-            ),
-            bottom: TabBar(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              labelPadding: EdgeInsets.all(6),
-              indicatorWeight: 3,
-              indicatorColor: Colors.white,
-              tabs: tabtitle,
-              labelStyle: TextStyle(fontSize: 17),
-              onTap: (value) {
-                changeselected(value);
-                print("$value info");
-              },
-            ),
+          appBar: CustomAppBar.defForCoupons(
+            context: context,
+            title: 'Coupons',
+            tablist: tabtitle,
           ),
           body: TabBarView(
             children: [
-              // buildpage(state),
-              // buildpage(state),
-              // buildpage(state),
-              // buildpage(state)
-              buildpage(),
-              buildpage(),
-              buildpage(),
-              buildpage()
+              // for (int i = 0; i < 4; i++) buildpage(state, i),
+              // or
+              // buildpage(state, 0),
+              // buildpage(state, 1),
+              // buildpage(state, 2),
+              // buildpage(state, 3)
+
+              // for testing
+              for (int i = 0; i < 4; i++) buildpage(i),
+              // or
+              // buildpage(0),
+              // buildpage(1),
+              // buildpage(2),
+              // buildpage(3)
             ],
           )),
     );
   }
 
-  // Widget buildpage(CouponsStateLoaded state) {
-  Widget buildpage() {
+  // Widget buildpage(CouponsStateLoaded state, int i) {
+  Widget buildpage(int i) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(20)),
       child: SingleChildScrollView(
@@ -176,11 +156,11 @@ class _CouponsPageState extends State<CouponsPage> {
             //   ],
             // ),
             SizedBox(height: ScreenUtil().setHeight(15)),
-            //for (CouponsModel model in state.result)
+            // for (CouponsModel model in state.result)
             for (CouponsModel model in result)
-              selected == AppConfig.all.toLowerCase()
+              brand[i].toLowerCase() == AppConfig.all.toLowerCase()
                   ? promoBox(model)
-                  : selected == model.brand.toLowerCase()
+                  : brand[i].toLowerCase() == model.brand.toLowerCase()
                       ? promoBox(model)
                       : SizedBox(),
           ],
@@ -188,13 +168,6 @@ class _CouponsPageState extends State<CouponsPage> {
       ),
     );
   }
-
-  List<Widget> tabtitle = [
-    Text(AppConfig.all),
-    Text(AppConfig.netmeds),
-    Text(AppConfig.apollo),
-    Text(AppConfig.onemg)
-  ];
 
   // Widget brandSelector(String brand) {
   //   return GestureDetector(
@@ -219,16 +192,10 @@ class _CouponsPageState extends State<CouponsPage> {
   //     ),
   //   );
   // }
-  Map<String, String> couponicon = {
-    AppConfig.onemg: "assets/onemg.png",
-    AppConfig.netmeds: "assets/netmeds.jpg",
-    AppConfig.apollo: "assets/apollo.jpg"
-  };
 
   Widget promoBox(CouponsModel model) {
     TextStyle textStyle = const TextStyle(fontSize: 14);
-    TextStyle headStyle =
-        const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
+    TextStyle headStyle = const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
     return Card(
       //width: double.infinity,
       //padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
@@ -250,12 +217,17 @@ class _CouponsPageState extends State<CouponsPage> {
               //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                            image: AssetImage(couponicon[model.brand])))),
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: AssetImage(model.imageUrl),
+                      // image: AssetImage(couponicon[model.brand].toString()),
+                      // image: AssetImage("assets/onemg.png"),
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(left: 12.0),
                   child: Text(model.id, style: headStyle),
@@ -301,8 +273,7 @@ class _CouponsPageState extends State<CouponsPage> {
               height: 5,
             ),
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3.0),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3.0),
               child: Container(
                 height: 38,
                 padding: EdgeInsets.only(left: 12),
@@ -317,25 +288,18 @@ class _CouponsPageState extends State<CouponsPage> {
                     Spacer(),
                     ElevatedButton(
                         onPressed: () {
-                          Clipboard.setData(new ClipboardData(text: model.id))
-                              .then((_) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text("Copied to clipboard")));
+                          Clipboard.setData(new ClipboardData(text: model.id)).then((_) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Copied to clipboard")));
                           });
                         },
                         style: ButtonStyle(
-                          elevation:
-                              MaterialStateProperty.resolveWith<double>((_) {
+                          elevation: MaterialStateProperty.resolveWith<double>((_) {
                             return 2;
                           }),
-                          shape:
-                              MaterialStateProperty.resolveWith<OutlinedBorder>(
-                                  (_) {
-                            return RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(19));
+                          shape: MaterialStateProperty.resolveWith<OutlinedBorder>((_) {
+                            return RoundedRectangleBorder(borderRadius: BorderRadius.circular(19));
                           }),
-                          backgroundColor:
-                              MaterialStateProperty.resolveWith<Color>((_) {
+                          backgroundColor: MaterialStateProperty.resolveWith<Color>((_) {
                             return Colors.indigo.shade900;
                           }),
                         ),

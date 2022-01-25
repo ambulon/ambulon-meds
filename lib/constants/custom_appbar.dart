@@ -27,12 +27,9 @@ class CustomAppBar {
     );
   }
 
-  static AppBar defForCoupons({
-    title,
-    context,
-    tablist,
-    changeselected,
-  }) {
+  // TODO : no need for changefunction now, automatically getting the index value in tab bar view
+  // and using that index
+  static AppBar defForCoupons({title, context, tablist}) {
     return AppBar(
       leading: GestureDetector(
         onTap: () {
@@ -57,10 +54,6 @@ class CustomAppBar {
         indicatorColor: Colors.white,
         tabs: tablist,
         labelStyle: TextStyle(fontSize: 17),
-        onTap: (value) {
-          changeselected(value);
-          print("$value info");
-        },
       ),
     );
   }

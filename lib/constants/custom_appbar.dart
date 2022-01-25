@@ -22,9 +22,45 @@ class CustomAppBar {
       centerTitle: true,
       title: Text(
         title,
-        style: TextStyle(
+        style: TextStyle(color: Colors.white, fontSize: 22),
+      ),
+    );
+  }
+
+  static AppBar defForCoupons({
+    title,
+    context,
+    tablist,
+    changeselected,
+  }) {
+    return AppBar(
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Icon(
+          Icons.arrow_back_ios_outlined,
+          size: ScreenUtil().setHeight(18),
           color: Colors.white,
         ),
+      ),
+      backgroundColor: ColorTheme.greyDark,
+      centerTitle: true,
+      title: Text(
+        title,
+        style: TextStyle(color: Colors.white, fontSize: 22),
+      ),
+      bottom: TabBar(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        labelPadding: EdgeInsets.all(6),
+        indicatorWeight: 3,
+        indicatorColor: Colors.white,
+        tabs: tablist,
+        labelStyle: TextStyle(fontSize: 17),
+        onTap: (value) {
+          changeselected(value);
+          print("$value info");
+        },
       ),
     );
   }

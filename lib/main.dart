@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:medcomp/views/home/components/coupons.dart';
 import 'package:medcomp/views/splash_screen.dart';
 import 'bloc/main.bloc.dart';
 
@@ -36,8 +37,9 @@ class MyApp extends StatelessWidget {
             Theme.of(context).textTheme,
           ),
         ),
-        home: SplashScreen(),
+        //  home: SplashScreen(),
         // home: TempParent(),
+        home: CouponsPage()
       ),
     );
   }

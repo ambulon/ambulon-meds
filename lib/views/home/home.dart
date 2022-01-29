@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +12,15 @@ import 'package:medcomp/events/home.event.dart';
 import 'package:medcomp/models/banner.model.dart';
 import 'package:medcomp/models/med.model.dart';
 import 'package:medcomp/models/searchhistory.model.dart';
+import 'package:medcomp/second_screen.dart';
 import 'package:medcomp/states/home.state.dart';
+import 'package:medcomp/third_screen.dart';
 import 'package:medcomp/views/cart/cart_page.dart';
 import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/styles.dart';
 import 'package:medcomp/views/home/components/coupons.dart';
 import 'package:medcomp/views/search/search_result_page.dart';
+import 'package:medcomp/views/splash_screen.dart';
 import 'components/appbar.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 
@@ -26,11 +30,15 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  int _selectedIndex = 0;
+final PageController _pageController = PageController();
+
   @override
   void initState() {
     super.initState();
     BlocProvider.of<HomeBloc>(context).add(HomeEventLoadData());
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -69,190 +77,301 @@ class _HomeState extends State<Home> {
 
   Widget page(state, List<MedicineModel> topPicks) => Scaffold(
         backgroundColor: Color(0xffA0A6A9),
-        body: Stack(
-          children: [
-            CustomScrollView(
-              physics: BouncingScrollPhysics(),
-              slivers: [
-                SliverAppBar(
-                  automaticallyImplyLeading: false,
-                  backgroundColor: ColorTheme.grey,
-                  expandedHeight: ScreenUtil().setHeight(210),
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: CustomAppBarHome(user: state.userModel),
-                    centerTitle: true,
-                  ),
-                ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      return Container(
-                        padding: EdgeInsets.symmetric(
-                          vertical: ScreenUtil().setHeight(10),
-                          horizontal: ScreenUtil().setWidth(15),
-                        ),
-                        margin: EdgeInsets.only(top: ScreenUtil().setHeight(5)),
-                        decoration: BoxDecoration(
-                          boxShadow: kElevationToShadow[8],
-                          color: ColorTheme.fontWhite,
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(7),
-                            topLeft: Radius.circular(7),
-                          ),
-                        ),
-                        child: Column(
-                          children: <Widget>[
-                            SizedBox(height: ScreenUtil().setHeight(15)),
-                            state.banners.length == 0
-                                ? SizedBox()
-                                : Container(
-                                    height: ScreenUtil().setHeight(200),
-                                    child: Carousel(
-                                      dotSize: 0,
-                                      indicatorBgPadding: 0,
-                                      boxFit: BoxFit.contain,
-                                      images: [
-                                        for (BannerModel i in state.banners)
-                                          Image(
-                                            fit: BoxFit.cover,
-                                            image: NetworkImage(i.image),
-                                          ),
-                                      ],
-                                      animationCurve: Curves.fastOutSlowIn,
-                                      animationDuration: Duration(milliseconds: 2000),
-                                    )),
-                            SizedBox(height: ScreenUtil().setHeight(20)),
-                            Container(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'View Coupons',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: ColorTheme.fontBlack,
-                                ),
+        bottomNavigationBar: BottomNavigationBar(
+     selectedItemColor: Colors.black,
+     unselectedItemColor: Colors.grey[500],
+     type:BottomNavigationBarType.shifting,
+     onTap: _onTap,
+    currentIndex: _selectedIndex,
+     items: [
+       BottomNavigationBarItem(
+         icon: Icon(Icons.home), 
+         label: 'Home',
+         ),
+        BottomNavigationBarItem(
+         icon: Icon(Icons.filter_alt), 
+         label: 'Filter',
+         ),
+         BottomNavigationBarItem(
+         icon: Icon(Icons.favorite), 
+         label: 'Favourite',
+         ), 
+     ],
+     ),
+        body: PageView(
+          controller: _pageController,
+          children: <Widget>[
+          Stack(
+              children: [
+                CustomScrollView(
+                  physics: BouncingScrollPhysics(),
+                  slivers: [
+                    SliverAppBar(
+                      automaticallyImplyLeading: false,
+                      backgroundColor: ColorTheme.grey,
+                      expandedHeight: ScreenUtil().setHeight(210),
+                      flexibleSpace: FlexibleSpaceBar(
+                        background: CustomAppBarHome(user: state.userModel),
+                        centerTitle: true,
+                      ),
+                    ),
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          return Container(
+                            padding: EdgeInsets.symmetric(
+                              vertical: ScreenUtil().setHeight(10),
+                              horizontal: ScreenUtil().setWidth(15),
+                            ),
+                            margin: EdgeInsets.only(top: ScreenUtil().setHeight(5)),
+                            decoration: BoxDecoration(
+                              boxShadow: kElevationToShadow[8],
+                              color: ColorTheme.fontWhite,
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(7),
+                                topLeft: Radius.circular(7),
                               ),
                             ),
-                            SizedBox(height: ScreenUtil().setHeight(8)),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (_) => CouponsPage()));
-                              },
-                              child: Container(
-                                width: double.infinity,
-                                height: ScreenUtil().setHeight(200),
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                  image: AssetImage('assets/coupons.png'),
-                                  fit: BoxFit.cover,
-                                )),
-                              ),
-                            ),
-                            SizedBox(height: ScreenUtil().setHeight(30)),
-                            state.searchHistory.length == 0 || kIsWeb
-                                ? SizedBox()
-                                : Column(
-                                    children: [
-                                      Container(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          'Your Searches',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: ColorTheme.fontBlack,
+                            child: Column(
+                              children: <Widget>[
+                                SizedBox(height: ScreenUtil().setHeight(15)),
+                                state.banners.length == 0
+                                    ? SizedBox()
+                                    : Container(
+                                        height: ScreenUtil().setHeight(200),
+                                        child: CarouselSlider(
+                                          items: [
+                                            for (BannerModel i in state.banners)
+                                              Image(
+                                                fit: BoxFit.cover,
+                                                image: NetworkImage(i.image),
+                                              ),
+                                              ],
+                                          options: CarouselOptions(
+                                            height: ScreenUtil().setHeight(200),
+                                            enlargeCenterPage: true,
+                                            autoPlay: true,
+                                           // reverse: true,
+                                            autoPlayCurve: Curves.easeInOut,
+                                            enableInfiniteScroll: true,
+                                            autoPlayAnimationDuration: Duration(milliseconds: 800),
                                           ),
                                         ),
-                                      ),
-                                      kIsWeb ? SizedBox() : SizedBox(height: ScreenUtil().setHeight(2)),
-                                      kIsWeb
-                                          ? SizedBox()
-                                          : Container(
-                                              child: GridView.count(
-                                                padding: EdgeInsets.zero,
-                                                crossAxisCount: 3,
-                                                crossAxisSpacing: 0,
-                                                mainAxisSpacing: 0,
-                                                shrinkWrap: true,
-                                                physics: NeverScrollableScrollPhysics(),
-                                                children: List.generate(
-                                                  state.searchHistory.length,
-                                                  (index) {
-                                                    return searchBox(state.searchHistory[index]);
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                      SizedBox(height: ScreenUtil().setHeight(30)),
-                                    ],
-                                  ),
-                            topPicks.length == 0
-                                ? SizedBox()
-                                : Container(
-                                    child: Row(
+                                        ),       
+                                SizedBox(height: ScreenUtil().setHeight(20)),
+                                Container(
+                                  child:Row(
                                       children: [
-                                        Text(
-                                          'Top Picks',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: ColorTheme.fontBlack,
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                         Container(
+                                           child:Text("Order Medicine",
+                                           textAlign: TextAlign.left,
+                                           style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: ColorTheme.fontBlack,
+                                            ),),
+                                           padding: EdgeInsets.only(top:7, bottom: 3, left: 10),
+                                           alignment: Alignment.centerLeft,
+                                           ),
+                                           Container(
+                                           child:Text("Upload Prescription and tell \nus what you need. We do the \nrest.",
+                                           textAlign: TextAlign.left,
+                                           style: TextStyle(
+                                              fontSize: 11,
+                                              color: ColorTheme.grey,
+                                            ),
+                                            ),
+                                           padding: EdgeInsets.only(bottom: 3, left: 10),
+                                           alignment: Alignment.centerLeft,
+                                           ),
+                                           SizedBox(height: ScreenUtil().setHeight(10),),
+                                           Container(
+                                           child:Text("Save upto 60% off",
+                                           textAlign: TextAlign.left,
+                                           style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                              color: ColorTheme.green,
+                                            ),
+                                            ),
+                                           padding: EdgeInsets.only(top:3, bottom: 3, left: 10),
+                                           alignment: Alignment.centerLeft,
+                                           ), 
+                                          SizedBox(height: ScreenUtil().setHeight(10),),
+                                          Container(
+                                           child:ElevatedButton(
+                                            child: Text("Order now", 
+                                            style: TextStyle(fontWeight: FontWeight.bold, color: ColorTheme.fontWhite)),
+                                           style: ButtonStyle(
+                                             backgroundColor: MaterialStateProperty.all<Color>(Colors.teal[400],),
+                                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(4),
+                                              )
+                                            )
                                           ),
-                                        ),
-                                        Spacer(),
-                                        InkWell(
-                                          onTap: () {
-                                            BlocProvider.of<HomeBloc>(context).add(HomeEventRefreshToppicks());
-                                          },
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.add_box,
-                                                size: ScreenUtil().setHeight(25),
-                                                color: ColorTheme.blue,
-                                              ),
-                                              SizedBox(width: ScreenUtil().setWidth(5)),
-                                              Text(
-                                                'view more',
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: ColorTheme.blue,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
+                                            onPressed: (){},
+                                            ),
+                                           padding: EdgeInsets.only(bottom: 3, left: 10),
+                                           alignment: Alignment.centerLeft,
+                                           ),    
+                                    ],
+                                    ),
+                                      SizedBox(width: ScreenUtil().setWidth(60),),
+                                      Image.network('https://cdn-icons-png.flaticon.com/512/4861/4861715.png',
+                                      width: 120,
+                                      height: 120,
+                                      ),  
+                                    ],
                                     ),
                                   ),
-                            ProductsGrid(topPicks),
-                            SizedBox(height: ScreenUtil().setHeight(120)),
-                          ],
-                        ),
-                      );
-                    },
-                    childCount: 1,
-                  ),
+                                SizedBox(height: ScreenUtil().setHeight(20)),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'View Coupons',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: ColorTheme.fontBlack,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: ScreenUtil().setHeight(8)),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (_) => CouponsPage()));
+                                  },
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: ScreenUtil().setHeight(200),
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                      image: AssetImage('assets/coupons.png'),
+                                      fit: BoxFit.cover,
+                                    )),
+                                  ),
+                                ),
+                                SizedBox(height: ScreenUtil().setHeight(30)),
+                                state.searchHistory.length == 0 || kIsWeb
+                                    ? SizedBox()
+                                    : Column(
+                                        children: [
+                                          Container(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              'Your Searches',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: ColorTheme.fontBlack,
+                                              ),
+                                            ),
+                                          ),
+                                          kIsWeb ? SizedBox() : SizedBox(height: ScreenUtil().setHeight(2)),
+                                          kIsWeb
+                                              ? SizedBox()
+                                              : Container(
+                                                  child: GridView.count(
+                                                    padding: EdgeInsets.zero,
+                                                    crossAxisCount: 3,
+                                                    crossAxisSpacing: 0,
+                                                    mainAxisSpacing: 0,
+                                                    shrinkWrap: true,
+                                                    physics: NeverScrollableScrollPhysics(),
+                                                    children: List.generate(
+                                                      state.searchHistory.length,
+                                                      (index) {
+                                                        return searchBox(state.searchHistory[index]);
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+                                          SizedBox(height: ScreenUtil().setHeight(30)),
+                                        ],
+                                      ),
+                                topPicks.length == 0
+                                    ? SizedBox()
+                                    : Container(
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              'Top Picks',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: ColorTheme.fontBlack,
+                                              ),
+                                            ),
+                                            Spacer(),
+                                            InkWell(
+                                              onTap: () {
+                                                BlocProvider.of<HomeBloc>(context).add(HomeEventRefreshToppicks());
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.add_box,
+                                                    size: ScreenUtil().setHeight(25),
+                                                    color: ColorTheme.blue,
+                                                  ),
+                                                  SizedBox(width: ScreenUtil().setWidth(5)),
+                                                  Text(
+                                                    'view more',
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: ColorTheme.blue,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                ProductsGrid(topPicks),
+                                SizedBox(height: ScreenUtil().setHeight(120)),
+                              ],
+                            ),
+                          );
+                        },
+                        childCount: 1,
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Spacer(),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        vertical: ScreenUtil().setHeight(10),
+                        horizontal: ScreenUtil().setWidth(15),
+                      ),
+                      child: cart(),
+                    ),
+                    SizedBox(height: 20),
+                  ],
                 ),
               ],
             ),
-            Column(
-              children: [
-                Spacer(),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    vertical: ScreenUtil().setHeight(10),
-                    horizontal: ScreenUtil().setWidth(15),
-                  ),
-                  child: cart(),
-                ),
-                SizedBox(height: 20),
-              ],
-            ),
-          ],
-        ),
+      Second(), //extra screens
+      Third(),
+    ],
+  ),
       );
+
+      void _onTap(int idx) {
+        setState(() {
+          _selectedIndex = idx;
+          });
+        _pageController.jumpToPage(idx);
+        }
+
 
   Widget searchBox(SearchHistoryModel model) {
     return AspectRatio(
@@ -424,4 +543,5 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+
 }

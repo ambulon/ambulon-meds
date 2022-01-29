@@ -45,6 +45,7 @@ dependencies:
   cupertino_icons: ^1.0.0
   # mongo_dart: 0.4.1
   csv: ^5.0.0
+  carousel_slider: ^4.0.0
 
 dev_dependencies:
   flutter_test:

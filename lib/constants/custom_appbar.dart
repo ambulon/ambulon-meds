@@ -27,8 +27,6 @@ class CustomAppBar {
     );
   }
 
-  // TODO : no need for changefunction now, automatically getting the index value in tab bar view
-  // and using that index
   static AppBar defForCoupons({title, context, tablist}) {
     return AppBar(
       leading: GestureDetector(

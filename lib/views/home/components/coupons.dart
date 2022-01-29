@@ -37,25 +37,17 @@ class _CouponsPageState extends State<CouponsPage> {
     Text(AppConfig.onemg),
   ];
 
-  // no use
-  // changeselected(int current_ind) {
-  //   setState(() {
-  //     selected = brand[current_ind].toLowerCase();
-  //     print(current_ind);
-  //     print(selected);
-  //   });
-  // }
 
-  List<CouponsModel> result = [
-    CouponsModel("1", "abc", AppConfig.netmeds),
-    CouponsModel("2", "mno", AppConfig.apollo),
-    CouponsModel("3", "xyz", AppConfig.onemg),
-  ];
+  // List<CouponsModel> result = [
+  //   CouponsModel("1", "abc", AppConfig.netmeds),
+  //   CouponsModel("2", "mno", AppConfig.apollo),
+  //   CouponsModel("3", "xyz", AppConfig.onemg),
+  // ];
 
   @override
   void initState() {
     super.initState();
-    // BlocProvider.of<CouponsBloc>(context).add(CouponsEventLoadData());
+    BlocProvider.of<CouponsBloc>(context).add(CouponsEventLoadData());
   }
 
   @override
@@ -63,7 +55,7 @@ class _CouponsPageState extends State<CouponsPage> {
     ScreenUtil.instance =
         ScreenUtil(width: Styles.getWidth(context), height: Styles.getHeight(context), allowFontScaling: true)
           ..init(context);
-    return page();
+    // return page();
     return WillPopScope(
       onWillPop: () => Future<bool>.value(false),
       child: BlocConsumer<CouponsBloc, CouponsState>(
@@ -83,8 +75,8 @@ class _CouponsPageState extends State<CouponsPage> {
             // return Text(state.message);
           }
           if (state is CouponsStateLoaded) {
-            // return Styles.responsiveBuilder(page(state));
-            return Styles.responsiveBuilder(page());
+            return Styles.responsiveBuilder(page(state));
+            // return Styles.responsiveBuilder(page());
           }
           return SizedBox();
         },
@@ -92,8 +84,8 @@ class _CouponsPageState extends State<CouponsPage> {
     );
   }
 
-  // Widget page(CouponsStateLoaded state) {
-  Widget page() {
+  Widget page(CouponsStateLoaded state) {
+  // Widget page() {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
@@ -105,27 +97,15 @@ class _CouponsPageState extends State<CouponsPage> {
           ),
           body: TabBarView(
             children: [
-              // for (int i = 0; i < 4; i++) buildpage(state, i),
-              // or
-              // buildpage(state, 0),
-              // buildpage(state, 1),
-              // buildpage(state, 2),
-              // buildpage(state, 3)
-
-              // for testing
-              for (int i = 0; i < 4; i++) buildpage(i),
-              // or
-              // buildpage(0),
-              // buildpage(1),
-              // buildpage(2),
-              // buildpage(3)
+              for (int i = 0; i < 4; i++) buildpage(state, i),             
+              // for (int i = 0; i < 4; i++) buildpage(i),
             ],
           )),
     );
   }
 
-  // Widget buildpage(CouponsStateLoaded state, int i) {
-  Widget buildpage(int i) {
+  Widget buildpage(CouponsStateLoaded state, int i) {
+  // Widget buildpage(int i) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(20)),
       child: SingleChildScrollView(
@@ -156,8 +136,8 @@ class _CouponsPageState extends State<CouponsPage> {
             //   ],
             // ),
             SizedBox(height: ScreenUtil().setHeight(15)),
-            // for (CouponsModel model in state.result)
-            for (CouponsModel model in result)
+            for (CouponsModel model in state.result)
+            // for (CouponsModel model in result)
               brand[i].toLowerCase() == AppConfig.all.toLowerCase()
                   ? promoBox(model)
                   : brand[i].toLowerCase() == model.brand.toLowerCase()

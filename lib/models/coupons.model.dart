@@ -15,8 +15,6 @@ class CouponsModel {
     );
   }
 
-  // TODO : use getters if some computation is only for the current model
-  // removed your map couponicon code from coupons and used this
   String get imageUrl {
     if (brand.toLowerCase() == AppConfig.apollo.toLowerCase())
       return "assets/apollo.jpg";

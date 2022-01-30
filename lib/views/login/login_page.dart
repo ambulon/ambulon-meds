@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,12 +17,15 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance =
-        ScreenUtil(width: Styles.getWidth(context), height: Styles.getHeight(context), allowFontScaling: true)
-          ..init(context);
+    ScreenUtil.instance = ScreenUtil(
+      width: Styles.getWidth(context),
+      height: Styles.getHeight(context),
+      allowFontScaling: true,
+    )..init(context);
+
     return WillPopScope(
       onWillPop: () => Future<bool>.value(false),
-      child: Styles.responsiveBuilder(page()),
+      child: page(),
     );
   }
 

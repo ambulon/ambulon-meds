@@ -1,7 +1,4 @@
 class AppConfig {
-  static const firestoreCollection = "meds-list";
-  static const firebaseDoc = "docID";
-
   static const String rs = "\₹";
 
   static const String all = 'All';

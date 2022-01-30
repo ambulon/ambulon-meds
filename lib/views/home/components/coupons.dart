@@ -19,10 +19,6 @@ class CouponsPage extends StatefulWidget {
 }
 
 class _CouponsPageState extends State<CouponsPage> {
-  // no use
-  // String selected = AppConfig.all.toLowerCase();
-  // int current_ind = 0;
-
   List<String> brand = [
     AppConfig.all,
     AppConfig.netmeds,
@@ -37,13 +33,6 @@ class _CouponsPageState extends State<CouponsPage> {
     Text(AppConfig.onemg),
   ];
 
-
-  // List<CouponsModel> result = [
-  //   CouponsModel("1", "abc", AppConfig.netmeds),
-  //   CouponsModel("2", "mno", AppConfig.apollo),
-  //   CouponsModel("3", "xyz", AppConfig.onemg),
-  // ];
-
   @override
   void initState() {
     super.initState();
@@ -55,37 +44,31 @@ class _CouponsPageState extends State<CouponsPage> {
     ScreenUtil.instance =
         ScreenUtil(width: Styles.getWidth(context), height: Styles.getHeight(context), allowFontScaling: true)
           ..init(context);
-    // return page();
-    return WillPopScope(
-      onWillPop: () => Future<bool>.value(false),
-      child: BlocConsumer<CouponsBloc, CouponsState>(
-        listener: (BuildContext ctx, CouponsState state) {},
-        builder: (BuildContext ctx, CouponsState state) {
-          if (state is CouponsStateNotLoaded) {
-            return SizedBox();
-          }
-          if (state is CouponsStateLoading) {
-            return Loader.gifLoader(context);
-          }
-          if (state is CouponsStateError) {
-            return Styles.responsiveBuilder(ErrorPage(
-              message: state.message,
-              gotoLogin: true,
-            ));
-            // return Text(state.message);
-          }
-          if (state is CouponsStateLoaded) {
-            return Styles.responsiveBuilder(page(state));
-            // return Styles.responsiveBuilder(page());
-          }
+    return BlocConsumer<CouponsBloc, CouponsState>(
+      listener: (BuildContext ctx, CouponsState state) {},
+      builder: (BuildContext ctx, CouponsState state) {
+        if (state is CouponsStateNotLoaded) {
           return SizedBox();
-        },
-      ),
+        }
+        if (state is CouponsStateLoading) {
+          return Loader.def();
+          // return Loader.gifLoader(context);
+        }
+        if (state is CouponsStateError) {
+          return ErrorPage(
+            message: state.message,
+            gotoLogin: true,
+          );
+        }
+        if (state is CouponsStateLoaded) {
+          return page(state);
+        }
+        return SizedBox();
+      },
     );
   }
 
   Widget page(CouponsStateLoaded state) {
-  // Widget page() {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
@@ -97,47 +80,21 @@ class _CouponsPageState extends State<CouponsPage> {
           ),
           body: TabBarView(
             children: [
-              for (int i = 0; i < 4; i++) buildpage(state, i),             
-              // for (int i = 0; i < 4; i++) buildpage(i),
+              for (int i = 0; i < 4; i++) buildpage(state, i),
             ],
           )),
     );
   }
 
   Widget buildpage(CouponsStateLoaded state, int i) {
-  // Widget buildpage(int i) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(20)),
       child: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
           children: [
-            //SizedBox(height: ScreenUtil().setHeight(15)),
-            // Row(
-            //   children: [
-            //     Expanded(
-            //       child: Container(
-            //         child: SingleChildScrollView(
-            //           scrollDirection: Axis.horizontal,
-            //           physics: BouncingScrollPhysics(),
-            //           child: Row(
-            //             children: [
-            //               brandSelector(AppConfig.all),
-            //               brandSelector(AppConfig.netmeds),
-            //               brandSelector(AppConfig.apollo),
-            //               brandSelector(AppConfig.onemg),
-            //             ],
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //     // SizedBox(width: ScreenUtil().setWidth(20)),
-            //     // appbarIconButton(Icons.delete_forever, ColorTheme.red, () {}),
-            //   ],
-            // ),
             SizedBox(height: ScreenUtil().setHeight(15)),
             for (CouponsModel model in state.result)
-            // for (CouponsModel model in result)
               brand[i].toLowerCase() == AppConfig.all.toLowerCase()
                   ? promoBox(model)
                   : brand[i].toLowerCase() == model.brand.toLowerCase()
@@ -149,52 +106,20 @@ class _CouponsPageState extends State<CouponsPage> {
     );
   }
 
-  // Widget brandSelector(String brand) {
-  //   return GestureDetector(
-  //     onTap: () => setState(() => selected = brand.toLowerCase()),
-  //     child: Container(
-  //       padding: EdgeInsets.symmetric(horizontal: 15, vertical: 2),
-  //       decoration: BoxDecoration(
-  //         borderRadius: BorderRadius.circular(17),
-  //         color: brand.toLowerCase() == selected
-  //             ? ColorTheme.green
-  //             : Colors.transparent,
-  //       ),
-  //       child: Text(
-  //         brand,
-  //         style: TextStyle(
-  //           color: brand.toLowerCase() == selected
-  //               ? ColorTheme.fontWhite
-  //               : ColorTheme.greyDark,
-  //           fontSize: 13,
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Widget promoBox(CouponsModel model) {
     TextStyle textStyle = const TextStyle(fontSize: 14);
     TextStyle headStyle = const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
     return Card(
-      //width: double.infinity,
-      //padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
       margin: const EdgeInsets.symmetric(vertical: 12),
       color: Colors.grey.shade300,
       elevation: 5,
       shadowColor: Colors.black,
-      // decoration:BoxDecoration(
-      //
-      //   borderRadius: BorderRadius.circular(5),
-      //   //boxShadow: BoxShadow()
-      // ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
                   width: 40,
@@ -203,8 +128,6 @@ class _CouponsPageState extends State<CouponsPage> {
                     shape: BoxShape.circle,
                     image: DecorationImage(
                       image: AssetImage(model.imageUrl),
-                      // image: AssetImage(couponicon[model.brand].toString()),
-                      // image: AssetImage("assets/onemg.png"),
                     ),
                   ),
                 ),
@@ -227,16 +150,6 @@ class _CouponsPageState extends State<CouponsPage> {
                     ),
                   ),
                 ),
-                // ElevatedButton(
-                //     onPressed: () {
-                //       Clipboard.setData(new ClipboardData(text: model.id))
-                //           .then((_) {
-                //         ScaffoldMessenger.of(context).showSnackBar(
-                //             SnackBar(content: Text("Copied to clipboard")));
-                //       });
-                //     },
-                //     child: Text('COPY')
-                // ),
               ],
             ),
             const SizedBox(height: 10),
@@ -288,34 +201,6 @@ class _CouponsPageState extends State<CouponsPage> {
                 ),
               ),
             )
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.end,
-            //   children: [
-            //     ElevatedButton(
-            //         onPressed: () {
-            //           Clipboard.setData(new ClipboardData(text: model.id))
-            //               .then((_) {
-            //             ScaffoldMessenger.of(context).showSnackBar(
-            //                 SnackBar(content: Text("Copied to clipboard")));
-            //           });
-            //         },
-            //         child: Text('COPY')),
-            //     // Container(
-            //     //   padding: EdgeInsets.symmetric(horizontal: 15, vertical: 2),
-            //     //   decoration: BoxDecoration(
-            //     //     borderRadius: BorderRadius.circular(17),
-            //     //     color: ColorTheme.green,
-            //     //   ),
-            //     //   child: Text(
-            //     //     model.brand,
-            //     //     style: TextStyle(
-            //     //       color: ColorTheme.fontWhite,
-            //     //       fontSize: 13,
-            //     //     ),
-            //     //   ),
-            //     // ),
-            //   ],
-            //),
           ],
         ),
       ),

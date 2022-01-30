@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:medcomp/constants/quotes.dart';
+import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/styles.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -27,7 +29,10 @@ class Loader {
   static Widget def() {
     return Scaffold(
       body: Center(
-        child: Text('loading'),
+        child: SpinKitRipple(
+          color: ColorTheme.grey,
+          size: 50,
+        ),
       ),
     );
   }

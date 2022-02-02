@@ -81,7 +81,7 @@ class _SplashScreenState extends State<SplashScreen> {
     ScreenUtil.instance =
         ScreenUtil(width: Styles.getWidth(context), height: Styles.getHeight(context), allowFontScaling: true)
           ..init(context);
-    return Scaffold(
+    return  Scaffold(
       backgroundColor: ColorTheme.fontWhite,
     );
   }

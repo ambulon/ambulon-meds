@@ -429,6 +429,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.1"
+  settings_ui:
+    dependency: "direct main"
+    description:
+      name: settings_ui
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
   share_plus:
     dependency: "direct main"
     description:
@@ -615,7 +622,7 @@ packages:
       name: vector_math
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.1"
+    version: "2.1.0"
   webview_flutter:
     dependency: "direct main"
     description:
@@ -652,5 +659,5 @@ packages:
     source: hosted
     version: "2.2.1"
 sdks:
-  dart: ">=2.14.0 <3.0.0"
+  dart: ">=2.13.0 <3.0.0"
   flutter: ">=1.22.0"

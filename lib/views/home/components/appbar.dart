@@ -36,6 +36,7 @@ class CustomAppBarHome extends StatelessWidget {
                 ),
               ),
               Spacer(),
+              //TODO: add inkwell
               Icon(
                 Icons.notifications,
                 size: ScreenUtil().setHeight(30),

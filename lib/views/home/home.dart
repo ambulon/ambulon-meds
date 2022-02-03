@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +26,28 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final FirebaseMessaging firebaseMessaging = FirebaseMessaging();
+  @override
+  void initState() {
+    super.initState();
+    firebaseMessaging.configure(
+      onMessage: (message) {
+        print("onMessage $message");
+        return;
+      },
+      onLaunch: (message) {
+        print("onLaunch $message");
+        return;
+      },
+      onResume: (message) {
+        print("onResume $message");
+        return;
+      },
+    );
+    firebaseMessaging
+        .requestNotificationPermissions(const IosNotificationSettings());
+  }
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil(

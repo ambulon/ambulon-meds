@@ -11,12 +11,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   @override
   Stream<HomeState> mapEventToState(HomeEvent event) async* {
-    // TODO : Ask Nimish to merge all the apis for optimising
     if (event is HomeEventLoadData) {
       yield HomeStateLoading();
       try {
         var banners = await this._homeRepo.getBanner();
         var searchHistory = await this._homeRepo.searchHistory();
+
+        yield HomeStateTopPicksLoading(
+          banners: banners,
+          searchHistory: searchHistory,
+          topPicks: [],
+        );
+
         var toppicks = await this._homeRepo.getMoreicks();
 
         yield HomeStateLoaded(
@@ -24,14 +30,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           searchHistory: searchHistory,
           topPicks: toppicks,
         );
-
-        // yield HomeStateLoading();
-        // yield HomeStateLoaded(
-        //   userModel: user,
-        //   banners: banners,
-        //   searchHistory: searchHistory,
-        //   topPicks: [],
-        // );
       } catch (e) {
         yield HomeStateError(e);
       }
@@ -50,20 +48,20 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         yield HomeStateError(e);
       }
     }
-    // TODO : Fix get more picks
     if (event is HomeEventRefreshToppicks) {
       var oldState = state as HomeStateLoaded;
       // yield HomeStateLoading();
       yield HomeStateTopPicksLoading(
         banners: oldState.banners,
         searchHistory: oldState.searchHistory,
+        topPicks: oldState.topPicks,
       );
       try {
         var newData = await this._homeRepo.getMoreicks();
         yield HomeStateLoaded(
           banners: oldState.banners,
           searchHistory: oldState.searchHistory,
-          topPicks: newData,
+          topPicks: oldState.topPicks + newData,
         );
       } catch (e) {
         yield HomeStateError(e);

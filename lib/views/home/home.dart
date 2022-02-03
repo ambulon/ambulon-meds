@@ -9,8 +9,8 @@ import 'package:medcomp/constants/error.dart';
 import 'package:medcomp/constants/loader.dart';
 import 'package:medcomp/constants/products_grid.dart';
 import 'package:medcomp/constants/quotes.dart';
+import 'package:medcomp/events/home.event.dart';
 import 'package:medcomp/models/banner.model.dart';
-import 'package:medcomp/models/med.model.dart';
 import 'package:medcomp/models/searchhistory.model.dart';
 import 'package:medcomp/states/home.state.dart';
 import 'package:medcomp/utils/colortheme.dart';
@@ -32,6 +32,7 @@ class _HomeState extends State<Home> {
       height: Styles.getHeight(context),
       allowFontScaling: true,
     )..init(context);
+
     return BlocConsumer<HomeBloc, HomeState>(
       listener: (BuildContext ctx, HomeState state) {},
       builder: (BuildContext ctx, HomeState state) {
@@ -45,17 +46,17 @@ class _HomeState extends State<Home> {
           return ErrorPage(message: state.message, gotoLogin: true);
         }
         if (state is HomeStateLoaded) {
-          return pageBuild(state, state.topPicks);
+          return pageBuild(state, false);
         }
         if (state is HomeStateTopPicksLoading) {
-          return pageBuild(state, []);
+          return pageBuild(state, true);
         }
         return SizedBox();
       },
     );
   }
 
-  Widget pageBuild(state, List<MedicineModel> topPicks) {
+  Widget pageBuild(state, isloading) {
     return Scaffold(
       backgroundColor: Colors.grey,
       body: CustomScrollView(
@@ -72,7 +73,7 @@ class _HomeState extends State<Home> {
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                return body(state, topPicks);
+                return body(state, isloading);
               },
               childCount: 1,
             ),
@@ -82,7 +83,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget body(state, List<MedicineModel> topPicks) {
+  Widget body(state, isloading) {
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: ScreenUtil().setHeight(10),
@@ -199,7 +200,7 @@ class _HomeState extends State<Home> {
                 ),
           Divider(thickness: 1, height: ScreenUtil().setHeight(20)),
           SizedBox(height: ScreenUtil().setHeight(20)),
-          topPicks.length == 0
+          state.topPicks.length == 0
               ? SizedBox()
               : Container(
                   child: Row(
@@ -239,7 +240,23 @@ class _HomeState extends State<Home> {
                     ],
                   ),
                 ),
-          ProductsGrid(topPicks),
+          ProductsGrid(state.topPicks),
+          SizedBox(height: ScreenUtil().setHeight(20)),
+          isloading
+              ? SizedBox(
+                  height: 30,
+                  width: 30,
+                  child: CircularProgressIndicator(),
+                )
+              : SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      BlocProvider.of<HomeBloc>(context).add(HomeEventRefreshToppicks());
+                    },
+                    child: Text('Load more'),
+                  ),
+                ),
           SizedBox(height: ScreenUtil().setHeight(120)),
         ],
       ),

@@ -6,7 +6,7 @@ import 'package:medcomp/views/splash_screen.dart';
 import 'bloc/main.bloc.dart';
 
 class Version {
-  static String code = "1.1.3";
+  static String code = "1.2.4";
 }
 
 Future<void> main() async {

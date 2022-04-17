@@ -14,25 +14,22 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (event is HomeEventLoadData) {
       yield HomeStateLoading();
       try {
-        var user = await this._homeRepo.getUserDetails();
         var banners = await this._homeRepo.getBanner();
         var searchHistory = await this._homeRepo.searchHistory();
+
+        yield HomeStateTopPicksLoading(
+          banners: banners,
+          searchHistory: searchHistory,
+          topPicks: [],
+        );
+
         var toppicks = await this._homeRepo.getMoreicks();
 
         yield HomeStateLoaded(
-          userModel: user,
           banners: banners,
           searchHistory: searchHistory,
           topPicks: toppicks,
         );
-
-        // yield HomeStateLoading();
-        // yield HomeStateLoaded(
-        //   userModel: user,
-        //   banners: banners,
-        //   searchHistory: searchHistory,
-        //   topPicks: [],
-        // );
       } catch (e) {
         yield HomeStateError(e);
       }
@@ -43,7 +40,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       try {
         var searchHistory = await this._homeRepo.searchHistory();
         yield HomeStateLoaded(
-          userModel: oldState.userModel,
           banners: oldState.banners,
           searchHistory: searchHistory,
           topPicks: oldState.topPicks,
@@ -56,17 +52,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       var oldState = state as HomeStateLoaded;
       // yield HomeStateLoading();
       yield HomeStateTopPicksLoading(
-        userModel: oldState.userModel,
         banners: oldState.banners,
         searchHistory: oldState.searchHistory,
+        topPicks: oldState.topPicks,
       );
       try {
         var newData = await this._homeRepo.getMoreicks();
         yield HomeStateLoaded(
-          userModel: oldState.userModel,
           banners: oldState.banners,
           searchHistory: oldState.searchHistory,
-          topPicks: newData,
+          topPicks: oldState.topPicks + newData,
         );
       } catch (e) {
         yield HomeStateError(e);

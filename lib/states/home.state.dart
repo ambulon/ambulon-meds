@@ -14,11 +14,10 @@ class HomeStateNotLoaded extends HomeState {}
 class HomeStateLoading extends HomeState {}
 
 class HomeStateLoaded extends HomeState {
-  final UserModel userModel;
   final List<BannerModel> banners;
   final List<SearchHistoryModel> searchHistory;
   final List<MedicineModel> topPicks;
-  HomeStateLoaded({this.userModel, this.banners, this.searchHistory, this.topPicks});
+  HomeStateLoaded({this.banners, this.searchHistory, this.topPicks});
 }
 
 class HomeStateError extends HomeState {

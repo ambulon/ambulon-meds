@@ -4,8 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medcomp/app.config.dart';
+import 'package:medcomp/bloc/cart.bloc.dart';
 import 'package:medcomp/bloc/home.bloc.dart';
 import 'package:medcomp/bloc/search.bloc.dart';
+import 'package:medcomp/events/cart.event.dart';
 import 'package:medcomp/events/home.event.dart';
 import 'package:medcomp/events/search.event.dart';
 import 'package:medcomp/models/med.model.dart';
@@ -405,6 +407,7 @@ class _SearchResultState extends State<SearchResult> {
                                     String res = await cartRepo.addItem(data.toJson());
                                     Navigator.pop(context);
                                     if (res == "true") {
+                                      BlocProvider.of<CartBloc>(context).add(CartEventLoad());
                                       ToastPreset.successful(context: context, str: 'Added to cart');
                                     } else {
                                       ToastPreset.err(context: context, str: res);

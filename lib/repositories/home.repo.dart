@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:medcomp/app.config.dart';
 import 'package:medcomp/models/banner.model.dart';
 import 'package:medcomp/models/med.model.dart';
@@ -30,10 +31,21 @@ class HomeRepo {
   }
 
   Future<List<BannerModel>> getBanner() async {
-    BannerModel banner1 = new BannerModel(image: MyUrl.url('Banner1.jpg'));
-    BannerModel banner2 = new BannerModel(image: MyUrl.url('Banner2.jpg'));
-    BannerModel banner3 = new BannerModel(image: MyUrl.url('Banner3.jpg'));
-    return [banner1, banner2, banner3];
+    try {
+      QuerySnapshot s = await FirebaseFirestore.instance.collection('config').get();
+      var tempList = await s.docs.first.get('url') as List;
+      print(tempList);
+      if (tempList != null) {
+        List<BannerModel> models = [];
+        for (var url in tempList) {
+          models.add(BannerModel(image: url));
+        }
+        return models;
+      } else
+        return [];
+    } catch (e) {
+      return [];
+    }
   }
 
   Future<List<SearchHistoryModel>> searchHistory() async {

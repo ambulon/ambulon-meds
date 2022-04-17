@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-class HomeMedEvent extends Equatable {
+class ProfileEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class HomeMedEventLoadData extends HomeMedEvent {}
+class ProfileEventLoadData extends ProfileEvent {}

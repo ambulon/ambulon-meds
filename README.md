@@ -1,8 +1,8 @@
 
 ### Version Control
  - Change the version in yaml file and in app/build.gradle file
+ - # if mandatory update, then only change in version.code and firebase
  - Change Version.code class variable (create a class and put the same version code for easy access)
- - *send GET /force-update 400 if not necessary, but if mandatory send 200 with body {version : x.y.z}
  - For web, Change the version code in web/index.html file 
 <img src="https://i.stack.imgur.com/5FUZJ.jpg">
 

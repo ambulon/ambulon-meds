@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:medcomp/constants/custom_appbar.dart';
 import 'package:webview_flutter/webview_flutter.dart';

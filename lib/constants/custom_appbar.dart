@@ -8,23 +8,51 @@ class CustomAppBar {
     context,
   }) {
     return AppBar(
-      leading: GestureDetector(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: Icon(
-          Icons.arrow_back_ios_outlined,
-          size: ScreenUtil().setHeight(18),
-          color: Colors.white,
-        ),
-      ),
+      // leading: GestureDetector(
+      //   onTap: () {
+      //     Navigator.pop(context);
+      //   },
+      //   child: Icon(
+      //     Icons.arrow_back_ios_outlined,
+      //     size: ScreenUtil().setHeight(18),
+      //     color: Colors.white,
+      //   ),
+      // ),
       backgroundColor: ColorTheme.greyDark,
       centerTitle: true,
       title: Text(
         title,
-        style: TextStyle(
-          color: Colors.white,
-        ),
+        style: TextStyle(color: Colors.white, fontSize: 22),
+      ),
+    );
+  }
+
+  static AppBar defForCoupons({title, context, tablist}) {
+    return AppBar(
+      // leading: GestureDetector(
+      //   onTap: () {
+      //     Navigator.pop(context);
+      //   },
+      //   child: Icon(
+      //     Icons.arrow_back_ios_outlined,
+      //     size: ScreenUtil().setHeight(18),
+      //     color: Colors.white,
+      //   ),
+      // ),
+      backgroundColor: ColorTheme.greyDark,
+      elevation: 0,
+      centerTitle: true,
+      title: Text(
+        title,
+        style: TextStyle(color: Colors.white, fontSize: 22),
+      ),
+      bottom: TabBar(
+        // padding: EdgeInsets.symmetric(horizontal: 20),
+        labelPadding: EdgeInsets.all(6),
+        indicatorWeight: 3,
+        // indicatorColor: ColorTheme.green,
+        tabs: tablist,
+        labelStyle: TextStyle(fontSize: ScreenUtil().setHeight(15)),
       ),
     );
   }
@@ -73,16 +101,16 @@ class CustomAppBar {
   static AppBar cart({context, bool empty = false}) {
     return AppBar(
       centerTitle: true,
-      leading: GestureDetector(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: Icon(
-          Icons.arrow_back_ios_outlined,
-          size: ScreenUtil().setHeight(18),
-          color: Colors.black,
-        ),
-      ),
+      // leading: GestureDetector(
+      //   onTap: () {
+      //     Navigator.pop(context);
+      //   },
+      //   child: Icon(
+      //     Icons.arrow_back_ios_outlined,
+      //     size: ScreenUtil().setHeight(18),
+      //     color: Colors.black,
+      //   ),
+      // ),
       actions: empty
           ? []
           : [

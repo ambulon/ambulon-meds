@@ -13,13 +13,11 @@ import 'package:medcomp/constants/quotes.dart';
 import 'package:medcomp/events/home.event.dart';
 import 'package:medcomp/models/banner.model.dart';
 import 'package:medcomp/models/searchhistory.model.dart';
-import 'package:medcomp/second_screen.dart';
 import 'package:medcomp/states/home.state.dart';
 import 'package:medcomp/utils/colortheme.dart';
 import 'package:medcomp/utils/styles.dart';
 import 'package:medcomp/views/home/components/coupons.dart';
 import 'package:medcomp/views/search/search_result_page.dart';
-import 'package:medcomp/views/splash_screen.dart';
 import 'components/appbar.dart';
 
 class Home extends StatefulWidget {
@@ -373,12 +371,12 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void _onTap(int idx) {
-    setState(() {
-      _selectedIndex = idx;
-    });
-    _pageController.jumpToPage(idx);
-  }
+  // void _onTap(int idx) {
+  //   setState(() {
+  //     _selectedIndex = idx;
+  //   });
+  //   _pageController.jumpToPage(idx);
+  // }
 
   Widget searchBox(SearchHistoryModel model) {
     return AspectRatio(

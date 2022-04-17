@@ -20,9 +20,7 @@ import 'package:medcomp/views/home/components/saviour_poster.dart';
 import 'package:medcomp/views/login/login_page.dart';
 import 'package:medcomp/constants/toast.dart';
 import 'package:settings_ui/settings_ui.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:medcomp/views/login/webfake.dart' if (dart.library.html) 'package:medcomp/views/login/webreal.dart';
-import 'package:settings_ui/settings_ui.dart';
 
 class ProfilePage extends StatelessWidget {
   Widget defaultHeadline(str, bool small, IconData icon) {
@@ -106,34 +104,35 @@ class ProfilePage extends StatelessWidget {
                     radius: ScreenUtil().setHeight(40),
                     backgroundImage: networkImage,
                   ),
-            
-                  SizedBox(height: ScreenUtil().setHeight(10)),
-
-                    SettingsList(
-                      shrinkWrap: true,
-                      physics: PageScrollPhysics(),
-                      lightTheme: SettingsThemeData(settingsListBackground: Colors.white),
-                      sections: [
-                      SettingsSection(
-                        title: Text('Main Settings',
+                ),
+                SizedBox(height: ScreenUtil().setHeight(10)),
+                SettingsList(
+                  shrinkWrap: true,
+                  physics: PageScrollPhysics(),
+                  lightTheme: SettingsThemeData(settingsListBackground: Colors.white),
+                  sections: [
+                    SettingsSection(
+                      title: Text(
+                        'Main Settings',
                         style: TextStyle(
-                      color: Colors.black,
-                      fontSize: ScreenUtil().setHeight(20),
-                       ),
-                       ),
-                        tiles: [
-                          SettingsTile.navigation(
-                            leading: Icon(Icons.shield),
-                            title: Text('Saviour Poster'),
-                            onPressed: (BuildContext ctx) {
-                              Navigator.push(context, MaterialPageRoute(builder: (ctx) => SaviourPoster(img: networkImage)));
-                            },
-                          ),
-                          SettingsTile.navigation(
-                            leading: Icon(Icons.book),
-                            title: Text('Terms and Conditions'),
-                            onPressed: (BuildContext ctx) {
-                              if (kIsWeb) {
+                          color: Colors.black,
+                          fontSize: ScreenUtil().setHeight(20),
+                        ),
+                      ),
+                      tiles: [
+                        SettingsTile.navigation(
+                          leading: Icon(Icons.shield),
+                          title: Text('Saviour Poster'),
+                          onPressed: (BuildContext ctx) {
+                            Navigator.push(
+                                context, MaterialPageRoute(builder: (ctx) => SaviourPoster(img: networkImage)));
+                          },
+                        ),
+                        SettingsTile.navigation(
+                          leading: Icon(Icons.book),
+                          title: Text('Terms and Conditions'),
+                          onPressed: (BuildContext ctx) {
+                            if (kIsWeb) {
                               openSite(AppConfig.tnc);
                             } else {
                               Navigator.push(
@@ -142,59 +141,59 @@ class ProfilePage extends StatelessWidget {
                               );
                             }
                           },
+                        ),
+                        SettingsTile.navigation(
+                          leading: Icon(Icons.privacy_tip),
+                          title: Text('Privacy Policy'),
+                          onPressed: (BuildContext ctx) {
+                            if (kIsWeb) {
+                              openSite(AppConfig.prPolicy);
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (ctx) => WebViewPage(link: AppConfig.prPolicy)),
+                              );
+                            }
+                          },
+                        ),
+                        SettingsTile.navigation(
+                          leading: Icon(Icons.clear),
+                          title: Text('Clear Searches'),
+                          onPressed: (BuildContext ctx) async {
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            prefs.remove(AppConfig.prefsSearchHistory);
+                            BlocProvider.of<HomeBloc>(ctx).add(HomeEventRefreshSearches());
+                            Navigator.pop(ctx);
+                            ToastPreset.successful(str: 'Cleared', context: context);
+                          },
+                        ),
+                        SettingsTile.navigation(
+                          leading: Icon(Icons.logout),
+                          title: Text('Logout'),
+                          onPressed: (BuildContext context) async {
+                            try {
+                              var res = await MyHttp.post('/logout', {});
+                              if (res.statusCode != 200) {
+                                ToastPreset.err(context: context, str: 'Logout error ${res.statusCode}');
+                              }
+                              SharedPreferences prefs = await SharedPreferences.getInstance();
+                              prefs.remove('token');
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LoginPage()));
+                            } catch (e) {
+                              print("logg out error : $e");
+                              ToastPreset.err(context: context, str: e);
+                            }
+                          },
+                        ),
+                        CustomSettingsTile(
+                          child: Divider(
+                            height: 10,
+                            thickness: 1,
+                            color: Colors.black26,
                           ),
-                          SettingsTile.navigation(
-                            leading: Icon(Icons.privacy_tip),
-                            title: Text('Privacy Policy'),
-                            onPressed: (BuildContext ctx) {
-                        if (kIsWeb) {
-                          openSite(AppConfig.prPolicy);
-                        } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (ctx) => WebViewPage(link: AppConfig.prPolicy)),
-                          );
-                        }
-                      },
-                          ),
-                          SettingsTile.navigation(
-                            leading: Icon(Icons.clear),
-                            title: Text('Clear Searches'),
-                            onPressed: (BuildContext ctx) async {
-                        SharedPreferences prefs = await SharedPreferences.getInstance();
-                        prefs.remove(AppConfig.prefsSearchHistory);
-                        BlocProvider.of<HomeBloc>(ctx).add(HomeEventRefreshSearches());
-                        Navigator.pop(ctx);
-                        ToastPreset.successful(str: 'Cleared', context: context);
-                      },
-                          ),
-                          SettingsTile.navigation(
-                            leading: Icon(Icons.logout),
-                            title: Text('Logout'),
-                            onPressed: (BuildContext context) async {
-                        try {
-                          var res = await MyHttp.post('/logout', {});
-                          if (res.statusCode != 200) {
-                            ToastPreset.err(context: context, str: 'Logout error ${res.statusCode}');
-                          }
-                          SharedPreferences prefs = await SharedPreferences.getInstance();
-                          prefs.remove('token');
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LoginPage()));
-                        } catch (e) {
-                          print("logg out error : $e");
-                          ToastPreset.err(context: context, str: e);
-                        }
-                      },
-                          ),
-                          CustomSettingsTile(child:  
-                         Divider(
-                           height: 10,
-                           thickness: 1,
-                           color: Colors.black26,
-                          ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
                 SizedBox(height: ScreenUtil().setHeight(10)),
@@ -344,103 +343,6 @@ class ProfilePage extends StatelessWidget {
             SizedBox(height: 12),
           ]),
         ),
-      ],
-    );
-    return Column(
-      children: [
-        SizedBox(height: kToolbarHeight),
-        SizedBox(height: ScreenUtil().setHeight(20)),
-        Container(
-          child: Row(
-            children: [
-              Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    defaultHeadline(user.email, true, null),
-                    defaultHeadline(user.name, false, null),
-                  ],
-                ),
-              ),
-              Spacer(),
-              CircleAvatar(
-                radius: ScreenUtil().setHeight(30),
-                backgroundImage: networkImage,
-              ),
-              SizedBox(width: ScreenUtil().setWidth(18)),
-            ],
-          ),
-        ),
-        SizedBox(height: ScreenUtil().setHeight(40)),
-        GestureDetector(
-          onTap: () {},
-          child: defaultHeadline('Rate us', false, Icons.star),
-        ),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (_) => SaviourPoster(img: networkImage)));
-          },
-          child: defaultHeadline('Saviour Poster', false, Icons.shield),
-        ),
-        GestureDetector(
-          onTap: () {
-            if (kIsWeb) {
-              openSite(AppConfig.tnc);
-            } else {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => WebViewPage(link: AppConfig.tnc)),
-              );
-            }
-          },
-          child: defaultHeadline('Terms and Conditions', false, Icons.book),
-        ),
-        GestureDetector(
-          onTap: () {
-            if (kIsWeb) {
-              openSite(AppConfig.prPolicy);
-            } else {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => WebViewPage(link: AppConfig.prPolicy)),
-              );
-            }
-          },
-          child: defaultHeadline('Privacy Policy', false, Icons.privacy_tip),
-        ),
-        GestureDetector(
-          onTap: () async {
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            prefs.remove(AppConfig.prefsSearchHistory);
-            BlocProvider.of<HomeBloc>(context).add(HomeEventRefreshSearches());
-            ToastPreset.successful(str: 'Cleared', context: context);
-          },
-          child: defaultHeadline('Clear Searches', false, Icons.clear),
-        ),
-        InkWell(
-          onTap: () async {
-            try {
-              var res = await MyHttp.post('/logout', {});
-              if (res.statusCode != 200) {
-                ToastPreset.err(context: context, str: 'Logout error ${res.statusCode}');
-              }
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.remove('token');
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LoginPage()));
-            } catch (e) {
-              print("logg out error : $e");
-              ToastPreset.err(context: context, str: e);
-            }
-          },
-          child: defaultHeadline('Log out', false, Icons.logout),
-        ),
-        Spacer(),
-        Text(
-          'Version build : ${Version.code}',
-          style: TextStyle(fontSize: 11),
-        ),
-        SizedBox(height: 12),
       ],
     );
   }

@@ -18,6 +18,7 @@ import 'package:medcomp/utils/styles.dart';
 import 'package:medcomp/views/home/components/saviour_poster.dart';
 import 'package:medcomp/views/login/login_page.dart';
 import 'package:medcomp/constants/toast.dart';
+import 'package:settings_ui/settings_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:medcomp/views/login/webfake.dart' if (dart.library.html) 'package:medcomp/views/login/webreal.dart';
 
@@ -85,7 +86,174 @@ class ProfilePage extends StatelessWidget {
 
   Widget pageBuild(UserModel user, context) {
     var networkImage = NetworkImage(user.photoUrl);
-    // appBar: CustomAppBar.def(title: 'Profile', context: context),
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: ColorTheme.fontWhite,
+          expandedHeight: ScreenUtil().setHeight(200),
+          flexibleSpace: FlexibleSpaceBar(
+            background: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SizedBox(height: kToolbarHeight),
+                Container(
+                  margin: EdgeInsets.only(left: ScreenUtil().setWidth(20)),
+                  child: CircleAvatar(
+                    radius: ScreenUtil().setHeight(40),
+                    backgroundImage: networkImage,
+                  ),
+                ),
+                SizedBox(height: ScreenUtil().setHeight(10)),
+                defaultHeadline(user.email, true, null),
+                defaultHeadline(user.name, false, null),
+              ],
+            ),
+            centerTitle: true,
+          ),
+        ),
+        SliverList(
+          delegate: SliverChildListDelegate([
+            // Container(
+            //   child: Row(
+            //     children: [
+            //       Container(
+            //         child:
+            //       ),
+            //       SizedBox(width: ScreenUtil().setWidth(18)),
+            //     ],
+            //   ),
+            // ),
+            SizedBox(height: ScreenUtil().setHeight(10)),
+            SettingsList(
+              shrinkWrap: true,
+              physics: PageScrollPhysics(),
+              lightTheme: SettingsThemeData(settingsListBackground: Colors.white),
+              sections: [
+                SettingsSection(
+                  title: Text(
+                    'User Settings',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: ScreenUtil().setHeight(20),
+                    ),
+                  ),
+                  tiles: [
+                    // SettingsTile.navigation(
+                    //   leading: Icon(Icons.shield),
+                    //   title: Text('Saviour Poster'),
+                    //   onPressed: (BuildContext ctx) {
+                    //     Navigator.push(context, MaterialPageRoute(builder: (ctx) => SaviourPoster(img: networkImage)));
+                    //   },
+                    // ),
+                    SettingsTile.navigation(
+                      leading: Icon(Icons.clear),
+                      title: Text('Clear Searches'),
+                      onPressed: (BuildContext ctx) async {
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                        prefs.remove(AppConfig.prefsSearchHistory);
+                        BlocProvider.of<HomeBloc>(ctx).add(HomeEventRefreshSearches());
+                        ToastPreset.successful(str: 'Cleared', context: context);
+                      },
+                    ),
+                    SettingsTile.navigation(
+                      leading: Icon(Icons.logout),
+                      title: Text('Logout'),
+                      onPressed: (BuildContext context) async {
+                        try {
+                          var res = await MyHttp.post('/logout', {});
+                          if (res.statusCode != 200) {
+                            ToastPreset.err(context: context, str: 'Logout error ${res.statusCode}');
+                          }
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          prefs.remove('token');
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LoginPage()));
+                        } catch (e) {
+                          print("logg out error : $e");
+                          ToastPreset.err(context: context, str: e);
+                        }
+                      },
+                    ),
+                    CustomSettingsTile(
+                      child: Divider(
+                        height: 10,
+                        thickness: 1,
+                        color: Colors.black26,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            //
+            SettingsList(
+              shrinkWrap: true,
+              physics: PageScrollPhysics(),
+              lightTheme: SettingsThemeData(settingsListBackground: Colors.white),
+              sections: [
+                SettingsSection(
+                  title: Text(
+                    'Legal Information',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: ScreenUtil().setHeight(18),
+                    ),
+                  ),
+                  tiles: [
+                    SettingsTile.navigation(
+                      leading: Icon(Icons.book),
+                      title: Text(
+                        'Terms and Conditions',
+                      ),
+                      onPressed: (BuildContext ctx) {
+                        if (kIsWeb) {
+                          openSite(AppConfig.tnc);
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (ctx) => WebViewPage(link: AppConfig.tnc)),
+                          );
+                        }
+                      },
+                    ),
+                    SettingsTile.navigation(
+                      leading: Icon(Icons.privacy_tip),
+                      title: Text('Privacy Policy'),
+                      onPressed: (BuildContext ctx) {
+                        if (kIsWeb) {
+                          openSite(AppConfig.prPolicy);
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (ctx) => WebViewPage(link: AppConfig.prPolicy)),
+                          );
+                        }
+                      },
+                    ),
+                    CustomSettingsTile(
+                      child: Divider(
+                        height: 10,
+                        thickness: 1,
+                        color: Colors.black26,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            Spacer(),
+            Text(
+              'Version build : ${Version.code}',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 11),
+            ),
+            SizedBox(height: 12),
+          ]),
+        ),
+      ],
+    );
     return Column(
       children: [
         SizedBox(height: kToolbarHeight),

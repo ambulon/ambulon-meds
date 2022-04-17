@@ -47,7 +47,7 @@ class CustomAppBar {
         style: TextStyle(color: Colors.white, fontSize: 22),
       ),
       bottom: TabBar(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        // padding: EdgeInsets.symmetric(horizontal: 20),
         labelPadding: EdgeInsets.all(6),
         indicatorWeight: 3,
         // indicatorColor: ColorTheme.green,

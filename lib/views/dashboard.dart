@@ -12,7 +12,6 @@ import 'package:medcomp/utils/styles.dart';
 import 'package:medcomp/views/cart/cart_page.dart';
 import 'package:medcomp/views/home/components/profile_page.dart';
 import 'package:medcomp/views/home/home.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 class Dashboard extends StatefulWidget {
   Dashboard({Key key}) : super(key: key);
@@ -25,14 +24,12 @@ class _DashboardState extends State<Dashboard> {
   int _selectedIndex = 0;
   final PageController _pageController = PageController();
 
-
   @override
   void initState() {
     super.initState();
     BlocProvider.of<HomeBloc>(context).add(HomeEventLoadData());
     BlocProvider.of<CartBloc>(context).add(CartEventLoad());
     BlocProvider.of<ProfileBloc>(context).add(ProfileEventLoadData());
-    
   }
 
   @override
@@ -61,18 +58,9 @@ class _DashboardState extends State<Dashboard> {
           },
           currentIndex: _selectedIndex,
           items: [
-            btn(
-                icon: Icons.home,
-                isSelected: _selectedIndex == 0,
-                label: 'Home'),
-            btn(
-                icon: Icons.shopping_cart_outlined,
-                isSelected: _selectedIndex == 1,
-                label: 'Cart'),
-            btn(
-                icon: Icons.account_circle,
-                isSelected: _selectedIndex == 2,
-                label: 'Profile'),
+            btn(icon: Icons.home, isSelected: _selectedIndex == 0, label: 'Home'),
+            btn(icon: Icons.shopping_cart_outlined, isSelected: _selectedIndex == 1, label: 'Cart'),
+            btn(icon: Icons.account_circle, isSelected: _selectedIndex == 2, label: 'Profile'),
           ],
         ),
         body: PageView(
